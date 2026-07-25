@@ -148,6 +148,32 @@ def validate_required_content() -> None:
             "Lightning",
             "smoke",
         ],
+        "marketplace/specs/research-core/shared/scientific-writing.md": [
+            "Engineering Term Isolation",
+            "Anti AI Tone",
+            "Write Like A Human",
+            "Over-Ornamentation",
+            "Bilingual Policy",
+            "Self-Check Before Submitting Prose",
+        ],
+        "marketplace/specs/dl-earth-research/shared/scientific-writing.md": [
+            "Engineering Term Isolation",
+            "Anti AI Tone",
+            "Write Like A Human",
+            "Over-Ornamentation",
+            "Bilingual Policy",
+            "Self-Check Before Submitting Prose",
+        ],
+        "marketplace/specs/research-core/guides/write-results.md": [
+            "Write A Results Discussion",
+            "scientific question",
+            "Completion Checklist",
+        ],
+        "marketplace/specs/dl-earth-research/guides/write-results.md": [
+            "Write A Results Discussion",
+            "scientific question",
+            "Completion Checklist",
+        ],
     }
     for rel_path, needles in required.items():
         text = (ROOT / rel_path).read_text(encoding="utf-8")
@@ -184,6 +210,11 @@ def validate_no_non_ascii() -> None:
             str(rel_path).encode("ascii")
         except UnicodeEncodeError:
             fail(f"path must be ASCII: {rel_path}")
+        # Content under examples/ may include bilingual writing samples (for
+        # example a Chinese result discussion). Only paths must stay ASCII there;
+        # the portable spec files under marketplace/ remain fully ASCII.
+        if any(part == "examples" for part in rel_path.parts):
+            continue
         data = path.read_bytes()
         try:
             data.decode("ascii")
@@ -204,12 +235,14 @@ def validate_trellis_spec_shape() -> None:
             "shared/project-layout.md",
             "shared/anti-bloat.md",
             "shared/reproducibility.md",
+            "shared/scientific-writing.md",
             "shared/python-style.md",
             "data/index.md",
             "training/index.md",
             "evaluation/index.md",
             "guides/index.md",
             "guides/add-experiment.md",
+            "guides/write-results.md",
             "guides/debug-nan-oom.md",
             "guides/code-review.md",
         ],
@@ -219,10 +252,12 @@ def validate_trellis_spec_shape() -> None:
             "shared/project-layout.md",
             "shared/anti-bloat.md",
             "shared/reproducibility.md",
+            "shared/scientific-writing.md",
             "data/index.md",
             "evaluation/index.md",
             "guides/index.md",
             "guides/add-run.md",
+            "guides/write-results.md",
             "guides/code-review.md",
         ],
     }

@@ -10,6 +10,7 @@ iteration speed, readable code, and evidence-backed claims.
 | [project-layout.md](./project-layout.md) | Creating, moving, or naming files |
 | [anti-bloat.md](./anti-bloat.md) | Adding files, variants, scripts, helpers, or abstractions |
 | [reproducibility.md](./reproducibility.md) | Running computations or reporting results |
+| [scientific-writing.md](./scientific-writing.md) | Writing reports, discussions, methods, or paper drafts |
 | [../data/index.md](../data/index.md) | Reading, writing, processing, or validating data |
 | [../evaluation/index.md](../evaluation/index.md) | Writing metrics, figures, reports, or comparisons |
 | [../guides/index.md](../guides/index.md) | Choosing a task guide |
@@ -22,6 +23,7 @@ iteration speed, readable code, and evidence-backed claims.
 | Run an experiment, simulation, or analysis | [reproducibility.md](./reproducibility.md) |
 | Create or transform data | [../data/index.md](../data/index.md) |
 | Report a metric, figure, or comparison | [../evaluation/index.md](../evaluation/index.md) |
+| Write a results discussion, report, or paper draft | [scientific-writing.md](./scientific-writing.md) and [../guides/write-results.md](../guides/write-results.md) |
 | Review a change | [../guides/code-review.md](../guides/code-review.md) |
 
 ## Pre-Development Checklist
@@ -61,5 +63,8 @@ iteration speed, readable code, and evidence-backed claims.
       or ad hoc scripts.
 - [ ] Any result claim is backed by retained evidence with config, command,
       data record, environment, metrics, and assumptions.
+- [ ] Any prose (report, discussion, methods, paper draft) follows
+      [scientific-writing.md](./scientific-writing.md): science-first narrative,
+      no engineering terms in prose, no buzzwords.
 - [ ] Any data-writing task records what was written, where it came from, and
       how to rebuild it.

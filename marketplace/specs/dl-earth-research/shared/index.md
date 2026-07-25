@@ -13,6 +13,7 @@ these rules, treat them as migration candidates, not as patterns to copy.
 | [project-layout.md](./project-layout.md) | Creating, moving, or naming files |
 | [anti-bloat.md](./anti-bloat.md) | Adding files, variants, scripts, helpers, or abstractions |
 | [reproducibility.md](./reproducibility.md) | Running or reporting experiments |
+| [scientific-writing.md](./scientific-writing.md) | Writing reports, discussions, methods, or paper drafts |
 | [python-style.md](./python-style.md) | Writing Python modules |
 | [../data/index.md](../data/index.md) | Touching data |
 | [../training/index.md](../training/index.md) | Touching training or model code |
@@ -28,6 +29,8 @@ these rules, treat them as migration candidates, not as patterns to copy.
 - [ ] Touching results? Decide whether each run is scratch, smoke, or
       retained; confirm where retained metrics, figures, config snapshots, and
       run manifests are written.
+- [ ] Writing prose (report, discussion, methods, paper draft)? Plan to lead
+      with the scientific finding; see [scientific-writing.md](./scientific-writing.md).
 
 ## Core Rules
 
@@ -54,4 +57,7 @@ Before claiming completion:
 - [ ] New reusable logic lives under `src/<pkg>/`, not in notebooks or ad hoc scripts.
 - [ ] Any result claim is backed by a retained run artifact with config, seed,
       environment freeze, data manifest, and metrics.
+- [ ] Any prose (report, discussion, methods, paper draft) follows
+      [scientific-writing.md](./scientific-writing.md): science-first narrative,
+      no engineering terms in prose, no buzzwords.
 - [ ] Any data-writing task records what was written, where it came from, and how to rebuild it.

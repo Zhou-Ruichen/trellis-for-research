@@ -81,6 +81,70 @@ Validate at the point where data enters the project:
 
 ## Geoscience Data Rules
 
+These rules apply on top of the general data rules above. They are checkable:
+each item maps to a field in the data manifest or a validation step at the data
+boundary.
+
+### Array Formats (netCDF / Zarr)
+
+For `.nc` (netCDF / CF) and `.zarr` stores used as inputs or durable products:
+
+- Record the format, the library and version that read or wrote it (for example
+  `xarray` + `h5netcdf`, or `zarr` + storage backend), and the encoding options
+  (compression, filters, shuffling).
+- Record every variable name consumed and the `units` attribute for each
+  physical variable. Do not strip CF attributes when writing processed products.
+- Handle `_FillValue` / `missing_value`, `scale_factor`, and `add_offset`
+  explicitly: apply or preserve them at the boundary and record the convention
+  used. Never silently let fill values enter model inputs.
+- For Zarr, record the chunk shape and storage layout (for example dimension
+  order and chunks) so a re-opened store matches the access pattern the pipeline
+  expects.
+
+### Coordinate Reference Systems
+
+- Record the CRS for every geospatial product: an EPSG code, a PROJ string, or a
+  CF `grid_mapping` variable. "Assumed lat/lon" is not a CRS record.
+- Record the longitude convention (`[-180, 180]` or `[0, 360]`) and latitude
+  bounds at the boundary, and any reprojection or resampling step with its
+  parameters.
+- Record the affine transform or grid spacing (for rasters) and the pixel
+  interpretation (pixel-center vs pixel-corner).
+
+### Time Dimension
+
+- Record the time coordinate encoding: CF `units` and `calendar`, or an
+  ISO-8601 column, plus the timezone if any.
+- Record any time aggregation, resampling, or subsetting (for example monthly
+  mean, rolling window) and the boundary handling.
+- When matching observations across products, record the join tolerance in time
+  and the reference time scale.
+
+### Chunking And Access Pattern
+
+- Match array chunking to the dominant access pattern (time-series reads vs
+  spatial tiles) and record the chosen chunk shape in the manifest.
+- Record whether reads are dask-backed and the task chunk size when that affects
+  determinism or memory.
+
+### External Data Pointers
+
+For data too large to version in the repository:
+
+- Store a pointer, not the bytes: an absolute or configured root path, a
+  protocol (file, S3, HTTPS, OpenDAP), and the dataset version or collection.
+- Record the resolution rule in the manifest (environment variable or config
+  key that expands to the real path) so the pointer is reproducible on another
+  machine.
+- Record a checksum of the resolved source when feasible, or the upstream
+  version identifier and retrieval date when a byte checksum is impractical.
+
+### Checksums
+
+- Record a checksum (sha256 by default) per durable data file or per Zarr array
+  in the data manifest. For very large products, checksum a representative
+  manifest of chunk keys and sizes and state that scope.
+
 ### SWOT And Related Data
 
 For SWOT, altimetry, gravity, and bathymetry workflows:
@@ -118,4 +182,12 @@ If the stage changes, update config and manifest, not the script name.
 - [ ] Splits are recorded and leakage-checked for the relevant scientific question.
 - [ ] Data paths are config-driven, not hardcoded workstation paths.
 - [ ] NaN/fill values, units, and coordinate conventions are explicit.
+- [ ] For netCDF/Zarr: variable names, units, fill-value handling, and chunk
+      layout are recorded.
+- [ ] CRS is recorded (EPSG / PROJ / CF grid_mapping); longitude convention and
+      latitude bounds are explicit.
+- [ ] Time encoding (CF units and calendar, or ISO-8601) and any aggregation or
+      join tolerance are recorded.
+- [ ] External data is a reproducible pointer (root, protocol, version) with a
+      checksum or version identifier.
 - [ ] Large generated data is ignored by git unless the user explicitly chooses to version a small fixture.

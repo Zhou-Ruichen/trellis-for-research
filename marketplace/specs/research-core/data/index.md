@@ -77,6 +77,25 @@ Validate at the point where data enters the project:
 - train/validation/test splits cannot leak entities, time ranges, regions,
   subjects, or source records when leakage matters.
 
+## Scientific Data Formats
+
+These rules are checkable and apply whenever durable data carries physical or
+structured meaning. They are language-agnostic; the format may be CSV, Parquet,
+HDF5, netCDF, JSON, or any project convention.
+
+- Record units and the coordinate or key convention for every physical field at
+  the boundary. A column named `temperature` without a unit is not a complete
+  record.
+- Handle missing-value sentinels, fill values, and NaN explicitly: state the
+  convention and never let an unconverted sentinel reach a computation.
+- Record a checksum (sha256 by default) per durable data file in the manifest.
+- For data too large to version in the repository, store a reproducible pointer
+  (root path or config key, protocol, upstream version or retrieval date)
+  instead of the bytes, and record the resolution rule.
+- For binary or self-describing formats (HDF5, netCDF, Parquet), record the
+  library and version used to read or write, and any compression or encoding
+  options that affect how the data is reconstructed.
+
 ## Data Processing Entrypoints
 
 Use one stable entrypoint per durable processing stage:
@@ -106,5 +125,9 @@ If the stage changes, update parameters and manifest, not the script name.
 - [ ] Data paths are parameterized or documented, not hardcoded workstation
       paths.
 - [ ] Missing values, units, schema, and conventions are explicit.
+- [ ] Physical fields carry units; fill-value and sentinel handling is explicit.
+- [ ] Durable data files have a checksum, or the manifest states why one is
+      impractical.
+- [ ] Large external data is a reproducible pointer, not committed bytes.
 - [ ] Large generated data is ignored by git unless the user explicitly
       chooses to version a small fixture.

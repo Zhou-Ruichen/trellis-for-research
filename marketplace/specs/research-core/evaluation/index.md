@@ -3,6 +3,10 @@
 Use these rules for validation, metrics, comparisons, figures, tables,
 diagnostics, and report artifacts.
 
+This file governs the evidence (what to write and where). The prose around that
+evidence -- captions, report text, result discussions -- is governed by
+[../shared/scientific-writing.md](../shared/scientific-writing.md).
+
 ## Evaluation Layout
 
 Keep scripts thin and move reusable evaluation logic to the project's source
@@ -114,4 +118,6 @@ scripts/check_new_results.py
 - [ ] Retained figures and tables are tied to a run ID or data manifest.
 - [ ] Comparison tables record what was compared and how.
 - [ ] Reports contain curated artifacts, not raw output dumps.
+- [ ] Report prose and captions follow scientific-writing.md: science-first, no
+      engineering terms, no buzzwords.
 - [ ] New evaluation behavior did not create copied script variants.

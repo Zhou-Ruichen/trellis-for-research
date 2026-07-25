@@ -61,7 +61,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.2.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
   --template research-core \
   --claude --codex
 ```
@@ -70,7 +70,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.2.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -90,7 +90,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.2.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
   --template research-core \
   --overwrite \
   --claude --codex
@@ -162,7 +162,7 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.2.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
   --template research-core \
   --claude --codex -y
 find .trellis/spec -type f | sort

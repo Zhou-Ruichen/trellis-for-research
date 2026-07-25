@@ -117,5 +117,5 @@ scripts/evaluate_old_checkpoint.py
 - [ ] Geospatial outputs record coordinate convention, grid definition, and postprocessing.
 - [ ] Reports contain curated artifacts, not raw output dumps.
 - [ ] Report prose and captions follow scientific-writing.md: science-first, no
-      engineering terms, no buzzwords, units and CRS on every map.
+      engineering terms, no over-ornamentation or empty adjectives, units and CRS on every map.
 - [ ] New evaluation behavior did not create copied script variants.

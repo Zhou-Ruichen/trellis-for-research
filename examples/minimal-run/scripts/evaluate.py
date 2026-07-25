@@ -2,7 +2,8 @@
 """Re-evaluate a saved checkpoint and rewrite metrics for a retained run.
 
 Thin entrypoint: read the run manifest, load the checkpoint and the recorded
-data product, recompute metrics, and overwrite ``metrics.json``.
+data product, recompute metrics, and overwrite ``metrics.json``. Training-only
+fields such as ``loss_history`` are not preserved by this overwrite.
 """
 
 from __future__ import annotations

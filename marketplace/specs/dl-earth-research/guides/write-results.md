@@ -1,3 +1,13 @@
+<!--
+Maintainer note: the sibling template carries an equivalent copy of this file
+with domain examples adapted (research-core is generic; dl-earth-research is
+geoscience). Mirror structural changes -- section headings, self-check items,
+cross-reference targets -- across both copies unless a change is genuinely
+domain-specific. The duplication is structural: Trellis installs each template
+directory as a standalone flat copy into .trellis/spec/, so the two cannot share
+a single source file.
+-->
+
 # Guide: Write A Results Discussion
 
 Use this when drafting a results discussion, conclusion, paper section, or any

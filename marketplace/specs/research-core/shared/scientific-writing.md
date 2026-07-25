@@ -1,3 +1,13 @@
+<!--
+Maintainer note: the sibling template carries an equivalent copy of this file
+with domain examples adapted (research-core is generic; dl-earth-research is
+geoscience). Mirror structural changes -- section headings, self-check items,
+cross-reference targets -- across both copies unless a change is genuinely
+domain-specific. The duplication is structural: Trellis installs each template
+directory as a standalone flat copy into .trellis/spec/, so the two cannot share
+a single source file.
+-->
+
 # Scientific Writing
 
 These rules govern how prose is written for this project: results discussions,
@@ -168,9 +178,9 @@ produced it.
       description.
 - [ ] No engineering terms (`retained run`, `manifest`, `artifact`,
       `promotion`, `run_id`, `scratch`/`smoke`) appear as if they were results.
-- [ ] No over-ornamentation (`delve`, `unveil`, `tapestry`, `navigate`,
-      `myriad`, "it is worth noting", or the Chinese cliches above) remains.
-- [ ] No empty adjectives (`robust`, `scalable`, `leverage`, `seamless`,
+- [ ] No over-ornamentation (`delve`, `unveil`, `leverage`, `tapestry`,
+      `navigate`, `myriad`, "it is worth noting", or the Chinese cliches above) remains.
+- [ ] No empty adjectives (`robust`, `scalable`, `seamless`,
       `state-of-the-art` without comparison) remain.
 - [ ] No mechanical transition-adverb chains or prose-as-bullet-list; sentence
       structure varies and connectives are causal, not filler.

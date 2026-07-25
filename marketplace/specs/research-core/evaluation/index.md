@@ -119,5 +119,5 @@ scripts/check_new_results.py
 - [ ] Comparison tables record what was compared and how.
 - [ ] Reports contain curated artifacts, not raw output dumps.
 - [ ] Report prose and captions follow scientific-writing.md: science-first, no
-      engineering terms, no buzzwords.
+      engineering terms, no over-ornamentation or empty adjectives.
 - [ ] New evaluation behavior did not create copied script variants.

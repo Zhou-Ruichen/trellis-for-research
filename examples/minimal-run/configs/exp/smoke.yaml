@@ -1,0 +1,10 @@
+# Tiny smoke run: proves the pipeline executes end to end. Writes to the
+# scratch tier; no environment freeze unless promoted to retained.
+run:
+  name: smoke
+  output_root: outputs/scratch
+  retention: scratch
+training:
+  epochs: 3
+optimizer:
+  lr: 0.05

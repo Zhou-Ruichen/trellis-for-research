@@ -1,0 +1,9 @@
+# Environment freeze captured for this retained run.
+# This is a minimal snapshot; real projects use `pip freeze`,
+# `uv pip freeze`, `conda env export`, or an equivalent lockfile.
+python: 3.12.11
+implementation: cpython
+platform: macOS-15.2-arm64-arm-64bit
+packages:
+  pyyaml: 6.0.3
+  research-demo: 0.1.0

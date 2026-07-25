@@ -36,12 +36,14 @@ deep-learning training as the main workflow.
 | [shared/project-layout.md](./shared/project-layout.md) | Creating files or directories |
 | [shared/anti-bloat.md](./shared/anti-bloat.md) | Adding files, variants, scripts, or abstractions |
 | [shared/reproducibility.md](./shared/reproducibility.md) | Running experiments or reporting results |
+| [shared/scientific-writing.md](./shared/scientific-writing.md) | Writing reports, discussions, methods, or paper drafts |
 | [shared/python-style.md](./shared/python-style.md) | Writing Python modules |
 | [data/index.md](./data/index.md) | Reading, writing, processing, or validating data |
 | [training/index.md](./training/index.md) | Training, checkpoints, configs, or model code |
 | [evaluation/index.md](./evaluation/index.md) | Metrics, figures, predictions, or reports |
 | [guides/index.md](./guides/index.md) | Choosing a task guide |
 | [guides/add-experiment.md](./guides/add-experiment.md) | Adding a new experiment |
+| [guides/write-results.md](./guides/write-results.md) | Drafting a results discussion, report, or paper section |
 | [guides/debug-nan-oom.md](./guides/debug-nan-oom.md) | Debugging NaN, inf, divergence, or OOM |
 | [guides/code-review.md](./guides/code-review.md) | Reviewing research-code changes |
 

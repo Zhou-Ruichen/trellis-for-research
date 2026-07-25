@@ -21,6 +21,7 @@ Cross-cutting research engineering rules:
 - [Project Layout](./shared/project-layout.md)
 - [Anti-Bloat Rules](./shared/anti-bloat.md)
 - [Reproducibility](./shared/reproducibility.md)
+- [Scientific Writing](./shared/scientific-writing.md)
 
 ### [Data](./data/index.md)
 
@@ -34,9 +35,10 @@ claims.
 
 ### [Guides](./guides/index.md)
 
-Task guides for adding a run and reviewing research-code changes:
+Task guides for adding a run, writing results, and reviewing research-code changes:
 
 - [Add Run](./guides/add-run.md)
+- [Write Results](./guides/write-results.md)
 - [Code Review](./guides/code-review.md)
 
 ## Template Fit
@@ -63,6 +65,7 @@ and claims.
 | Durable data products need manifests | [data/index.md](./data/index.md) |
 | Superseded code is deleted after verification; experiment records require care | [shared/anti-bloat.md](./shared/anti-bloat.md) |
 | Reports contain curated artifacts, not raw dumps | [evaluation/index.md](./evaluation/index.md) |
+| Report prose leads with the finding, not the run | [shared/scientific-writing.md](./shared/scientific-writing.md) |
 
 ## Usage Notes
 

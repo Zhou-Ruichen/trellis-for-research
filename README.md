@@ -23,6 +23,13 @@ The templates currently cover:
   history is the archive), while run artifacts and experiment records are
   protected.
 
+Both templates also include a scientific-writing layer that keeps reports and
+discussions readable as science rather than engineering logs: prose leads with
+the finding, engineering terms stay in code and methods, AI tone (both the
+mechanical "does not speak human" style and the flowery over-ornamented style,
+in English or Chinese) is stripped, and bilingual prose (including Chinese) is
+supported.
+
 ## Scope
 
 - `research-core` is language-agnostic and layout-tolerant. It is the default
@@ -106,6 +113,30 @@ contracts, captured learnings), do not overwrite it. Instead:
 
 Reserve `--overwrite` for specs that are still untouched Trellis defaults.
 
+## Relationship With Trellis Defaults
+
+`trellis init` writes generic project-level placeholders into `.trellis/`
+(project notes, environment and conventions docs, and so on). These templates
+install into `.trellis/spec/` as a dedicated research-engineering layer and do
+not remove those project-level placeholders.
+
+Recommended strategy: overlay, do not replace.
+
+- The template's `spec/` tree is authoritative for research-engineering
+  concerns: code layout, anti-bloat, reproducibility, data contracts,
+  evaluation, and scientific writing. Keep Trellis's project-level placeholders
+  (outside `spec/`) for environment, tooling, and team notes.
+- Each area has its own `index.md` (`shared/`, `data/`, `evaluation/`,
+  `training/`, `guides/`). These are template-owned; if a Trellis default also
+  provides an area index, prefer the template's research index for
+  research-engineering rules.
+- For non-conflicting task guides, merge them into `guides/` rather than
+  duplicating. When a Trellis default and this template disagree on a
+  research-engineering rule, the template wins; record any deliberate
+  divergence in the project spec so it is visible.
+- Confirm the exact placeholder set against the Trellis version in use, then
+  keep this template as the research layer on top of it.
+
 ## Local Validation
 
 Run:
@@ -155,6 +186,21 @@ find .trellis/spec -type f | sort
   than accumulated; git history is the archive. Suspected-dead code, bulk
   cleanup, and run artifacts (`outputs/`, `data/manifests/`, configs still
   referenced by results) require asking first.
+- Result discussions, methods, and reports lead with the scientific finding,
+  keep engineering terms out of prose, and strip AI tone (mechanical stiffness
+  and flowery over-ornamentation, English or Chinese); the scientific-writing
+  layer (`shared/scientific-writing.md` and `guides/write-results.md` in each
+  template) defines the rules and a self-check.
+
+## Examples
+
+- `examples/project-layout/` shows the target directory shape for a new
+  `dl-earth-research` project. It is a layout reference, not runnable code.
+- `examples/minimal-run/` is a minimal runnable project: synthetic
+  one-feature linear regression that exercises the full contract end to end
+  (data manifest, config, training, retained-run manifest with environment
+  freeze, and a bilingual result discussion written in the scientific style).
+  See `examples/minimal-run/README.md` for how to run it.
 
 ## Repository Layout
 
@@ -163,19 +209,31 @@ marketplace/
   index.json
   specs/
     dl-earth-research/
-      shared/
+      shared/        # incl. scientific-writing.md
       data/
       training/
       evaluation/
-      guides/
+      guides/        # incl. write-results.md
     research-core/
-      shared/
+      shared/        # incl. scientific-writing.md
       data/
       evaluation/
-      guides/
+      guides/        # incl. write-results.md
 examples/
-  project-layout/
+  project-layout/    # layout reference
+  minimal-run/       # runnable end-to-end demo
+scripts/
+  validate.py
+LICENSE
 ```
 
 The marketplace schema follows Trellis `index.json` requirements: a `templates`
 array with entries containing string `id`, `type`, `name`, and `path` fields.
+
+## License
+
+Released under the [MIT License](./LICENSE). MIT is chosen over Apache-2.0
+because these templates are rulesets (markdown) that get installed into other
+projects: the permissive, recognition-friendly terms fit that use, and the
+patent-grant machinery of Apache-2.0 adds no value for documentation-only
+content.

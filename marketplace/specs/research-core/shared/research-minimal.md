@@ -7,17 +7,22 @@ code. Write the smallest change that answers the question; prefer one line
 from an existing library over new code (see the reuse ladder in
 [anti-bloat.md](./anti-bloat.md)).
 
+Two independent questions are in play: the mode controls how code is written
+and checked (exploratory by default; durable means code the project keeps
+and maintains), and the evidence tier (scratch / smoke / retained, per
+[reproducibility.md](./reproducibility.md)) controls what the run records.
+A retained result does not make exploratory code durable.
+
 In exploratory mode, do not add defensive code, boundary checks,
 hash/checksum logic, exception handling, retries, unit tests, strict typing,
 or abstractions unless the task names a concrete, likely failure that needs
 one, or the user explicitly asks. In durable mode, apply the reliability the
 component actually needs.
 
-Before any verification step, answer two questions: what specific failure
-would it catch, and what would you do differently once it finds one? If
-there is no answer, do not add the check. A check earns its place only when
-it replaces a clearly more expensive operation and its result changes the
-next action.
+Before any verification step, be able to name the concrete, plausible
+failure it targets and how its result would change the next action. Use the
+cheapest check that answers that question; do not add another check for the
+same question once it is answered.
 
 Run and data manifests are written by the run-script template at retained
 tier only; hash and checksum logic never appears scattered through

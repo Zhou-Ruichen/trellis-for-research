@@ -5,43 +5,53 @@ software-engineering default (implement -> full check -> verify) with a
 two-mode flow where verification depth follows the evidence tier, not task
 size.
 
-## Mode
+## Mode and evidence tier
 
-Each task's `prd.md` declares its mode on line 1:
+Two independent questions are separated on purpose:
 
-- `Mode: exploratory` (default when absent): validate an idea, run an
-  experiment, answer a question. One sanity pass, then stop.
-- `Mode: durable`: reusable infrastructure, data contracts, or paper-table
-  evidence that later work builds on. Full check (lint, type-check, tests).
+- **Mode** (code): `prd.md` line 1 declares `Mode: exploratory` (default when
+  absent) or `Mode: durable` (code the project keeps and maintains: loaders,
+  pipelines, data contracts). The mode controls how code is written and how
+  deeply it is checked. Do not promote a task to durable on the AI's own
+  judgment; ask the user.
+- **Evidence tier** (runs): scratch / smoke / retained, decided per run per
+  `spec/shared/reproducibility.md`. It controls what the run records.
 
-Do not promote a task to durable on the AI's own judgment; ask the user.
+A retained result (paper-table evidence) does not make exploratory code
+durable: a 25-line script for a paper table stays exploratory; its run
+records config, command, git revision, environment, and results.
 
 ## What changes relative to the stock workflow
 
 1. `workflow.md` (master copy here):
    - Request Triage and the `no_task` / `planning` breadcrumbs set the mode
-     at task creation.
+     at task creation and separate it from the evidence tier.
    - The `in_progress` breadcrumbs carry two flows plus a stop condition:
      once the requested result is established and the mode's checks pass,
      stop. No extra certainty without a concrete failure signal; no re-running
      checks that already passed; an unexpected scientific result is a finding,
      not a bug.
-   - Phase 2.1 dispatch descriptions close with the mode's pass instead of
-     unconditional lint/type-check.
+   - Phase 2.1 dispatch descriptions close with the mode's final check
+     instead of unconditional lint/type-check.
    - Phase 2.2 is split by mode: exploratory runs one sanity pass via
      `trellis-research-check`; durable runs the full `trellis-check`.
-     Any added check must answer: what failure does it catch, and what would
-     you do differently once it finds one?
-   - Phase 3.3 (spec update) accepts durable knowledge only; single-run
-     observations go to run records, and exploratory tasks may record
-     "no durable knowledge" and skip.
+     Any added check must target a concrete, plausible failure and be the
+     cheapest check that answers it.
+   - Phase 3.3 (spec update) first decides whether durable knowledge exists;
+     if not, the task records "no durable knowledge" and moves on without
+     loading the update-spec skill.
 2. `agents/implement.md` (master copy here): the channel implement agent
-   reads the mode, writes the minimum code, and closes with the mode's pass.
+   reads the mode, writes the minimum code, and closes with the mode's final
+   check.
 3. `skills/trellis-research-check/`: a one-pass sanity skill for exploratory
-   tasks (executes, shapes/units, NaN/Inf, result from the stated run;
-   explicitly no hashes, no repeats, no auto-fix).
-4. A one-line description patch on the official `trellis-check` skill so
-   exploratory work routes to `trellis-research-check` instead.
+   tasks (executes, shapes/units, NaN/Inf, result from the invocation just
+   executed; provenance identifiers only for retained runs; explicitly no
+   hashes, no repeats, no auto-fix).
+
+The official `trellis-check` skill is not patched. Routing lives entirely in
+`workflow.md` (state blocks, Phase 2.2, Active Task Routing) and in the
+research-check skill's own description, so the overlay only owns its own
+files.
 
 ## Usage
 
@@ -65,6 +75,3 @@ workflow.
   `apply.sh` after updating.
 - `trellis-research-check` is a file owned by this overlay; the Trellis
   updater does not manage it.
-- The `trellis-check` description edit is a local modification of a bundled
-  skill (bundled skills are hash-tracked in recent versions); on update,
-  keep the local version or re-run `apply.sh`.

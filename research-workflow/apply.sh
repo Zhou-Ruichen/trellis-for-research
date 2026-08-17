@@ -49,30 +49,9 @@ install_file() {
   return 0
 }
 
-# patch the official trellis-check skill description (one line, idempotent)
-patch_check_description() {
-  local f="$PROJ/.claude/skills/trellis-check/SKILL.md"
-  [ -f "$f" ] || { echo "  SKIP           .claude/skills/trellis-check/SKILL.md (not installed)"; return; }
-  if grep -q "exploratory experiments use trellis-research-check" "$f"; then
-    echo "  OK (patched)   .claude/skills/trellis-check/SKILL.md"
-    return
-  fi
-  echo "  PATCH          .claude/skills/trellis-check/SKILL.md (description)"
-  [ "$MODE" = apply ] || return 0
-  cp "$f" "$f.backup-$(ts)"
-  python3 - "$f" <<'PYEOF'
-import sys, re
-p = sys.argv[1]
-s = open(p).read()
-s = s.replace(
-    "before committing changes, or to catch context drift during long sessions.\"",
-    "before committing changes, or to catch context drift during long sessions. "
-    "For durable engineering changes; exploratory experiments use trellis-research-check instead.\"",
-    1,
-)
-open(p, "w").write(s)
-PYEOF
-}
+# The official trellis-check skill is NOT patched. Routing lives entirely in
+# workflow.md (state blocks, Phase 2.2, Active Task Routing) and in the
+# trellis-research-check skill's own description.
 
 verify_state_blocks() {
   local n o
@@ -91,13 +70,8 @@ echo "== research-workflow overlay: $PROJ ($MODE)"
 if [ "$MODE" = verify ]; then
   ok=0
   cmp -s "$T/workflow.md" "$MASTER_WORKFLOW" && echo "  OK             workflow.md matches master" || { echo "  FAIL           workflow.md differs from master"; ok=1; }
-  grep -q "Closing pass per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
+  grep -q "Final check per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
   [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill installed" || { echo "  FAIL           research-check skill missing"; ok=1; }
-  if [ -f "$PROJ/.claude/skills/trellis-check/SKILL.md" ]; then
-    grep -q "exploratory experiments use trellis-research-check" "$PROJ/.claude/skills/trellis-check/SKILL.md" && echo "  OK             check skill routing patch present" || { echo "  FAIL           check skill routing patch missing"; ok=1; }
-  else
-    echo "  SKIP           trellis-check skill not installed (non-Claude platform project)"
-  fi
   verify_state_blocks || ok=1
   [ $ok = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
   exit $ok
@@ -106,7 +80,6 @@ fi
 install_file "$T/workflow.md" "$MASTER_WORKFLOW"
 install_file "$T/agents/implement.md" "$MASTER_IMPLEMENT"
 install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
-patch_check_description
 if [ "$MODE" = apply ]; then
   verify_state_blocks
   echo "== applied. Restart AI sessions in this project to pick up the new workflow."

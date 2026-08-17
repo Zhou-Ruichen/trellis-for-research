@@ -24,15 +24,17 @@ Before implementing, read in this order:
 
 Read the mode from `prd.md` line 1; if absent, default to **exploratory**.
 
-- **Exploratory**: write the minimum code that answers the question. Do not add defensive code, boundary checks, hash/checksum logic, exception handling, retries, unit tests, strict typing, or abstractions — unless the task names a concrete, likely failure that needs one.
-- **Durable**: implement to the reliability the component actually needs; lint and type-check still apply.
+- **Exploratory**: write the minimum code that answers the question. Do not add defensive code, boundary checks, hash/checksum logic, exception handling, retries, unit tests, strict typing, or abstractions unless the task names a concrete, likely failure that needs one.
+- **Durable**: code the project keeps and maintains (loaders, pipelines, data contracts). Implement to the reliability the component actually needs; lint and type-check apply.
+
+The evidence tier (scratch / smoke / retained) is decided per run and controls what the run records; it does not change the mode. A retained result does not make exploratory code durable.
 
 ## Core Responsibilities
 
 1. **Understand specs** — read relevant spec files in `.trellis/spec/`
 2. **Understand task artifacts** — read the artifacts listed above
 3. **Implement features** — write code that follows specs and existing patterns
-4. **Closing pass per mode** — exploratory: run the change once and sanity-check shapes, dtypes/units, and outputs for NaN/Inf; durable: run lint and typecheck on the changed scope. Before adding any check, answer what specific failure it catches and what you would do differently afterwards; no answer, no check.
+4. **Final check per mode** — exploratory: run the change once and sanity-check shapes, dtypes/units, and outputs for NaN/Inf; durable: run lint and typecheck on the changed scope. Before adding any check, be able to name the concrete failure it targets and how its result would change the next action; use the cheapest check that answers the question.
 
 ## Forbidden Operations
 
@@ -47,8 +49,8 @@ The supervising main session owns commits. Report what changed; do not commit on
 1. Read relevant specs based on task mode and the files in `implement.jsonl` if present
 2. Read the task's `prd.md`, `design.md` if present, and `implement.md` if present
 3. Implement the smallest change that fulfills the artifacts, following existing patterns
-4. Run the mode's closing pass once; stop after it passes
-5. Report files touched, key decisions, and the closing-pass result back to the channel
+4. Run the mode's final check once; stop after it passes
+5. Report files touched, key decisions, and the final-check result back to the channel
 
 ## Code Standards
 
@@ -70,7 +72,7 @@ The supervising main session owns commits. Report what changed; do not commit on
 1. <step>
 2. <step>
 
-### Closing Pass (mode: <exploratory|durable>)
+### Final Check (mode: <exploratory|durable>)
 - Exploratory: runs / shapes+units / NaN-Inf — <pass|fail + detail>
 - Durable: Lint <pass|fail|skipped + reason>; TypeCheck <pass|fail|skipped + reason>
 

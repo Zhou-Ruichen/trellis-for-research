@@ -14,7 +14,9 @@ This is a single pass. It is not a review cycle.
 - The changed path executes.
 - Obvious shape, dtype, unit, and coordinate errors where relevant.
 - NaN/Inf or clearly invalid outputs.
-- The reported result comes from the stated run (path or run_id matches).
+- The reported observation comes from the invocation just executed. Require
+  run_id or path provenance only when the run is retained or already carries
+  such an identifier; do not create provenance machinery for a scratch check.
 
 ## Do not
 
@@ -24,8 +26,8 @@ This is a single pass. It is not a review cycle.
 - Introduce abstractions.
 - Run unrelated test suites.
 - Hash or checksum files unless integrity verification is explicitly required
-  by the task; before any such check, answer what failure it catches and what
-  would change once found.
+  by the task; before any such check, be able to name the failure it targets
+  and what would change once found.
 - Repeat a check that already passed without new evidence.
 - Treat an unexpected scientific result as a software failure. A negative or
   surprising outcome is reported, not debugged into a bug hunt.
@@ -43,6 +45,6 @@ additional certainty without a concrete failure signal.
 - Executes: <yes/no + how invoked>
 - Shapes/units: <ok | issue + where>
 - NaN/Inf: <absent | found + where>
-- Result provenance: <matches stated run | mismatch + detail>
+- Result provenance: <from the invocation just executed | mismatch + detail>
 - Findings: <none | list>
 ```

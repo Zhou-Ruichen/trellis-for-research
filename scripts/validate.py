@@ -76,6 +76,24 @@ def validate_required_content() -> None:
             "Template Fit",
             "dl-earth-research",
         ],
+        "marketplace/specs/research-core/shared/research-minimal.md": [
+            "exploratory",
+            "smallest change",
+            "concrete, likely failure",
+            "cheapest check",
+            "Stop condition",
+            "durable",
+            "retained",
+        ],
+        "marketplace/specs/dl-earth-research/shared/research-minimal.md": [
+            "exploratory",
+            "smallest change",
+            "concrete, likely failure",
+            "cheapest check",
+            "Stop condition",
+            "durable",
+            "retained",
+        ],
         "marketplace/specs/research-core/shared/project-layout.md": [
             "data/raw/",
             "data/interim/",
@@ -243,6 +261,7 @@ def validate_trellis_spec_shape() -> None:
             "shared/anti-bloat.md",
             "shared/reproducibility.md",
             "shared/scientific-writing.md",
+            "shared/research-minimal.md",
             "shared/python-style.md",
             "data/index.md",
             "training/index.md",
@@ -260,6 +279,7 @@ def validate_trellis_spec_shape() -> None:
             "shared/anti-bloat.md",
             "shared/reproducibility.md",
             "shared/scientific-writing.md",
+            "shared/research-minimal.md",
             "data/index.md",
             "evaluation/index.md",
             "guides/index.md",
@@ -303,11 +323,28 @@ def validate_trellis_spec_shape() -> None:
                     )
 
 
+def validate_readme_pins_latest_version() -> None:
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    match = re.search(r"^## (v\d+\.\d+\.\d+) - \d{4}-\d{2}-\d{2}", changelog, re.M)
+    if not match:
+        fail("CHANGELOG.md has no versioned release heading")
+        return
+    latest = match.group(1)
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
+    if not pins:
+        fail(f"README.md pins no version; expected {latest}")
+    for pin in set(pins):
+        if pin != latest:
+            fail(f"README.md pins {pin}; latest CHANGELOG release is {latest}")
+
+
 def main() -> None:
     validate_index()
     validate_markdown_links()
     validate_required_content()
     validate_no_non_ascii()
+    validate_readme_pins_latest_version()
     validate_trellis_spec_shape()
     print("trellis-research-spec validation passed")
 

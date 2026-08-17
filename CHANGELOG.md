@@ -5,6 +5,39 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.3 - 2026-08-17
+
+Concept and wording fixes from review; no new mechanisms.
+
+### Changed
+- Mode and evidence tier are separated: mode (exploratory / durable)
+  controls how code is written and checked; the run tier (scratch / smoke /
+  retained) controls what the run records. A retained result no longer
+  implies durable code; `prd.md` declares only the mode. Durable is defined
+  as code the project keeps and maintains.
+- `shared/research-minimal.md`: the check rule now reads "name the concrete,
+  plausible failure, use the cheapest check that answers it, do not re-check
+  an answered question" (the earlier wording could reject cheap sanity
+  checks); "answer two questions" softened to "be able to name" to avoid
+  ritual output.
+- Exploratory flow no longer loads `trellis-update-spec` by default; Phase
+  3.3 first decides whether durable knowledge exists and records "no durable
+  knowledge" without loading the skill. Exploratory results go to
+  `<task>/result.md`; retained evidence goes to the run manifest.
+- `trellis-research-check`: provenance identifiers are required only for
+  retained runs; scratch checks confirm the result came from the invocation
+  just executed and never create provenance machinery.
+- "closing pass" renamed to "final check" throughout the overlay.
+
+### Removed
+- The `apply.sh` patch of the official `trellis-check` skill description.
+  Routing lives entirely in `workflow.md` and the research-check skill.
+
+### Added
+- `scripts/validate.py`: README install pins must match the latest CHANGELOG
+  release; `shared/research-minimal.md` added to expected spec shape with
+  required-content checks.
+
 ## v0.3.2 - 2026-08-17
 
 Research workflow overlay and minimal-code rules. Verification depth now

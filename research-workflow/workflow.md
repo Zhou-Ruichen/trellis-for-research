@@ -8,7 +8,7 @@
 2. **Specs injected, not remembered** — guidelines are injected via hook/skill, not recalled from memory
 3. **Persist everything** — research, decisions, and lessons all go to files; conversations get compacted, files don't
 4. **Incremental development** — one task at a time
-5. **Capture learnings** — after each task, review and write new knowledge back to spec
+5. **Capture learnings** — after each task, consider whether durable knowledge was learned; update spec only when it exists
 6. **Experiments produce findings, not verified software** — the smallest change that answers the question is the right size; match verification depth to the evidence tier, not to task size
 
 ---
@@ -155,11 +155,11 @@ Phase 3: Finish  → record findings, update spec with durable knowledge, commit
 - Simple conversation or small task: ask only whether this turn should create a Trellis task. If the user says no, skip Trellis for this session.
 - Complex task: ask whether you may create a Trellis task and enter planning. If the user says no, do not do broad inline implementation; explain, clarify scope, or suggest a smaller split.
 - User approval to create a task is not approval to start implementation. Planning still happens first.
-- When a task is created, set its **mode** and write it as the first line of `prd.md`: `Mode: exploratory` (default — validate an idea, run an experiment, answer a question) or `Mode: durable` (reusable infrastructure, data contracts, code that paper-table results or other tasks build on). Do not promote a task to durable on your own judgment; ask the user.
+- When a task is created, set its **mode** and write it as the first line of `prd.md`: `Mode: exploratory` (default — validate an idea, run an experiment, answer a question) or `Mode: durable` (code the project keeps and maintains: loaders, pipelines, data contracts). Two independent questions are involved: the mode controls how code is written and checked; the evidence tier (scratch / smoke / retained, per `spec/shared/reproducibility.md`) controls what the run must record. A retained result does not make exploratory code durable. Do not promote a task to durable on your own judgment; ask the user.
 
 ### Planning Artifacts
 
-- `prd.md` — first line declares the mode; then, for exploratory tasks, the experiment question, the hypothesis, and the signal to look for (what result counts as interesting, what counts as a negative result); for durable tasks, requirements, constraints, and acceptance criteria. Do not put technical design or execution checklists here.
+- `prd.md` — first line declares the mode; then, for exploratory tasks, the experiment question, the hypothesis, and the signal to look for (what result counts as interesting, what counts as a negative result); for durable tasks, requirements, constraints, and acceptance criteria. The evidence tier is decided per run, not recorded here. Do not put technical design or execution checklists here.
 - `design.md` — technical design for complex tasks: boundaries, contracts, data flow, tradeoffs, compatibility, rollout / rollback shape.
 - `implement.md` — execution plan for complex tasks: ordered checklist, validation commands, review gates, and rollback points.
 - `implement.jsonl` / `check.jsonl` — spec and research manifests for sub-agent context. They do not replace `implement.md`.
@@ -179,7 +179,7 @@ Create new children with `task.py create "<title>" --slug <name> --parent <paren
 No active task. First classify the current turn and ask for task-creation consent before creating any Trellis task.
 Simple conversation / small task: ask only whether this turn should create a Trellis task. If the user says no, skip Trellis for this session.
 Complex task: ask the user if you can create a Trellis task and enter the planning phase. If the user says no, explain, clarify scope, or suggest a smaller split.
-When creating a task, set its mode in prd.md line 1: exploratory (default) or durable (reusable infrastructure or paper-table evidence; ask before promoting).
+When creating a task, set its mode in prd.md line 1: exploratory (default) or durable (code the project keeps and maintains; ask before promoting).
 [/workflow-state:no_task]
 
 ### Phase 1: Plan
@@ -229,7 +229,7 @@ Sub-agent dispatch protocol applies to all platforms and all sub-agents, includi
 [workflow-state:in_progress]
 Tools: `trellis-implement` / `trellis-research` are sub-agent types only (Task/Agent tool, NOT Skill; there is no skill by these names). `trellis-update-spec` is a skill. `trellis-check` and `trellis-research-check` exist as both; prefer the Agent form when checking after code changes.
 Read Mode from `prd.md` line 1; if absent, default to exploratory.
-Exploratory flow: `trellis-implement` -> one sanity pass (`trellis-research-check`: runs, shapes/units, no NaN/Inf, result from the stated run) -> record result -> `trellis-update-spec` (durable knowledge only) -> commit (Phase 3.4) -> `/trellis:finish-work`.
+Exploratory flow: `trellis-implement` -> one sanity pass (`trellis-research-check`: runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines; retained evidence goes to the run's manifest instead) -> commit (Phase 3.4) -> `/trellis:finish-work`. Skip the spec-update step unless durable knowledge exists (Phase 3.3).
 Durable flow: `trellis-implement` -> `trellis-check` -> `trellis-update-spec` -> commit (Phase 3.4) -> `/trellis:finish-work`.
 Stop condition: once the requested result is established and the mode's sanity checks pass, stop. Do not seek additional certainty without a concrete failure signal; do not re-run a check that already passed; do not treat an unexpected scientific result as a software failure.
 Main-session default: dispatch implement/check sub-agents. Sub-agent self-exemption: if already running as `trellis-implement`, do NOT spawn another `trellis-implement` or `trellis-check`; if already running as `trellis-check`, do NOT spawn another `trellis-check` or `trellis-implement`. Dispatch is main session only.
@@ -243,7 +243,7 @@ Dispatch prompt starts with `Active task: <task path from task.py current>`. Rea
 
 [workflow-state:in_progress-inline]
 Read Mode from `prd.md` line 1; if absent, default to exploratory.
-Exploratory flow: `trellis-before-dev` -> edit -> one sanity pass (runs, shapes/units, no NaN/Inf, result from the stated run) -> record result -> `trellis-update-spec` (durable knowledge only) -> commit (Phase 3.4) -> `/trellis:finish-work`.
+Exploratory flow: `trellis-before-dev` -> edit -> one sanity pass (runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines) -> commit (Phase 3.4). Skip the spec-update step unless durable knowledge exists.
 Durable flow: `trellis-before-dev` -> edit -> `trellis-check` -> `trellis-update-spec` -> commit -> `/trellis:finish-work`.
 Stop condition: once the requested result is established and the mode's checks pass, stop; do not seek additional certainty without a concrete failure signal.
 Do not dispatch implement/check sub-agents in inline mode.
@@ -487,7 +487,7 @@ Goal: turn reviewed planning artifacts into the smallest change that answers the
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's closing pass (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
 - **Dispatch prompt guard**: The prompt MUST start with `Active task: <task path>`, then tell the spawned agent it is already the `trellis-implement` sub-agent and must implement directly, not spawn another `trellis-implement` / `trellis-check`.
 
 The platform hook/plugin auto-handles:
@@ -502,7 +502,7 @@ The platform hook/plugin auto-handles:
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's closing pass (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
 - **Dispatch prompt guard**: The prompt MUST start with `Active task: <task path>`, then explicitly say the spawned agent is already `trellis-implement` and must implement directly without spawning another `trellis-implement` / `trellis-check`.
 
 The pull-based sub-agent definition auto-handles the context load requirement:
@@ -516,7 +516,7 @@ The pull-based sub-agent definition auto-handles the context load requirement:
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's closing pass (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
 - **Dispatch prompt guard**: Tell the spawned agent it is already the `trellis-implement` sub-agent and must implement directly, not spawn another `trellis-implement` / `trellis-check`.
 
 The platform prelude auto-handles the context load requirement:
@@ -531,7 +531,7 @@ The platform prelude auto-handles the context load requirement:
 2. Read `{TASK_DIR}/prd.md`, then `design.md` if present, then `implement.md` if present
 3. Consult materials under `{TASK_DIR}/research/`
 4. Implement the code per reviewed artifacts
-5. Closing pass per mode: exploratory runs once and sanity-checks shapes/units and NaN/Inf; durable runs lint and type-check
+5. Final check per mode: exploratory runs once and sanity-checks shapes/units and NaN/Inf; durable runs lint and type-check
 
 [/codex-inline, Kilo, Antigravity, Devin, DeepSeek Harness]
 
@@ -582,7 +582,7 @@ If issues are found → fix → re-check, until green.
 
 [/codex-inline, Kilo, Antigravity, Devin, DeepSeek Harness]
 
-**Before adding any check (either mode)**, answer: what specific failure would it catch, and what would you do differently once it finds one? No answer, no check. A check that replaces a clearly more expensive operation and whose result changes the next action is worth keeping; everything else is not.
+**Before adding any check (either mode)**, be able to name the concrete, plausible failure it targets and how its result would change the next action. Use the cheapest check that answers that question, and do not add another check for the same question once it is answered.
 
 **Final pass (before Phase 3.4 commit)**: for durable tasks, the last 2.2 must run full-scope, not just on the latest implement chunk. List all affected packages with `python3 ./.trellis/scripts/get_context.py --mode packages`, then load each package's spec index Quality Check section. For exploratory tasks there is no final pass beyond the sanity list above.
 
@@ -609,14 +609,16 @@ The goal is to capture debugging lessons so the same class of issue doesn't recu
 
 #### 3.3 Spec update `[required · once]`
 
-Load the `trellis-update-spec` skill and review whether this task produced **durable** knowledge worth recording:
+First decide whether this task produced **durable** knowledge:
 - Stable data contracts or interfaces
 - Confirmed invariants
 - Reusable experiment conventions
 - Repository structure decisions
 - Lessons observed across more than one task
 
-Do not update spec for a single experimental outcome, a tentative hypothesis, temporary debugging findings, or hyperparameter observations from one run — those belong in the task's run record or experiment notes. For an exploratory task with nothing durable, write one line ("no durable knowledge") in the task record and move on; do not force a spec edit.
+If no: write one line ("no durable knowledge") in the task record and continue to 3.4. Do not load the `trellis-update-spec` skill for an empty judgment.
+
+If yes: load `trellis-update-spec` and record it. Single experimental outcomes, tentative hypotheses, temporary debugging findings, and hyperparameter observations from one run are not durable knowledge; they belong in the task's run record or experiment notes.
 
 #### 3.4 Commit changes `[required · once]`
 

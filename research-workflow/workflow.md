@@ -9,7 +9,7 @@
 3. **Persist everything** — research, decisions, and lessons all go to files; conversations get compacted, files don't
 4. **Incremental development** — one task at a time
 5. **Capture learnings** — after each task, consider whether durable knowledge was learned; update spec only when it exists
-6. **Experiments produce findings, not verified software** — the smallest change that answers the question is the right size; match verification depth to the evidence tier, not to task size
+6. **Experiments produce findings, not verified software** — the smallest change that answers the question is the right size; verification depth follows the task mode, evidence recording follows the run tier, and neither follows task size
 
 ---
 
@@ -227,10 +227,10 @@ Inline mode: skip jsonl curation; Phase 2 reads artifacts/specs via `trellis-bef
 Sub-agent dispatch protocol applies to all platforms and all sub-agents, including native Codex `SubagentStart` context injection with child-side pull fallback, class-2 Gemini/Qoder/Copilot/Reasonix/Trae/Grok/Kimi Code, hook-backed ZCode/Snow, and `trellis-research`: every dispatch prompt starts with `Active task: <task path from task.py current>` before role-specific instructions. On Grok Build, use `spawn_subagent` with `subagent_type` set to the Trellis agent name (e.g. `trellis-implement`). On Kimi Code, dispatch the built-in `coder` / `explore` sub-agent with the matching `.kimi-code/skills/trellis-<role>/SKILL.md` instructions.
 
 [workflow-state:in_progress]
-Tools: `trellis-implement` / `trellis-research` are sub-agent types only (Task/Agent tool, NOT Skill; there is no skill by these names). `trellis-update-spec` is a skill. `trellis-check` and `trellis-research-check` exist as both; prefer the Agent form when checking after code changes.
+Tools: `trellis-implement` / `trellis-research` are sub-agent types only (Task/Agent tool, NOT Skill; there is no skill by these names). `trellis-update-spec` is a skill. `trellis-check` exists as both; `trellis-research-check` is a skill only — there is no sub-agent form; do not spawn it, load it in the main session.
 Read Mode from `prd.md` line 1; if absent, default to exploratory.
 Exploratory flow: `trellis-implement` -> one sanity pass (`trellis-research-check`: runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines; retained evidence goes to the run's manifest instead) -> commit (Phase 3.4) -> `/trellis:finish-work`. Skip the spec-update step unless durable knowledge exists (Phase 3.3).
-Durable flow: `trellis-implement` -> `trellis-check` -> `trellis-update-spec` -> commit (Phase 3.4) -> `/trellis:finish-work`.
+Durable flow: `trellis-implement` -> `trellis-check` -> update spec only if durable knowledge exists (Phase 3.3) -> commit (Phase 3.4) -> `/trellis:finish-work`.
 Stop condition: once the requested result is established and the mode's sanity checks pass, stop. Do not seek additional certainty without a concrete failure signal; do not re-run a check that already passed; do not treat an unexpected scientific result as a software failure.
 Main-session default: dispatch implement/check sub-agents. Sub-agent self-exemption: if already running as `trellis-implement`, do NOT spawn another `trellis-implement` or `trellis-check`; if already running as `trellis-check`, do NOT spawn another `trellis-check` or `trellis-implement`. Dispatch is main session only.
 Dispatch prompt starts with `Active task: <task path from task.py current>`. Read context: jsonl entries -> `prd.md` -> `design.md if present` -> `implement.md if present`.
@@ -244,7 +244,7 @@ Dispatch prompt starts with `Active task: <task path from task.py current>`. Rea
 [workflow-state:in_progress-inline]
 Read Mode from `prd.md` line 1; if absent, default to exploratory.
 Exploratory flow: `trellis-before-dev` -> edit -> one sanity pass (runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines) -> commit (Phase 3.4). Skip the spec-update step unless durable knowledge exists.
-Durable flow: `trellis-before-dev` -> edit -> `trellis-check` -> `trellis-update-spec` -> commit -> `/trellis:finish-work`.
+Durable flow: `trellis-before-dev` -> edit -> `trellis-check` -> update spec only if durable knowledge exists (Phase 3.3) -> commit -> `/trellis:finish-work`.
 Stop condition: once the requested result is established and the mode's checks pass, stop; do not seek additional certainty without a concrete failure signal.
 Do not dispatch implement/check sub-agents in inline mode.
 Read context: `prd.md` -> `design.md if present` -> `implement.md if present`, plus relevant spec/research loaded by skills.
@@ -543,7 +543,7 @@ Check depth follows the task's mode, read from `prd.md` line 1 (absent means exp
 
 [Claude Code, Cursor, OpenCode, codex-sub-agent, Kiro, Gemini, Qoder, CodeBuddy, Copilot, Droid, Pi, Oh My Pi, ZCode, Snow, Reasonix, Trae, Grok, Kimi Code]
 
-Spawn the `trellis-research-check` sub-agent (or load the skill): the changed path executes; shapes, dtypes, and units are consistent where relevant; no NaN/Inf or clearly invalid outputs; the reported result comes from the stated run. It reports findings; it does not auto-fix, does not run test suites, does not add checks, and does not re-run a check that already passed.
+Load the `trellis-research-check` skill (it is a skill only; there is no sub-agent form): the changed path executes; shapes, dtypes, and units are consistent where relevant; no NaN/Inf or clearly invalid outputs; the reported result comes from the invocation just executed. Report findings; do not auto-fix, do not run test suites, do not add checks, and do not re-run a check that already passed.
 
 [/Claude Code, Cursor, OpenCode, codex-sub-agent, Kiro, Gemini, Qoder, CodeBuddy, Copilot, Droid, Pi, Oh My Pi, ZCode, Snow, Reasonix, Trae, Grok, Kimi Code]
 
@@ -622,7 +622,7 @@ If yes: load `trellis-update-spec` and record it. Single experimental outcomes, 
 
 #### 3.4 Commit changes `[required · once]`
 
-**Spec-sync preamble**: before drafting commits, ask: did this task fix a bug or surface non-obvious knowledge that should land in `.trellis/spec/` so future-you (or future-AI) doesn't repeat the mistake? If yes, return to Phase 3.3 first — spec writes belong in the same task's commit batch, not as a forgotten follow-up.
+**Spec-sync preamble**: Phase 3.3 already recorded its spec-update decision. Do not reconsider it here unless genuinely new information appeared after 3.3; if it did, return to Phase 3.3 first so spec writes land in the same task's commit batch.
 
 The AI drives a batched commit of this task's code changes so `/finish-work` can run cleanly afterwards. Goal: produce work commits FIRST, then bookkeeping (archive + journal) commits land after — never interleaved.
 

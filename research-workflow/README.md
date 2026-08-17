@@ -2,8 +2,8 @@
 
 A lighter `.trellis` workflow for exploratory research. It replaces the
 software-engineering default (implement -> full check -> verify) with a
-two-mode flow where verification depth follows the evidence tier, not task
-size.
+two-mode flow where verification depth follows the task mode and evidence
+recording follows the run tier, not task size.
 
 ## Mode and evidence tier
 
@@ -46,7 +46,11 @@ records config, command, git revision, environment, and results.
 3. `skills/trellis-research-check/`: a one-pass sanity skill for exploratory
    tasks (executes, shapes/units, NaN/Inf, result from the invocation just
    executed; provenance identifiers only for retained runs; explicitly no
-   hashes, no repeats, no auto-fix).
+   hashes, no repeats, no auto-fix). It is a skill only — there is no
+   sub-agent form; the main session loads it. `apply.sh` installs it for
+   Claude Code (`.claude/skills/`) and for Codex (`.agents/skills/`, the
+   shared layer Trellis uses for Codex skills) whenever the project has the
+   corresponding platform directory.
 
 The official `trellis-check` skill is not patched. Routing lives entirely in
 `workflow.md` (state blocks, Phase 2.2, Active Task Routing) and in the

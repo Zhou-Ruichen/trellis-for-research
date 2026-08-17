@@ -94,6 +94,17 @@ def validate_required_content() -> None:
             "durable",
             "retained",
         ],
+        "research-workflow/workflow.md": [
+            "verification depth follows the task mode",
+            "is a skill only",
+            "update spec only if durable knowledge exists",
+            "Do not seek additional certainty",
+            "default to exploratory",
+        ],
+        "research-workflow/README.md": [
+            "verification depth follows the task mode",
+            ".agents/skills",
+        ],
         "marketplace/specs/research-core/shared/project-layout.md": [
             "data/raw/",
             "data/interim/",

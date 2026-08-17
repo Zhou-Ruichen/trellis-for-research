@@ -5,6 +5,28 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.4 - 2026-08-17
+
+Fixes for Codex/GPT-5.6 compatibility and two axis-wording regressions.
+No new rules.
+
+### Fixed
+- `trellis-research-check` is a skill only; workflow no longer claims a
+  sub-agent form for it, and Phase 2.2 loads the skill in the main session.
+- `apply.sh` installs the skill for Codex too (`.agents/skills/`, the
+  shared layer Trellis uses for Codex skills), alongside
+  `.claude/skills/`, whenever the project has the platform directory;
+  `--verify` checks both.
+- Two reversed axis statements corrected to "verification depth follows the
+  task mode; evidence recording follows the run tier" (Core Principle 6 and
+  the research-workflow README).
+- The durable flow in both `in_progress` breadcrumbs now updates spec only
+  if durable knowledge exists (Phase 3.3) instead of unconditionally.
+- Phase 3.4 no longer re-asks the spec-update question Phase 3.3 already
+  answered.
+- The validator now anchors the axis wording and the skill-only statement in
+  `research-workflow/` so these cannot silently regress.
+
 ## v0.3.3 - 2026-08-17
 
 Concept and wording fixes from review; no new mechanisms.

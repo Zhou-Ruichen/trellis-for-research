@@ -71,7 +71,12 @@ if [ "$MODE" = verify ]; then
   ok=0
   cmp -s "$T/workflow.md" "$MASTER_WORKFLOW" && echo "  OK             workflow.md matches master" || { echo "  FAIL           workflow.md differs from master"; ok=1; }
   grep -q "Final check per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
-  [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill installed" || { echo "  FAIL           research-check skill missing"; ok=1; }
+  skill_ok=1
+  [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.claude/skills)" || skill_ok=0
+  if [ -d "$PROJ/.agents" ]; then
+    [ -f "$PROJ/.agents/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.agents/skills)" || skill_ok=0
+  fi
+  [ $skill_ok = 1 ] || { echo "  FAIL           research-check skill missing"; ok=1; }
   verify_state_blocks || ok=1
   [ $ok = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
   exit $ok
@@ -79,7 +84,15 @@ fi
 
 install_file "$T/workflow.md" "$MASTER_WORKFLOW"
 install_file "$T/agents/implement.md" "$MASTER_IMPLEMENT"
-install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
+# skill for both platforms: Claude (.claude/skills) and Codex (.agents/skills,
+# the shared layer). Install into each platform directory the project has;
+# if neither exists, create the Claude one.
+if [ -d "$PROJ/.claude" ] || [ ! -d "$PROJ/.agents" ]; then
+  install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
+fi
+if [ -d "$PROJ/.agents" ]; then
+  install_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
+fi
 if [ "$MODE" = apply ]; then
   verify_state_blocks
   echo "== applied. Restart AI sessions in this project to pick up the new workflow."

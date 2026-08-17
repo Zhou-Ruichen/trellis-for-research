@@ -157,6 +157,12 @@ Good:
 - Keep units and coordinate conventions explicit.
 - Distinguish a smoke check from a reported result. A smoke check is never
   evidence for a claim.
+- State a finding at the strength its evidence supports. Report uncertainty
+  once, where the evidence is presented; do not re-weaken a supported claim
+  with repeated hedges in every section.
+- State limitations once, where they actually limit the claim. Do not
+  re-list caveats that do not change the conclusion, and do not withhold a
+  supported conclusion out of caution.
 
 ## Figures And Tables
 

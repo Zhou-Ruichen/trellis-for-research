@@ -214,7 +214,11 @@ def validate_no_non_ascii() -> None:
         # example a Chinese result discussion). Only paths must stay ASCII there.
         # scientific-writing.md additionally carries the Chinese anti-AI-tone
         # word list; the banned phrases must appear verbatim to be matchable.
+        # research-workflow/ holds overlay masters derived from Trellis-managed
+        # project files; they keep upstream punctuation and CJK reply words.
         if any(part == "examples" for part in rel_path.parts):
+            continue
+        if "research-workflow" in rel_path.parts:
             continue
         if rel_path.name == "scientific-writing.md" and "marketplace" in rel_path.parts:
             continue

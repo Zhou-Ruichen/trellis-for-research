@@ -7,6 +7,7 @@ iteration speed, readable code, and evidence-backed claims.
 
 | File | Read when |
 | --- | --- |
+| [research-minimal.md](./research-minimal.md) | Before any exploratory implementation; overrides conflicting guidance |
 | [project-layout.md](./project-layout.md) | Creating, moving, or naming files |
 | [anti-bloat.md](./anti-bloat.md) | Adding files, variants, scripts, helpers, or abstractions |
 | [reproducibility.md](./reproducibility.md) | Running computations or reporting results |

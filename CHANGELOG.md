@@ -5,6 +5,35 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.2 - 2026-08-17
+
+Research workflow overlay and minimal-code rules. Verification depth now
+follows the task mode (exploratory by default, durable on request) instead
+of a single software-engineering standard.
+
+### Added
+- `research-workflow/` overlay: master `workflow.md` (two-mode flows in the
+  `in_progress` breadcrumbs with an explicit stop condition; Phase 2.2 split
+  by mode; Phase 3.3 spec updates restricted to durable knowledge), master
+  `agents/implement.md` (mode-aware closing pass), the
+  `trellis-research-check` one-pass sanity skill, an idempotent `apply.sh`
+  with `--dry-run` and `--verify`, and a README covering coexistence with
+  `trellis update`.
+- `shared/research-minimal.md` in both templates: highest-priority minimal
+  code rules. Mode-conditional defaults (exploratory adds no defensive
+  code, boundary checks, hash/checksum logic, exception handling, retries,
+  unit tests, strict typing, or abstractions without a concrete likely
+  failure), the utility test for any added check (what failure does it
+  catch, what changes once found), and the stop condition.
+- Certainty discipline in `shared/scientific-writing.md` (both templates):
+  state findings at the strength the evidence supports, report uncertainty
+  once, state limitations once.
+
+### Changed
+- `shared/index.md` (both templates) lists `research-minimal.md` first.
+- Checksum rules in `data/index.md` were verified to already be limited to
+  durable data products; no change needed.
+
 ## v0.3.1 - 2026-08-17
 
 Exploration discipline and anti-bloat sharpening. Verification regimes built

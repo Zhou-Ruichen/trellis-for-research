@@ -207,6 +207,14 @@ find .trellis/spec -type f | sort
   properties) and never to scientific outcomes. No TDD, coverage targets, or
   metric-value assertions; a missed target is reported as a finding, not a
   task failure. Validation commands check executability and sanity only.
+- `shared/research-minimal.md` sets the highest-priority minimal-code rules:
+  mode-conditional defaults, a utility test for any added check, and a stop
+  condition once the result is established.
+- `research-workflow/` provides an overlay `workflow.md`, an overlay
+  implement agent, and a `trellis-research-check` one-pass sanity skill that
+  together make verification depth follow the task mode (exploratory by
+  default, durable on request). Apply it to a project with
+  `research-workflow/apply.sh <project-dir>`.
 - Result discussions, methods, and reports lead with the scientific finding,
   keep engineering terms out of prose, and strip AI tone (mechanical stiffness
   and flowery over-ornamentation) with verbatim banned-phrase lists in

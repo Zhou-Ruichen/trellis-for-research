@@ -18,6 +18,7 @@ MASTER_IMPLEMENT="$SCRIPT_DIR/agents/implement.md"
 MASTER_SKILL="$SCRIPT_DIR/skills/trellis-research-check/SKILL.md"
 
 MODE="${2:-apply}"
+MODE="${MODE#--}"
 PROJ="${1:?usage: apply.sh <project-dir> [--dry-run|--verify]}"
 T="$PROJ/.trellis"
 
@@ -92,7 +93,11 @@ if [ "$MODE" = verify ]; then
   cmp -s "$T/workflow.md" "$MASTER_WORKFLOW" && echo "  OK             workflow.md matches master" || { echo "  FAIL           workflow.md differs from master"; ok=1; }
   grep -q "Closing pass per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
   [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill installed" || { echo "  FAIL           research-check skill missing"; ok=1; }
-  grep -q "exploratory experiments use trellis-research-check" "$PROJ/.claude/skills/trellis-check/SKILL.md" 2>/dev/null && echo "  OK             check skill routing patch present" || { echo "  FAIL           check skill routing patch missing"; ok=1; }
+  if [ -f "$PROJ/.claude/skills/trellis-check/SKILL.md" ]; then
+    grep -q "exploratory experiments use trellis-research-check" "$PROJ/.claude/skills/trellis-check/SKILL.md" && echo "  OK             check skill routing patch present" || { echo "  FAIL           check skill routing patch missing"; ok=1; }
+  else
+    echo "  SKIP           trellis-check skill not installed (non-Claude platform project)"
+  fi
   verify_state_blocks || ok=1
   [ $ok = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
   exit $ok

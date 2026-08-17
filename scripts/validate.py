@@ -103,6 +103,8 @@ def validate_required_content() -> None:
             "Exploratory tasks are PRD-only by default",
             "seed-only manifests are valid otherwise",
             "actual invocation, observation, findings, and output paths",
+            "limitation or uncertainty that changes the interpretation",
+            "does not approve a scientific claim",
             "spec update only if durable knowledge",
             "Never repeat a passed check",
             "default exploratory",
@@ -146,6 +148,8 @@ def validate_required_content() -> None:
             '"retention"',
             '"manager"',
             '"freeze"',
+            "Once a retained run or comparison starts",
+            "does not approve a scientific claim",
         ],
         "marketplace/specs/research-core/data/index.md": [
             "Manifest Rule",
@@ -179,6 +183,8 @@ def validate_required_content() -> None:
             '"retention"',
             '"manager"',
             '"freeze"',
+            "Once a retained run or comparison starts",
+            "does not approve a scientific claim",
         ],
         "marketplace/specs/dl-earth-research/data/index.md": [
             "SWOT",
@@ -215,11 +221,13 @@ def validate_required_content() -> None:
             "Write A Results Discussion",
             "scientific question",
             "Completion Checklist",
+            "A completed Trellis task does not approve a scientific claim",
         ],
         "marketplace/specs/dl-earth-research/guides/write-results.md": [
             "Write A Results Discussion",
             "scientific question",
             "Completion Checklist",
+            "A completed Trellis task does not approve a scientific claim",
         ],
     }
     for rel_path, needles in required.items():

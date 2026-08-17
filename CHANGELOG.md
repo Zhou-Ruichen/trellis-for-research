@@ -5,6 +5,25 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.8 - 2026-08-17
+
+Research protocol changes and claim review are now explicit without adding a
+skill, hook, agent, state, ledger, or task file.
+
+### Changed
+- Once a retained run or comparison starts, changes to its question or
+  hypothesis, method, data, split, preprocessing, metric, baseline, or claim
+  scope require a new run or comparison record. Earlier artifacts remain
+  unchanged and the reason for the change is recorded.
+- A changed research question starts a new Trellis task. Scratch work remains
+  free to iterate and records its final protocol only if promoted.
+- `result.md` records limitations or uncertainties that change the
+  interpretation. Completing a task does not approve a manuscript or external
+  scientific claim; that still requires researcher review of retained evidence,
+  scope, uncertainty, and limitations.
+- The jsonl guidance no longer describes `implement.md` as mandatory merely
+  because a task is complex.
+
 ## v0.3.7 - 2026-08-17
 
 Fewer planning files and repeated check lists for exploratory tasks, based on

@@ -131,6 +131,18 @@ Use one project helper for seed setup. It should cover:
 Deterministic algorithms are useful for debugging but can be slower or unsupported.
 Expose them as a config option instead of hardcoding them globally.
 
+## Protocol Changes
+
+Once a retained run or comparison starts, keep its question or hypothesis,
+model or method definition, data source and version, split, preprocessing,
+metric definition, baseline, and claim scope fixed for that record. If any of
+them changes, create a new run or comparison record, preserve the earlier
+artifacts, and state what changed and why. Create a new Trellis task when the
+research question changes.
+
+Scratch work can change freely. If it is promoted, the retained record must
+describe the inputs and protocol that produced the promoted result.
+
 ## Result Claims
 
 Do not say a model improved, converged, or reproduced a number unless the
@@ -143,6 +155,11 @@ supporting run was promoted to retained and:
 - the environment freeze is recorded.
 
 If only a smoke test ran, say it was a smoke test.
+
+Completing a Trellis task means the requested work and evidence record are
+complete. It does not approve a scientific claim for a manuscript or external
+release. That decision requires human review of the retained evidence, claim
+scope, and limitations.
 
 ## Logging Backends
 

@@ -61,7 +61,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.7 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
   --template research-core \
   --claude --codex
 ```
@@ -70,7 +70,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.7 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -90,7 +90,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.7 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
   --template research-core \
   --append \
   --claude --codex
@@ -101,7 +101,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.7 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
   --template research-core \
   --overwrite \
   --claude --codex
@@ -173,7 +173,7 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.7 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
   --template research-core \
   --claude --codex -y
 find .trellis/spec -type f | sort
@@ -219,6 +219,10 @@ find .trellis/spec -type f | sort
   `research/`, `design.md`, `implement.md`, and jsonl context are added only
   when implementation or checking needs information not already in those two
   files.
+- Retained runs do not overwrite earlier evidence when the question, method,
+  data, split, preprocessing, metric, baseline, or claim scope changes. Task
+  completion records completed work; manuscript and external claims still
+  require researcher review of the evidence, scope, uncertainty, and limits.
 - Result discussions, methods, and reports lead with the scientific finding,
   keep engineering terms out of prose, and strip AI tone (mechanical stiffness
   and flowery over-ornamentation) with verbatim banned-phrase lists in

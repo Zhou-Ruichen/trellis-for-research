@@ -47,7 +47,9 @@ records config, command, git revision, environment, and results.
    - Exploratory tasks are PRD-only by default, even for multi-step runs.
      `design.md`, `implement.md`, and jsonl context are added only when
      implementation or checking needs them. Phase 2.2 owns check commands, and
-     `result.md` records what actually ran.
+     `result.md` records what actually ran plus limitations or uncertainties
+     that change the interpretation. Task completion does not approve a
+     manuscript or external claim.
 2. `agents/implement.md` (master copy here): the channel implement agent
    reads the mode and writes the minimum code. It performs no self
    validation or execution; Phase 2.2 of the workflow owns the result-producing

@@ -97,9 +97,10 @@ def validate_required_content() -> None:
         "research-workflow/workflow.md": [
             "verification depth follows the task mode",
             "is a skill only",
-            "update spec only if durable knowledge exists",
-            "Do not seek additional certainty",
-            "default to exploratory",
+            "Phase 2.2 owns validation",
+            "spec update only if durable knowledge",
+            "Never repeat a passed check",
+            "default exploratory",
         ],
         "research-workflow/README.md": [
             "verification depth follows the task mode",

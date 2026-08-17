@@ -6,7 +6,7 @@
 
 1. **Plan before code** — figure out what to do before you start
 2. **Specs injected, not remembered** — guidelines are injected via hook/skill, not recalled from memory
-3. **Persist everything** — research, decisions, and lessons all go to files; conversations get compacted, files don't
+3. **Persist what must survive the session** — evidence depth follows the run tier; do not create durable artifacts solely to preserve scratch work
 4. **Incremental development** — one task at a time
 5. **Capture learnings** — after each task, consider whether durable knowledge was learned; update spec only when it exists
 6. **Experiments produce findings, not verified software** — the smallest change that answers the question is the right size; verification depth follows the task mode, evidence recording follows the run tier, and neither follows task size
@@ -227,13 +227,10 @@ Inline mode: skip jsonl curation; Phase 2 reads artifacts/specs via `trellis-bef
 Sub-agent dispatch protocol applies to all platforms and all sub-agents, including native Codex `SubagentStart` context injection with child-side pull fallback, class-2 Gemini/Qoder/Copilot/Reasonix/Trae/Grok/Kimi Code, hook-backed ZCode/Snow, and `trellis-research`: every dispatch prompt starts with `Active task: <task path from task.py current>` before role-specific instructions. On Grok Build, use `spawn_subagent` with `subagent_type` set to the Trellis agent name (e.g. `trellis-implement`). On Kimi Code, dispatch the built-in `coder` / `explore` sub-agent with the matching `.kimi-code/skills/trellis-<role>/SKILL.md` instructions.
 
 [workflow-state:in_progress]
-Tools: `trellis-implement` / `trellis-research` are sub-agent types only (Task/Agent tool, NOT Skill; there is no skill by these names). `trellis-update-spec` is a skill. `trellis-check` exists as both; `trellis-research-check` is a skill only — there is no sub-agent form; do not spawn it, load it in the main session.
-Read Mode from `prd.md` line 1; if absent, default to exploratory.
-Exploratory flow: `trellis-implement` -> one sanity pass (`trellis-research-check`: runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines; retained evidence goes to the run's manifest instead) -> commit (Phase 3.4) -> `/trellis:finish-work`. Skip the spec-update step unless durable knowledge exists (Phase 3.3).
-Durable flow: `trellis-implement` -> `trellis-check` -> update spec only if durable knowledge exists (Phase 3.3) -> commit (Phase 3.4) -> `/trellis:finish-work`.
-Stop condition: once the requested result is established and the mode's sanity checks pass, stop. Do not seek additional certainty without a concrete failure signal; do not re-run a check that already passed; do not treat an unexpected scientific result as a software failure.
-Main-session default: dispatch implement/check sub-agents. Sub-agent self-exemption: if already running as `trellis-implement`, do NOT spawn another `trellis-implement` or `trellis-check`; if already running as `trellis-check`, do NOT spawn another `trellis-check` or `trellis-implement`. Dispatch is main session only.
-Dispatch prompt starts with `Active task: <task path from task.py current>`. Read context: jsonl entries -> `prd.md` -> `design.md if present` -> `implement.md if present`.
+Mode from `prd.md` line 1; default exploratory.
+Exploratory: implement (Phase 2.1, no self-check) -> one `trellis-research-check` pass (2.2) -> result to `<task>/result.md` -> commit (Phase 3.4).
+Durable: implement -> `trellis-check` (2.2) -> spec update only if durable knowledge (3.3) -> commit.
+Never repeat a passed check without new failure evidence; an unexpected result is a finding, not a bug.
 [/workflow-state:in_progress]
 
 <!-- Per-turn breadcrumb: shown while status='in_progress' when
@@ -242,12 +239,10 @@ Dispatch prompt starts with `Active task: <task path from task.py current>`. Rea
      instead of dispatching sub-agents. -->
 
 [workflow-state:in_progress-inline]
-Read Mode from `prd.md` line 1; if absent, default to exploratory.
-Exploratory flow: `trellis-before-dev` -> edit -> one sanity pass (runs, shapes/units, no NaN/Inf, result from the run just executed) -> record the result in `<task>/result.md` (a few lines) -> commit (Phase 3.4). Skip the spec-update step unless durable knowledge exists.
-Durable flow: `trellis-before-dev` -> edit -> `trellis-check` -> update spec only if durable knowledge exists (Phase 3.3) -> commit -> `/trellis:finish-work`.
-Stop condition: once the requested result is established and the mode's checks pass, stop; do not seek additional certainty without a concrete failure signal.
-Do not dispatch implement/check sub-agents in inline mode.
-Read context: `prd.md` -> `design.md if present` -> `implement.md if present`, plus relevant spec/research loaded by skills.
+Mode from `prd.md` line 1; default exploratory.
+Exploratory: edit (no self-check) -> one sanity pass per 2.2 -> result to `<task>/result.md` -> commit (Phase 3.4).
+Durable: edit -> `trellis-check` (2.2) -> spec update only if durable knowledge (3.3) -> commit.
+Never repeat a passed check without new failure evidence; no sub-agent dispatch in inline mode.
 [/workflow-state:in_progress-inline]
 
 ### Phase 3: Finish
@@ -480,6 +475,8 @@ If `task.py start` errors with a session-identity message (no context key from h
 
 Goal: turn reviewed planning artifacts into the smallest change that answers the question, checked at the depth the task's mode requires.
 
+Dispatch rules for sub-agent platforms: only the main session dispatches; if already running as `trellis-implement`, do not spawn another `trellis-implement` or `trellis-check`; if already running as `trellis-check`, do not spawn another check or implement agent. `trellis-research-check` is a skill, loaded in the main session — never spawned. Read context in this order: jsonl entries -> `prd.md` -> `design.md` if present -> `implement.md` if present.
+
 #### 2.1 Implement `[required · repeatable]`
 
 [Claude Code, Cursor, OpenCode, codex-sub-agent, CodeBuddy, Droid, Pi, ZCode, Snow, Oh My Pi]
@@ -487,7 +484,7 @@ Goal: turn reviewed planning artifacts into the smallest change that answers the
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`. Do not run the workflow quality check; Phase 2.2 owns validation.
 - **Dispatch prompt guard**: The prompt MUST start with `Active task: <task path>`, then tell the spawned agent it is already the `trellis-implement` sub-agent and must implement directly, not spawn another `trellis-implement` / `trellis-check`.
 
 The platform hook/plugin auto-handles:
@@ -502,7 +499,7 @@ The platform hook/plugin auto-handles:
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`. Do not run the workflow quality check; Phase 2.2 owns validation.
 - **Dispatch prompt guard**: The prompt MUST start with `Active task: <task path>`, then explicitly say the spawned agent is already `trellis-implement` and must implement directly without spawning another `trellis-implement` / `trellis-check`.
 
 The pull-based sub-agent definition auto-handles the context load requirement:
@@ -516,7 +513,7 @@ The pull-based sub-agent definition auto-handles the context load requirement:
 Spawn the implement sub-agent:
 
 - **Agent type**: `trellis-implement`
-- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`; finish with the mode's final check (exploratory: run once and sanity-check shapes/units and for NaN/Inf; durable: lint and type-check)
+- **Task description**: Implement the reviewed task artifacts, consulting materials under `{TASK_DIR}/research/`. Do not run the workflow quality check; Phase 2.2 owns validation.
 - **Dispatch prompt guard**: Tell the spawned agent it is already the `trellis-implement` sub-agent and must implement directly, not spawn another `trellis-implement` / `trellis-check`.
 
 The platform prelude auto-handles the context load requirement:
@@ -531,7 +528,7 @@ The platform prelude auto-handles the context load requirement:
 2. Read `{TASK_DIR}/prd.md`, then `design.md` if present, then `implement.md` if present
 3. Consult materials under `{TASK_DIR}/research/`
 4. Implement the code per reviewed artifacts
-5. Final check per mode: exploratory runs once and sanity-checks shapes/units and NaN/Inf; durable runs lint and type-check
+5. Proceed to Phase 2.2 for the mode's check; do not run it here
 
 [/codex-inline, Kilo, Antigravity, Devin, DeepSeek Harness]
 

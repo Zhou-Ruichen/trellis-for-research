@@ -5,6 +5,30 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.5 - 2026-08-17
+
+Single-owner validation and breadcrumb compression. Final static-rule
+release; further changes only from real failure cases.
+
+### Changed
+- Phase 2.1 and the implement agent no longer self-check: dispatch
+  descriptions say "Do not run the workflow quality check; Phase 2.2 owns
+  validation", and the agent report drops the check section. The experiment
+  runs exactly once, in the check step.
+- The `in_progress` and `in_progress-inline` breadcrumbs are compressed to
+  five lines (Trellis recommends roughly 200 bytes per per-turn block).
+  Sub-agent dispatch rules, the skill-only statement's detail, and context
+  order moved into the Phase 2 body where they are read once, not every
+  turn.
+- Core Principle 3 softened from "Persist everything" to "Persist what must
+  survive the session; evidence depth follows the run tier".
+- research-workflow README: the skill is always installed to both the
+  Claude and Codex skill locations (matches the script).
+
+### Fixed
+- `apply.sh` rejects unknown modes instead of silently behaving like
+  dry-run.
+
 ## v0.3.4 - 2026-08-17
 
 Fixes for Codex/GPT-5.6 compatibility and two axis-wording regressions.

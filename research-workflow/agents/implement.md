@@ -34,7 +34,7 @@ The evidence tier (scratch / smoke / retained) is decided per run and controls w
 1. **Understand specs** — read relevant spec files in `.trellis/spec/`
 2. **Understand task artifacts** — read the artifacts listed above
 3. **Implement features** — write code that follows specs and existing patterns
-4. **Final check per mode** — exploratory: run the change once and sanity-check shapes, dtypes/units, and outputs for NaN/Inf; durable: run lint and typecheck on the changed scope. Before adding any check, be able to name the concrete failure it targets and how its result would change the next action; use the cheapest check that answers the question.
+4. **No self-validation** — Phase 2.2 of the workflow owns the quality check. Write the code; do not run the experiment, lint, typecheck, or sanity checks unless the task explicitly asks you to run something to produce the requested result.
 
 ## Forbidden Operations
 
@@ -49,8 +49,8 @@ The supervising main session owns commits. Report what changed; do not commit on
 1. Read relevant specs based on task mode and the files in `implement.jsonl` if present
 2. Read the task's `prd.md`, `design.md` if present, and `implement.md` if present
 3. Implement the smallest change that fulfills the artifacts, following existing patterns
-4. Run the mode's final check once; stop after it passes
-5. Report files touched, key decisions, and the final-check result back to the channel
+4. Stop after the change is written; the workflow's Phase 2.2 performs the check
+5. Report files touched, key decisions, and open questions back to the channel
 
 ## Code Standards
 
@@ -72,9 +72,8 @@ The supervising main session owns commits. Report what changed; do not commit on
 1. <step>
 2. <step>
 
-### Final Check (mode: <exploratory|durable>)
-- Exploratory: runs / shapes+units / NaN-Inf — <pass|fail + detail>
-- Durable: Lint <pass|fail|skipped + reason>; TypeCheck <pass|fail|skipped + reason>
+### Not Run (Phase 2.2 owns validation)
+- <checks left to the workflow, if any would otherwise be expected>
 
 ### Open Questions
 - <if any, otherwise omit>

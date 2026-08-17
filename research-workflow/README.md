@@ -41,16 +41,17 @@ records config, command, git revision, environment, and results.
      if not, the task records "no durable knowledge" and moves on without
      loading the update-spec skill.
 2. `agents/implement.md` (master copy here): the channel implement agent
-   reads the mode, writes the minimum code, and closes with the mode's final
-   check.
+   reads the mode and writes the minimum code. It performs no self
+   validation; Phase 2.2 of the workflow owns the quality check, so the
+   experiment runs exactly once, in the check step.
 3. `skills/trellis-research-check/`: a one-pass sanity skill for exploratory
    tasks (executes, shapes/units, NaN/Inf, result from the invocation just
    executed; provenance identifiers only for retained runs; explicitly no
    hashes, no repeats, no auto-fix). It is a skill only — there is no
-   sub-agent form; the main session loads it. `apply.sh` installs it for
-   Claude Code (`.claude/skills/`) and for Codex (`.agents/skills/`, the
-   shared layer Trellis uses for Codex skills) whenever the project has the
-   corresponding platform directory.
+   sub-agent form; the main session loads it. `apply.sh` always installs it
+   to both the Claude Code location (`.claude/skills/`) and the Codex
+   location (`.agents/skills/`, the shared layer Trellis uses for Codex
+   skills); the project is expected to run Claude and Codex together.
 
 The official `trellis-check` skill is not patched. Routing lives entirely in
 `workflow.md` (state blocks, Phase 2.2, Active Task Routing) and in the

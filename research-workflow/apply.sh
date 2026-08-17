@@ -19,6 +19,10 @@ MASTER_SKILL="$SCRIPT_DIR/skills/trellis-research-check/SKILL.md"
 
 MODE="${2:-apply}"
 MODE="${MODE#--}"
+case "$MODE" in
+  apply|dry-run|verify) ;;
+  *) echo "FATAL: unknown mode: $MODE (use apply, --dry-run, or --verify)"; exit 2 ;;
+esac
 PROJ="${1:?usage: apply.sh <project-dir> [--dry-run|--verify]}"
 T="$PROJ/.trellis"
 

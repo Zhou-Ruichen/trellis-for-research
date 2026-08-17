@@ -74,7 +74,7 @@ echo "== research-workflow overlay: $PROJ ($MODE)"
 if [ "$MODE" = verify ]; then
   ok=0
   cmp -s "$T/workflow.md" "$MASTER_WORKFLOW" && echo "  OK             workflow.md matches master" || { echo "  FAIL           workflow.md differs from master"; ok=1; }
-  grep -q "Final check per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
+  grep -q "owns the quality check" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
   skill_ok=1
   [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.claude/skills)" || skill_ok=0
   [ -f "$PROJ/.agents/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.agents/skills)" || skill_ok=0

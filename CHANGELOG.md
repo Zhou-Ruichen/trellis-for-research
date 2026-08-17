@@ -5,6 +5,25 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.7 - 2026-08-17
+
+Fewer planning files and repeated check lists for exploratory tasks, based on
+observed Trellis usage in a long-running research repository. No new skill,
+hook, agent, or task status.
+
+### Changed
+- Exploratory tasks are PRD-only by default, including multi-step experiments.
+  `design.md` and `implement.md` are created only for explicit interface,
+  dependency, coordination, migration, or rollback needs.
+- Optional planning files no longer copy acceptance criteria or validation
+  commands from `prd.md`. Phase 2.2 owns checks, and `result.md` records the
+  actual invocation, observation, findings, and output paths once.
+- `implement.jsonl` and `check.jsonl` list only files needed during
+  implementation or checking. Seed-only manifests are valid when no additional
+  spec or research context exists; exploratory manifests avoid broad indexes.
+- Later journal entries summarize the finding, commit, and `result.md` path
+  instead of reproducing the check list.
+
 ## v0.3.6 - 2026-08-17
 
 One-invocation ownership and complete overlay verification. No new skill,

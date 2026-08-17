@@ -44,6 +44,10 @@ records config, command, git revision, environment, and results.
    - Task `research/` directories hold Markdown investigation notes and small
      metadata only. Experiment artifacts stay under project `outputs/`, and
      task results link to them.
+   - Exploratory tasks are PRD-only by default, even for multi-step runs.
+     `design.md`, `implement.md`, and jsonl context are added only when
+     implementation or checking needs them. Phase 2.2 owns check commands, and
+     `result.md` records what actually ran.
 2. `agents/implement.md` (master copy here): the channel implement agent
    reads the mode and writes the minimum code. It performs no self
    validation or execution; Phase 2.2 of the workflow owns the result-producing

@@ -100,6 +100,9 @@ def validate_required_content() -> None:
             "Phase 2.2 owns the result-producing invocation and validation",
             "one result-producing invocation",
             "Keep `research/` to Markdown investigation notes and small metadata",
+            "Exploratory tasks are PRD-only by default",
+            "seed-only manifests are valid otherwise",
+            "actual invocation, observation, findings, and output paths",
             "spec update only if durable knowledge",
             "Never repeat a passed check",
             "default exploratory",
@@ -107,6 +110,7 @@ def validate_required_content() -> None:
         "research-workflow/README.md": [
             "verification depth follows the task mode",
             "Phase 2.1 only prepares code and configuration",
+            "Exploratory tasks are PRD-only by default",
             ".agents/skills",
         ],
         "research-workflow/agents/implement.md": [

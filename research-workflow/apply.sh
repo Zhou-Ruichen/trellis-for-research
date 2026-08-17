@@ -73,9 +73,7 @@ if [ "$MODE" = verify ]; then
   grep -q "Final check per mode" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
   skill_ok=1
   [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.claude/skills)" || skill_ok=0
-  if [ -d "$PROJ/.agents" ]; then
-    [ -f "$PROJ/.agents/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.agents/skills)" || skill_ok=0
-  fi
+  [ -f "$PROJ/.agents/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.agents/skills)" || skill_ok=0
   [ $skill_ok = 1 ] || { echo "  FAIL           research-check skill missing"; ok=1; }
   verify_state_blocks || ok=1
   [ $ok = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
@@ -84,15 +82,12 @@ fi
 
 install_file "$T/workflow.md" "$MASTER_WORKFLOW"
 install_file "$T/agents/implement.md" "$MASTER_IMPLEMENT"
-# skill for both platforms: Claude (.claude/skills) and Codex (.agents/skills,
-# the shared layer). Install into each platform directory the project has;
-# if neither exists, create the Claude one.
-if [ -d "$PROJ/.claude" ] || [ ! -d "$PROJ/.agents" ]; then
-  install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
-fi
-if [ -d "$PROJ/.agents" ]; then
-  install_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
-fi
+# skill for both platforms, unconditionally: Claude (.claude/skills) and
+# Codex (.agents/skills, the shared layer Trellis uses for Codex skills).
+# Projects commonly carry a root AGENTS.md for Codex even without an
+# existing .agents tree, so both locations are always populated.
+install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
+install_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
 if [ "$MODE" = apply ]; then
   verify_state_blocks
   echo "== applied. Restart AI sessions in this project to pick up the new workflow."

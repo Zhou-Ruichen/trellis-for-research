@@ -90,3 +90,22 @@ workflow.
   `apply.sh` after updating.
 - `trellis-research-check` is a file owned by this overlay; the Trellis
   updater does not manage it.
+
+## Maintaining the workflow
+
+The `[workflow-state:*]` blocks in `workflow.md` are the source for per-turn
+breadcrumbs. The hook parser reads those blocks and has no embedded copy. Keep
+every `[required · once]` step represented in the matching block, including
+task activation, conditional spec update, and commit.
+
+The live scopes are `no_task`, `planning`, `planning-inline`, `in_progress`,
+and `in_progress-inline`. The `completed` block remains for compatibility but
+is not reached by the normal archive flow because archiving also clears the
+active-task pointer. A custom status requires both a matching block and a
+lifecycle hook that writes that status to `task.json`.
+
+After changing a step or breadcrumb, run `python3 scripts/validate.py`, apply
+the overlay to a temporary initialized project, and verify it with
+`research-workflow/apply.sh <project-dir> --verify`. The installed Trellis
+runtime contract remains authoritative at
+`.trellis/spec/cli/backend/workflow-state-contract.md`.

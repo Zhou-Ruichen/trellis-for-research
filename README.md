@@ -61,7 +61,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
   --template research-core \
   --claude --codex
 ```
@@ -70,7 +70,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -90,7 +90,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
   --template research-core \
   --append \
   --claude --codex
@@ -101,7 +101,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
   --template research-core \
   --overwrite \
   --claude --codex
@@ -173,7 +173,7 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.8 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
   --template research-core \
   --claude --codex -y
 find .trellis/spec -type f | sort

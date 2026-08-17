@@ -5,6 +5,18 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.9 - 2026-08-17
+
+Maintainer-only text is removed from installed research workflows without
+changing workflow states, routing, research rules, or checks.
+
+### Changed
+- Replaced the 44-line workflow-state maintainer comment with a short pointer
+  that retains the required-step invariant.
+- Moved the generic workflow customization and lifecycle-hook notes from the
+  installed `workflow.md` into the overlay README in condensed form.
+- Kept all `[workflow-state:*]` block bodies unchanged.
+
 ## v0.3.8 - 2026-08-17
 
 Research protocol changes and claim review are now explicit without adding a

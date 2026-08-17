@@ -72,3 +72,8 @@ and claims.
 For new projects, start with the recommended layout only if it fits the work.
 For existing projects, map these rules onto the current structure instead of
 renaming directories just to match the template.
+
+## Version Notes
+
+Template ids are stable. Small rule changes ship under the same id. The
+source repository's root CHANGELOG.md records what changed in each release.

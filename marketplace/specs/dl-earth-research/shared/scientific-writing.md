@@ -93,6 +93,9 @@ human" failure) and over-ornamentation (the flowery, empty-rhetoric failure).
   substantial improvement, underscoring its pivotal role".
 - Do not fake balance: drop "however" or "on the other hand" when there is no
   real tension, and do not pad a point into a rule-of-three to sound thorough.
+  Drop "it's not just X, it's Y" / "not only X, but Y" rephrasings of a single
+  point.
+- Do not use em dashes; use commas, colons, semicolons, or parentheses instead.
 - Prefer one concrete sentence over a vague one padded to look comprehensive.
 
 ### Over-Ornamentation
@@ -104,22 +107,32 @@ Empty flourish inflates without informing. Do not use:
 - myriad, plethora, "a host of", "a wealth of";
 - "it is worth noting", "it should be noted", "it is important to note";
 - "plays a crucial/pivotal/vital role", "stands as", "at the forefront of";
-- "in today's world", "in an increasingly X world", "the ever-evolving X".
+- "in today's world", "in an increasingly X world", "the ever-evolving X";
+- underscore(s), showcasing, intricate, "at its core", "when it comes to",
+  load-bearing as filler emphasis.
 
 Each is a signal that a sentence is performing competence instead of stating a
 fact. Replace with the concrete observation.
 
-For Chinese prose, also drop translation-style padding and official-document
-cliches. Avoid phrases that translate to "in the background of", "deeply
-explore", "empower" or "assist", "a tapestry of", "manifests" or "highlights",
-"committed to", "continuously optimize", and "comprehensively elevate", and
-avoid forced three-part parallelism used only to sound thorough. Write plain,
-factual Chinese.
+For Chinese prose, drop the same items the global agent rules ban, verbatim.
+Two categories:
+
+- fake insight: "不是 X，而是 Y", "本质上", "底层逻辑", "核心/关键在于", "核心"
+  as empty emphasis (as in "核心逻辑"), "真正稳的是", "更稳/最稳", "根因",
+  "口径", "深刻/深入" as empty modifiers, "契约" and "派生" outside their
+  technical senses, "一语中的";
+- formulaic padding: "首先…其次…最后…", "一方面…另一方面…", "不仅…而且…",
+  "综上", "值得注意", "全面/全方位", "强大/强健", "无缝/流畅", "尖端/前沿",
+  "落盘", "收口", "兜底", "闭环", "一版", "补一刀", "更硬", "痛点", "打通",
+  "收窄", "跑一遍", "一句话", "原子", "冒烟测试".
+
+Write plain, factual Chinese that states the action, the object, and the
+result directly.
 
 ### Empty Adjectives And Hollow Comparisons
 
-- robust, scalable, modular, flexible, comprehensive, seamless, cutting-edge,
-  next-generation;
+- robust, scalable, modular, flexible, pivotal, comprehensive, multifaceted,
+  seamless, cutting-edge, next-generation, transformative, game-changing;
 - state-of-the-art or significant unless a specific comparison or statistical
   test is in the same section;
 - "we implemented X module", "we built a pipeline" stated as a finding.

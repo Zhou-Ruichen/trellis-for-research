@@ -23,6 +23,34 @@ scripts/
 Scripts remain thin. Metrics, prediction writing, diagnostics, and plotting
 logic live under `src/<pkg>/eval/`.
 
+## Verification Boundaries
+
+Research code is exploratory: the result is discovered, not specified. Do not
+import software-engineering verification regimes (TDD, coverage targets,
+metric gates) into it.
+
+Hard gates apply to code, never to scientific outcomes:
+
+- the pipeline runs and shapes, dtypes, and units are consistent;
+- errors fail loudly at boundaries instead of producing fake success;
+- sanity properties that hold by construction are checked (normalization
+  sums, no train/test leakage, coordinate conventions, a random-input
+  baseline in the expected range).
+
+No gate applies to outcomes:
+
+- Do not assert metric values anywhere. "RMSE must be below X" encodes the
+  answer the experiment is meant to discover.
+- Expected outputs are unknown, so TDD does not apply. Sanity checks may be
+  written before the run (they verify the code); result assertions may not.
+- Regression checks are for maintained code with a retained baseline, not
+  for exploration.
+- A missed target is a finding to report (value, condition, gap to the
+  baseline or expectation, plausible explanation), not a task failure. A
+  task is complete when its evidence is traceable, not when a target is met.
+- Validation commands attached to a task check executability and sanity
+  only; they never assert metric values.
+
 ## Metrics
 
 Retained evaluation runs write:

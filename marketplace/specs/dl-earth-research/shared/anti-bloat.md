@@ -10,6 +10,10 @@ and leaving output conventions ambiguous. Prevent bloat by not adding it.
 - Extract common code when two durable scripts share meaningful logic.
 - Do not create `*_v2.py`, `*_final.py`, `*_new.py`, or date-suffixed variants.
 - Do not add a factory, registry, base class, plugin system, or config class for a one-off script.
+- Before new code or a new dependency, climb the ladder in order: reuse this
+  codebase, then an already-installed dependency (for research code, usually
+  the scientific stack), then the standard library, then one line; only after
+  all four fail, write the minimum implementation the task needs.
 - Do not hide unknown behavior with broad fallback branches, swallowed exceptions, or fake success logs.
 - Delete superseded code instead of accumulating variants. Git history is the
   archive; follow the cleanup protocol below for what needs asking first.
@@ -54,6 +58,13 @@ Good:
 scripts/diagnose_run.py
 src/<pkg>/eval/diagnostics.py
 ```
+
+One-off test code follows the same rule as diagnostic scripts: scratch
+sanity or debugging tests are deleted once they answer their question and are
+never committed. `tests/` holds only durable checks: smoke tests,
+data-contract tests, shape/sanity properties, regression checks for
+maintained code, and small unit tests. Promote a scratch test only when a
+second task needs it again.
 
 ## Cleanup Protocol
 

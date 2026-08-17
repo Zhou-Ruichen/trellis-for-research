@@ -211,9 +211,12 @@ def validate_no_non_ascii() -> None:
         except UnicodeEncodeError:
             fail(f"path must be ASCII: {rel_path}")
         # Content under examples/ may include bilingual writing samples (for
-        # example a Chinese result discussion). Only paths must stay ASCII there;
-        # the portable spec files under marketplace/ remain fully ASCII.
+        # example a Chinese result discussion). Only paths must stay ASCII there.
+        # scientific-writing.md additionally carries the Chinese anti-AI-tone
+        # word list; the banned phrases must appear verbatim to be matchable.
         if any(part == "examples" for part in rel_path.parts):
+            continue
+        if rel_path.name == "scientific-writing.md" and "marketplace" in rel_path.parts:
             continue
         data = path.read_bytes()
         try:

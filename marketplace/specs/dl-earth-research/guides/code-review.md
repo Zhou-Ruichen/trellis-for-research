@@ -32,3 +32,8 @@ Use this checklist before considering a change complete.
 - [ ] Ran the narrowest meaningful command.
 - [ ] If no command was run, the reason is stated.
 - [ ] Test scope matches the risk of the change.
+- [ ] No metric-value assertion gates the task; a missed target is reported
+      as a finding, not treated as failure.
+- [ ] No TDD scaffolding or result assertions were added; sanity checks
+      verify code, not outcomes.
+- [ ] One-off test and diagnostic code was deleted, not committed.

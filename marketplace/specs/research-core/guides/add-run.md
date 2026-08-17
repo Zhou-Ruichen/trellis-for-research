@@ -50,4 +50,6 @@ A retained run records:
 - [ ] The run tier is clear: scratch, smoke, or retained.
 - [ ] Any result claim has retained artifacts.
 - [ ] Smoke validation was run or the reason it was not run is stated.
+- [ ] No metric target is written as a completion gate; targets are reported,
+      not gated.
 - [ ] New reusable code, if any, is in the project's source area.

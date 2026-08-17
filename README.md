@@ -61,7 +61,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.1 \
   --template research-core \
   --claude --codex
 ```
@@ -70,7 +70,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.1 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -85,12 +85,23 @@ trellis init \
   --claude --codex
 ```
 
-For an existing Trellis project, use `--overwrite` only when replacing a generic
+For an existing Trellis project, prefer `--append`: it adds only spec files
+that are missing and never touches files the project has customized:
+
+```sh
+trellis init \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.1 \
+  --template research-core \
+  --append \
+  --claude --codex
+```
+
+Use `--overwrite` only when replacing a generic
 or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.1 \
   --template research-core \
   --overwrite \
   --claude --codex
@@ -162,7 +173,7 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.0 \
+  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.1 \
   --template research-core \
   --claude --codex -y
 find .trellis/spec -type f | sort
@@ -186,9 +197,20 @@ find .trellis/spec -type f | sort
   than accumulated; git history is the archive. Suspected-dead code, bulk
   cleanup, and run artifacts (`outputs/`, `data/manifests/`, configs still
   referenced by results) require asking first.
+- New code and dependencies follow a reuse ladder: this codebase first, then
+  an already-installed dependency (for research code, usually the scientific
+  stack), then the standard library, then one line; only after all four fail,
+  the minimum implementation the task needs. One-off test code is deleted
+  once it answers its question; `tests/` holds only durable checks.
+- Verification boundaries fit exploratory research: hard gates apply to code
+  (runs, shapes and units, loud boundary errors, construction-level sanity
+  properties) and never to scientific outcomes. No TDD, coverage targets, or
+  metric-value assertions; a missed target is reported as a finding, not a
+  task failure. Validation commands check executability and sanity only.
 - Result discussions, methods, and reports lead with the scientific finding,
   keep engineering terms out of prose, and strip AI tone (mechanical stiffness
-  and flowery over-ornamentation, English or Chinese); the scientific-writing
+  and flowery over-ornamentation) with verbatim banned-phrase lists in
+  English and Chinese; the scientific-writing
   layer (`shared/scientific-writing.md` and `guides/write-results.md` in each
   template) defines the rules and a self-check.
 

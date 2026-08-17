@@ -30,3 +30,4 @@ Use these guides for common research-code workflows.
 | Durable data products need manifests | [../data/index.md](../data/index.md) |
 | Reports must point back to retained evidence | [../evaluation/index.md](../evaluation/index.md) |
 | Report prose leads with the finding, not the run | [../shared/scientific-writing.md](../shared/scientific-writing.md) |
+| Verification gates code, not outcomes; metric targets are reported, not gated | [../evaluation/index.md](../evaluation/index.md) |

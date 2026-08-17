@@ -32,3 +32,4 @@ Use these guides for common research-code workflows.
 | Geoscience data products need manifests and coordinate/unit checks | [../data/index.md](../data/index.md) |
 | Report prose leads with the finding, not the run | [../shared/scientific-writing.md](../shared/scientific-writing.md) |
 | Superseded code is deleted after verification; experiment records require care | [../shared/anti-bloat.md](../shared/anti-bloat.md) |
+| Verification gates code, not outcomes; metric targets are reported, not gated | [../evaluation/index.md](../evaluation/index.md) |

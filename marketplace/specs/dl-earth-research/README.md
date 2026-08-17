@@ -70,3 +70,8 @@ project/
 
 Use this shape for new work unless the user explicitly chooses a narrower
 one-off scratch directory.
+
+## Version Notes
+
+Template ids are stable. Small rule changes ship under the same id. The
+source repository's root CHANGELOG.md records what changed in each release.

@@ -44,4 +44,6 @@ At minimum, an experiment config should resolve:
 - [ ] New code was added only when config could not express the change.
 - [ ] The run command is clear.
 - [ ] Smoke validation was run or the reason it was not run is stated.
+- [ ] No metric target is written as a completion gate; targets are reported,
+      not gated.
 

@@ -5,6 +5,40 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.1 - 2026-08-17
+
+Exploration discipline and anti-bloat sharpening. Verification regimes built
+for maintained software (TDD, coverage, metric gates) are kept out of
+exploratory research code; the anti-bloat rules gain a reuse ladder and
+explicit handling of one-off test code; the anti-AI-tone word lists are
+synced with the global agent rules.
+
+### Added
+- Verification boundaries in both templates (`evaluation/index.md`): hard
+  gates apply to code, never to scientific outcomes; no TDD, coverage
+  targets, or metric-value assertions; a missed target is a finding to
+  report, not a task failure; validation commands check executability and
+  sanity only.
+- Completion-gate rules in `guides/code-review.md` (both templates) and the
+  run/experiment guides (`guides/add-run.md`, `guides/add-experiment.md`):
+  no metric target is written as a completion gate.
+- One-off test code rules in `shared/anti-bloat.md` (both templates):
+  scratch tests are deleted once they answer their question; `tests/` holds
+  only durable checks.
+
+### Changed
+- `shared/anti-bloat.md` (both templates) gains a reuse ladder before new
+  code or new dependencies: this codebase, then an already-installed
+  dependency (for research code, usually the scientific stack), then the
+  standard library, then one line, then the minimum implementation.
+- `shared/scientific-writing.md` (both templates) syncs its banned-phrase
+  lists with the global agent rules: English additions (underscore(s),
+  showcasing, intricate, "at its core", "when it comes to", load-bearing),
+  a verbatim Chinese banned-phrase list, more empty adjectives, the
+  "not just X, it's Y" rephrasing pattern, and an em-dash ban.
+- `scripts/validate.py` exempts `scientific-writing.md` from the
+  content-ASCII rule so the Chinese banned phrases appear verbatim.
+
 ## v0.3.0 - 2026-07-25
 
 A scientific-writing layer is added alongside the existing engineering contracts

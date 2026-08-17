@@ -69,19 +69,31 @@ verify_state_blocks() {
   fi
 }
 
+verify_file() {
+  local dest="$1" src="$2" label="$3"
+  if cmp -s "$dest" "$src"; then
+    echo "  OK             $label matches master"
+    return 0
+  fi
+  echo "  FAIL           $label differs from master"
+  return 1
+}
+
+verify_overlay() {
+  local ok=0
+  verify_file "$T/workflow.md" "$MASTER_WORKFLOW" "workflow.md" || ok=1
+  verify_file "$T/agents/implement.md" "$MASTER_IMPLEMENT" "implement agent" || ok=1
+  verify_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL" "research-check skill (.claude/skills)" || ok=1
+  verify_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL" "research-check skill (.agents/skills)" || ok=1
+  verify_state_blocks || ok=1
+  [ "$ok" = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
+  return "$ok"
+}
+
 echo "== research-workflow overlay: $PROJ ($MODE)"
 
 if [ "$MODE" = verify ]; then
-  ok=0
-  cmp -s "$T/workflow.md" "$MASTER_WORKFLOW" && echo "  OK             workflow.md matches master" || { echo "  FAIL           workflow.md differs from master"; ok=1; }
-  grep -q "owns the quality check" "$T/agents/implement.md" 2>/dev/null && echo "  OK             implement agent patched" || { echo "  FAIL           implement agent not patched"; ok=1; }
-  skill_ok=1
-  [ -f "$PROJ/.claude/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.claude/skills)" || skill_ok=0
-  [ -f "$PROJ/.agents/skills/trellis-research-check/SKILL.md" ] && echo "  OK             research-check skill (.agents/skills)" || skill_ok=0
-  [ $skill_ok = 1 ] || { echo "  FAIL           research-check skill missing"; ok=1; }
-  verify_state_blocks || ok=1
-  [ $ok = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
-  exit $ok
+  if verify_overlay; then exit 0; else exit 1; fi
 fi
 
 install_file "$T/workflow.md" "$MASTER_WORKFLOW"
@@ -93,6 +105,9 @@ install_file "$T/agents/implement.md" "$MASTER_IMPLEMENT"
 install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
 install_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
 if [ "$MODE" = apply ]; then
-  verify_state_blocks
-  echo "== applied. Restart AI sessions in this project to pick up the new workflow."
+  if verify_overlay; then
+    echo "== applied. Restart AI sessions in this project to pick up the new workflow."
+  else
+    exit 1
+  fi
 fi

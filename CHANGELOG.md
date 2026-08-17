@@ -5,6 +5,30 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
 
+## v0.3.6 - 2026-08-17
+
+One-invocation ownership and complete overlay verification. No new skill,
+agent, hook, or workflow mode.
+
+### Changed
+- Phase 2.1 prepares code and configuration without executing the experiment.
+  Phase 2.2 owns the single result-producing invocation and applies its sanity
+  check to that same invocation.
+- `trellis-research-check` now states explicitly that its one execution both
+  produces the requested observation and supplies the outputs being checked.
+- Task `research/` directories are limited to Markdown investigation notes and
+  small metadata. Experiment artifacts stay under project `outputs/`, with
+  task results recording paths instead of copies.
+- The research-workflow README now matches the Phase 2.1 behavior.
+
+### Fixed
+- `apply.sh --verify` compares all four overlay-owned installed files with
+  their masters instead of checking an implement-agent phrase and skill-file
+  existence. Normal apply runs the same complete verification before reporting
+  success.
+- Includes the post-v0.3.5 implement-agent verification fix without moving the
+  existing v0.3.5 tag.
+
 ## v0.3.5 - 2026-08-17
 
 Single-owner validation and breadcrumb compression. Final static-rule

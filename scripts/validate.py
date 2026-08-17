@@ -97,14 +97,27 @@ def validate_required_content() -> None:
         "research-workflow/workflow.md": [
             "verification depth follows the task mode",
             "is a skill only",
-            "Phase 2.2 owns validation",
+            "Phase 2.2 owns the result-producing invocation and validation",
+            "one result-producing invocation",
+            "Keep `research/` to Markdown investigation notes and small metadata",
             "spec update only if durable knowledge",
             "Never repeat a passed check",
             "default exploratory",
         ],
         "research-workflow/README.md": [
             "verification depth follows the task mode",
+            "Phase 2.1 only prepares code and configuration",
             ".agents/skills",
+        ],
+        "research-workflow/agents/implement.md": [
+            "No execution or self-validation",
+            "Phase 2.2 of the workflow owns the single result-producing invocation",
+            "leave that execution to Phase 2.2",
+        ],
+        "research-workflow/skills/trellis-research-check/SKILL.md": [
+            "execute the experiment once",
+            "result-producing",
+            "the experiment again",
         ],
         "marketplace/specs/research-core/shared/project-layout.md": [
             "data/raw/",

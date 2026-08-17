@@ -31,19 +31,23 @@ records config, command, git revision, environment, and results.
      stop. No extra certainty without a concrete failure signal; no re-running
      checks that already passed; an unexpected scientific result is a finding,
      not a bug.
-   - Phase 2.1 dispatch descriptions close with the mode's final check
-     instead of unconditional lint/type-check.
-   - Phase 2.2 is split by mode: exploratory runs one sanity pass via
-     `trellis-research-check`; durable runs the full `trellis-check`.
+   - Phase 2.1 only prepares code and configuration. It does not execute the
+     experiment or run a quality check.
+   - Phase 2.2 is split by mode: exploratory performs the single
+     result-producing invocation and sanity check via `trellis-research-check`;
+     durable runs the full `trellis-check`.
      Any added check must target a concrete, plausible failure and be the
      cheapest check that answers it.
    - Phase 3.3 (spec update) first decides whether durable knowledge exists;
      if not, the task records "no durable knowledge" and moves on without
      loading the update-spec skill.
+   - Task `research/` directories hold Markdown investigation notes and small
+     metadata only. Experiment artifacts stay under project `outputs/`, and
+     task results link to them.
 2. `agents/implement.md` (master copy here): the channel implement agent
    reads the mode and writes the minimum code. It performs no self
-   validation; Phase 2.2 of the workflow owns the quality check, so the
-   experiment runs exactly once, in the check step.
+   validation or execution; Phase 2.2 of the workflow owns the result-producing
+   invocation and quality check, so the experiment runs exactly once.
 3. `skills/trellis-research-check/`: a one-pass sanity skill for exploratory
    tasks (executes, shapes/units, NaN/Inf, result from the invocation just
    executed; provenance identifiers only for retained runs; explicitly no

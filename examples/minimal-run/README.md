@@ -1,7 +1,7 @@
 # Minimal Runnable Example
 
-A tiny, self-contained project that demonstrates the
-`research-core` contract end to end: a data manifest, a config, a training run,
+A tiny, self-contained project that demonstrates the `research-core`
+retained-run flow: a data manifest, a config, a training run,
 a retained-run manifest with environment freeze, and a curated report written in
 the scientific style the spec requires.
 

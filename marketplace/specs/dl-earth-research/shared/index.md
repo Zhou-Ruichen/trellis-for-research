@@ -1,4 +1,4 @@
-# Shared Research Guidelines
+# Shared Geoscience Deep Learning Guidelines
 
 Applies to every task in this repository. Optimize for reproducibility,
 iteration speed, and readable research code.
@@ -38,7 +38,7 @@ these rules, treat them as migration candidates, not as patterns to copy.
 - [ ] Writing prose (report, discussion, methods, paper draft)? Plan to lead
       with the scientific finding; see [scientific-writing.md](./scientific-writing.md).
 
-## Core Rules
+## Rules
 
 - Use `src/<pkg>/` for reusable code. Do not build a pile of top-level scripts.
 - Use `configs/` as the single source of truth for experiment knobs.

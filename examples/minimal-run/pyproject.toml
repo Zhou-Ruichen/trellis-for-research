@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "research-demo"
 version = "0.1.0"
-description = "Minimal runnable example for the trellis-research-spec template."
+description = "Minimal runnable example for the General Computational Research template."
 requires-python = ">=3.10"
 dependencies = ["pyyaml>=6.0"]
 

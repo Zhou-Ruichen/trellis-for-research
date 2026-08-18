@@ -1,4 +1,4 @@
-# DL Earth Research Guides
+# Geoscience Deep Learning Guides
 
 Use these guides for common research-code workflows.
 
@@ -22,7 +22,7 @@ Use these guides for common research-code workflows.
 | Debug unstable training or OOM | [debug-nan-oom.md](./debug-nan-oom.md) |
 | Review for reproducibility and bloat | [code-review.md](./code-review.md) |
 
-## Core Rules Summary
+## Rules Summary
 
 | Rule | Reference |
 | --- | --- |

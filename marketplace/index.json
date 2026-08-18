@@ -4,8 +4,8 @@
     {
       "id": "dl-earth-research",
       "type": "spec",
-      "name": "Deep Learning Earth Research",
-      "description": "Trellis specs for reproducible deep-learning geoscience research: data processing (netCDF/Zarr, CRS, time), PyTorch training, evaluation, scientific-writing guardrails, and anti-bloat conventions.",
+      "name": "Geoscience Deep Learning",
+      "description": "Research specs for geoscience deep learning: geospatial data, PyTorch training, checkpoints, evaluation, reproducibility, and scientific writing.",
       "path": "marketplace/specs/dl-earth-research",
       "tags": [
         "python",
@@ -24,8 +24,8 @@
     {
       "id": "research-core",
       "type": "spec",
-      "name": "Research Core",
-      "description": "Language-agnostic Trellis specs for reproducible non-DL research, simulations, traditional ML, data processing, evaluation, scientific-writing guardrails, and anti-bloat conventions.",
+      "name": "General Computational Research",
+      "description": "Language-agnostic research specs for statistical analysis, simulations, traditional machine learning, data processing, evaluation, reproducibility, and scientific writing.",
       "path": "marketplace/specs/research-core",
       "tags": [
         "research",

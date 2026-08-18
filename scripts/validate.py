@@ -72,7 +72,7 @@ def validate_markdown_links() -> None:
 def validate_required_content() -> None:
     required = {
         "marketplace/specs/research-core/README.md": [
-            "Research Core",
+            "General Computational Research",
             "Template Fit",
             "dl-earth-research",
         ],
@@ -326,7 +326,7 @@ def validate_trellis_spec_shape() -> None:
         ],
     }
 
-    with tempfile.TemporaryDirectory(prefix="trellis-research-spec-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="trellis-for-research-") as tmp:
         tmp_path = Path(tmp)
         subprocess.run(
             ["git", "init"],
@@ -383,7 +383,7 @@ def main() -> None:
     validate_no_non_ascii()
     validate_readme_pins_latest_version()
     validate_trellis_spec_shape()
-    print("trellis-research-spec validation passed")
+    print("trellis-for-research validation passed")
 
 
 if __name__ == "__main__":

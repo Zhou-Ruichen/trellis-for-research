@@ -1,4 +1,4 @@
-# Shared Research Core Guidelines
+# Shared Computational Research Guidelines
 
 Applies to every task in this repository. Optimize for reproducibility,
 iteration speed, readable code, and evidence-backed claims.
@@ -47,7 +47,7 @@ iteration speed, readable code, and evidence-backed claims.
       rules.
 - [ ] Touching results? Decide whether each run is scratch, smoke, or retained.
 
-## Core Rules
+## Rules
 
 - Respect the repository's current documented layout. Do not rename a mature
   project into this template shape without a migration task.

@@ -1,20 +1,26 @@
-# Trellis Research Spec
+# Trellis for Research
 
-Reusable Trellis spec templates for research projects.
+Reusable Trellis spec templates and a two-mode workflow for computational
+research.
 
-This repository is not a Python project scaffold. It is a ruleset that Trellis
-installs into `.trellis/spec/` so AI coding agents follow the same research
-engineering conventions across projects.
+This repository supplies two parts:
+
+- `marketplace/`: spec templates installed into `.trellis/spec/`;
+- `research-workflow/`: a workflow overlay that gives exploratory code one
+  result-producing sanity check and keeps the full Trellis check for durable
+  code.
+
+It is not a project scaffold or a Trellis fork.
 
 The templates currently cover:
 
-- `research-core`: language-agnostic research rules for non-DL analysis,
-  simulations, traditional ML, data processing, evaluation, and reproducible
-  result claims.
-- `dl-earth-research`: deep-learning geoscience research with PyTorch-oriented
-  training, evaluation, checkpoint, data, and anti-bloat conventions.
+- `research-core` (General Computational Research): language-agnostic rules for
+  non-DL analysis, simulations, traditional ML, data processing, evaluation,
+  and reproducible result claims.
+- `dl-earth-research` (Geoscience Deep Learning): PyTorch-oriented training,
+  evaluation, checkpoints, geospatial data, and anti-bloat conventions.
 
-`dl-earth-research` targets:
+The Geoscience Deep Learning template targets:
 
 - deep-learning training and evaluation;
 - SWOT, altimetry, gravity, bathymetry, and related geoscience data workflows;
@@ -32,15 +38,16 @@ supported.
 
 ## Scope
 
-- `research-core` is language-agnostic and layout-tolerant. It is the default
-  choice for non-DL computational research.
-- `dl-earth-research` is Python-first, not Python-only. The layout and style bindings
+- General Computational Research (`research-core`) is language-agnostic and
+  layout-tolerant. It is the default choice for non-DL computational research.
+- Geoscience Deep Learning (`dl-earth-research`) is Python-first, not
+  Python-only. The layout and style bindings
   (`src/<pkg>/`, `pyproject.toml`, `python-style.md`) target Python/PyTorch,
-  which is the expected main language. The core contracts -- anti-bloat,
-  reproducibility, run manifests, data manifests, environment recording -- are
-  language-agnostic and apply to any code in the repo.
+  which is the expected main language. Its anti-bloat, reproducibility, run
+  manifest, data manifest, and environment-recording rules are language-agnostic
+  and apply to any code in the repo.
 - Mixed-language work (CUDA/C++ extensions, Fortran kernels, Julia or Rust
-  tooling, shell scripts) follows the same contracts; add a per-language style
+  tooling, shell scripts) follows the same rules; add a per-language style
   file in the project's own spec when that language carries durable code.
 - Designed for new projects. Existing projects with a customized spec should
   follow the adoption section below instead of `--overwrite`.
@@ -52,8 +59,8 @@ supported.
 
 | Template | Use when | Avoid when |
 | --- | --- | --- |
-| `research-core` | Non-DL research, simulation, traditional ML, data analysis, reproducible pipelines, existing projects that need research discipline | The project needs DL-specific training/checkpoint/ablation rules |
-| `dl-earth-research` | Geoscience projects with deep-learning training, PyTorch evaluation, checkpoints, ablations, or geospatial data workflows | The project is non-DL and only needs generic research reproducibility |
+| General Computational Research (`research-core`) | Non-DL research, simulation, traditional ML, data analysis, reproducible pipelines, existing projects that need research discipline | The project needs DL-specific training/checkpoint/ablation rules |
+| Geoscience Deep Learning (`dl-earth-research`) | Geoscience projects with deep-learning training, PyTorch evaluation, checkpoints, ablations, or geospatial data workflows | The project is non-DL and only needs generic research reproducibility |
 
 Use the tagged registry for repeatable installs.
 
@@ -61,7 +68,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
   --template research-core \
   --claude --codex
 ```
@@ -70,7 +77,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -80,7 +87,7 @@ template changes:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace \
   --template research-core \
   --claude --codex
 ```
@@ -90,7 +97,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
   --template research-core \
   --append \
   --claude --codex
@@ -101,7 +108,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
   --template research-core \
   --overwrite \
   --claude --codex
@@ -173,7 +180,7 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#v0.3.9 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
   --template research-core \
   --claude --codex -y
 find .trellis/spec -type f | sort
@@ -235,7 +242,7 @@ find .trellis/spec -type f | sort
 - `examples/project-layout/` shows the target directory shape for a new
   `dl-earth-research` project. It is a layout reference, not runnable code.
 - `examples/minimal-run/` is a minimal runnable project: synthetic
-  one-feature linear regression that exercises the full contract end to end
+  one-feature linear regression that demonstrates a retained run
   (data manifest, config, training, retained-run manifest with environment
   freeze, and a bilingual result discussion written in the scientific style).
   See `examples/minimal-run/README.md` for how to run it.
@@ -257,6 +264,10 @@ marketplace/
       data/
       evaluation/
       guides/        # incl. write-results.md
+research-workflow/
+  workflow.md
+  agents/implement.md
+  skills/trellis-research-check/
 examples/
   project-layout/    # layout reference
   minimal-run/       # runnable end-to-end demo
@@ -270,8 +281,4 @@ array with entries containing string `id`, `type`, `name`, and `path` fields.
 
 ## License
 
-Released under the [MIT License](./LICENSE). MIT is chosen over Apache-2.0
-because these templates are rulesets (markdown) that get installed into other
-projects: the permissive, recognition-friendly terms fit that use, and the
-patent-grant machinery of Apache-2.0 adds no value for documentation-only
-content.
+Released under the [MIT License](./LICENSE).

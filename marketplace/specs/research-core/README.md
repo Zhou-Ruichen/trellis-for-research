@@ -1,4 +1,4 @@
-# Research Core Spec
+# General Computational Research Spec
 
 General research-project rules for reproducible, inspectable computational
 work. Use this template for non-DL research, statistical analysis, simulation,
@@ -6,11 +6,11 @@ traditional ML, data-processing pipelines, and paper reproduction work.
 
 This template is intentionally language-agnostic. It does not prescribe a
 framework, package manager, model stack, or directory layout beyond the minimum
-contracts needed for evidence, cleanup, and result traceability.
+rules needed for evidence, cleanup, and result traceability.
 
-Use `dl-earth-research` instead when the project primarily trains or evaluates
-deep-learning models on geoscience data and needs PyTorch, checkpoint, ablation,
-or geospatial data rules.
+Use `dl-earth-research` (Geoscience Deep Learning) instead when the project
+primarily trains or evaluates deep-learning models on geoscience data and needs
+PyTorch, checkpoint, ablation, or geospatial data rules.
 
 ## Structure
 
@@ -55,7 +55,7 @@ Do not use it as a generic web/backend/product-development template. It is
 research-oriented: its strongest rules are about evidence, artifacts, cleanup,
 and claims.
 
-## Core Rules Summary
+## Rules Summary
 
 | Rule | Reference |
 | --- | --- |

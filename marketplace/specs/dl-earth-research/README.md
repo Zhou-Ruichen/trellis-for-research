@@ -1,4 +1,4 @@
-# Deep Learning Earth Research Spec
+# Geoscience Deep Learning Spec
 
 This spec is for research repositories that process geoscience data and train
 deep-learning models for inversion, prediction, reconstruction, or analysis.
@@ -10,7 +10,7 @@ precedent.
 
 The template is Python-first, not Python-only. Python/PyTorch conventions are
 included because they are the expected main stack, while the reproducibility,
-anti-bloat, data, and run-manifest contracts apply to mixed-language project
+anti-bloat, data, and run-manifest rules apply to mixed-language project
 code as well. Add project-local language rules for durable CUDA/C++, Fortran,
 Julia, Rust, or shell code when needed.
 
@@ -24,9 +24,9 @@ Use `dl-earth-research` for:
 - workflows where geospatial data handling and retained run artifacts are both
   central.
 
-Use `research-core` instead when the project is non-DL research, statistical
-analysis, simulation, traditional ML, or a data-processing pipeline without
-deep-learning training as the main workflow.
+Use `research-core` (General Computational Research) instead when the project
+is non-DL research, statistical analysis, simulation, traditional ML, or a
+data-processing pipeline without deep-learning training as the main workflow.
 
 ## Documentation Files
 

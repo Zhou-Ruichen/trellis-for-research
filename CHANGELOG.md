@@ -3,7 +3,23 @@
 Notable changes to this Trellis spec-template repository. Format based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
-`trellis init --registry gh:Zhou-Ruichen/trellis-research-spec/marketplace#<tag>`.
+`trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
+
+## v0.3.10 - 2026-08-18
+
+The repository name and template labels now describe both the spec marketplace
+and the research workflow overlay. Installed research rules and workflow
+behavior are unchanged.
+
+### Changed
+- Renamed the repository source from `trellis-research-spec` to
+  `trellis-for-research` and updated registry examples, validation text, and
+  example descriptions.
+- Renamed the template labels to General Computational Research and Geoscience
+  Deep Learning while retaining the stable CLI ids `research-core` and
+  `dl-earth-research`.
+- Updated the root README introduction and repository layout to include the
+  workflow overlay, implement agent, and research-check skill.
 
 ## v0.3.9 - 2026-08-17
 

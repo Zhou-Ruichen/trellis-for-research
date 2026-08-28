@@ -2,6 +2,20 @@
   "version": 1,
   "templates": [
     {
+      "id": "research",
+      "type": "workflow",
+      "name": "Research Workflow",
+      "description": "Inline Trellis workflow for exploratory research, documentation and configuration changes, and durable research software.",
+      "path": "workflows/research/workflow.md",
+      "trellisVersion": "0.6.16",
+      "tags": [
+        "research",
+        "inline",
+        "one-pass",
+        "trellis-0.6.16"
+      ]
+    },
+    {
       "id": "dl-earth-research",
       "type": "spec",
       "name": "Geoscience Deep Learning",

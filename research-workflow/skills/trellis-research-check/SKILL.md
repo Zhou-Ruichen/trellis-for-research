@@ -1,6 +1,6 @@
 ---
 name: trellis-research-check
-description: One-pass sanity check for exploratory research tasks. Establishes that the changed path executes, that obvious shape/unit/data errors are absent, and that the reported observation comes from the stated run. Use after an exploratory experiment or script change; durable infrastructure uses trellis-check instead.
+description: Optional standalone copy of the one-pass sanity check embedded in the research marketplace workflow. Establishes that an exploratory path executes, obvious shape/unit/data errors are absent, and the reported observation comes from the same run.
 ---
 
 # Research Check (exploratory, one pass)
@@ -8,6 +8,9 @@ description: One-pass sanity check for exploratory research tasks. Establishes t
 Purpose: execute the experiment once, produce the requested observation, and
 establish whether that same invocation is trustworthy enough for the current
 research question. This is a single pass. It is not a review cycle.
+
+The marketplace workflow contains these rules directly and does not require
+this skill to be installed.
 
 ## Check only
 
@@ -30,6 +33,7 @@ research question. This is a single pass. It is not a review cycle.
   by the task; before any such check, be able to name the failure it targets
   and what would change once found.
 - Repeat a check that already passed without new evidence.
+- Retry automatically after a software or scientific failure.
 - Treat an unexpected scientific result as a software failure. A negative or
   surprising outcome is reported, not debugged into a bug hunt.
 

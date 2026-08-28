@@ -5,6 +5,40 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.4.0 - 2026-08-28
+
+### Added
+
+- Added the stable `research` marketplace entry with `type: workflow`, a
+  Markdown path inside the marketplace root, and a Trellis 0.6.16 audit marker.
+- Added a validator equality check between the authoritative research workflow
+  and its required marketplace mirror, plus checks for workflow state blocks,
+  compatibility metadata, and research stop rules.
+
+### Changed
+
+- Rebased the research workflow on the Trellis 0.6.16 task-state structure,
+  including unreadable-task handling and explicit
+  `task.py start --allow-empty-context` behavior.
+- Made inline main-session execution the workflow default. Exploratory work
+  makes one result-producing invocation, documentation/archive/configuration
+  work receives diff review only, and durable code receives the smallest
+  relevant authorized check.
+- Documented that Trellis 0.6.16 defaults Codex dispatch to `auto` and requires
+  an explicit `codex.dispatch_mode: inline` setting for this workflow.
+- Documented official installation through a combined `trellis init` command
+  for new repositories and `trellis workflow --template research` for existing
+  repositories, both pinned to `v0.4.0`.
+- Pinned the validation workflow to Trellis 0.6.16 instead of the moving beta
+  release.
+- Deprecated the overlay writer. `research-workflow/apply.sh` is now read-only
+  and refuses its former apply mode before changing project files.
+
+### Removed
+
+- Removed the patched `research-workflow/agents/implement.md`; the workflow no
+  longer changes Trellis-managed agents.
+
 ## v0.3.10 - 2026-08-18
 
 The repository name and template labels now describe both the spec marketplace

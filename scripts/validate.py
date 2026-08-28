@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -14,6 +15,19 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKETPLACE = ROOT / "marketplace"
+WORKFLOW_ID = "research"
+WORKFLOW_SOURCE = ROOT / "research-workflow/workflow.md"
+WORKFLOW_MIRROR = MARKETPLACE / "workflows/research/workflow.md"
+COMPATIBLE_TRELLIS_VERSION = "0.6.16"
+REQUIRED_WORKFLOW_STATES = (
+    "no_task",
+    "task_error",
+    "planning",
+    "planning-inline",
+    "in_progress",
+    "in_progress-inline",
+    "completed",
+)
 
 
 def fail(message: str) -> None:
@@ -37,17 +51,52 @@ def validate_index() -> None:
     if not isinstance(templates, list) or not templates:
         fail("marketplace/index.json must contain a non-empty templates array")
 
+    seen_ids: set[str] = set()
+    workflow_entry: dict | None = None
     for template in templates:
+        if not isinstance(template, dict):
+            fail(f"template entry must be an object: {template!r}")
         for key in ("id", "type", "name", "path"):
             if not isinstance(template.get(key), str):
                 fail(f"template entry must include string {key!r}: {template}")
-        if template["type"] != "spec":
-            fail(f"unsupported template type {template['type']!r}; expected 'spec'")
-        template_path = ROOT / template["path"]
-        if not template_path.is_dir():
-            fail(f"template path does not exist: {template['path']}")
-        if not (template_path / "README.md").is_file():
-            fail(f"template path lacks README.md: {template['path']}")
+        template_id = template["id"]
+        if template_id in seen_ids:
+            fail(f"duplicate template id: {template_id}")
+        seen_ids.add(template_id)
+
+        template_type = template["type"]
+        if template_type == "spec":
+            template_path = (ROOT / template["path"]).resolve()
+            try:
+                template_path.relative_to(MARKETPLACE.resolve())
+            except ValueError:
+                fail(f"spec template path leaves marketplace root: {template['path']}")
+            if not template_path.is_dir():
+                fail(f"spec template path does not exist: {template['path']}")
+            if not (template_path / "README.md").is_file():
+                fail(f"spec template path lacks README.md: {template['path']}")
+        elif template_type == "workflow":
+            template_path = (MARKETPLACE / template["path"]).resolve()
+            try:
+                template_path.relative_to(MARKETPLACE.resolve())
+            except ValueError:
+                fail(f"workflow path leaves marketplace root: {template['path']}")
+            if template_path.suffix != ".md" or not template_path.is_file():
+                fail(f"workflow path must name a Markdown file: {template['path']}")
+            if template_id == WORKFLOW_ID:
+                workflow_entry = template
+        else:
+            fail(f"unsupported template type {template_type!r}")
+
+    if workflow_entry is None:
+        fail(f"marketplace lacks workflow template {WORKFLOW_ID!r}")
+    if workflow_entry["path"] != "workflows/research/workflow.md":
+        fail("research workflow path is not the stable marketplace path")
+    if workflow_entry.get("trellisVersion") != COMPATIBLE_TRELLIS_VERSION:
+        fail(
+            "research workflow trellisVersion must be "
+            f"{COMPATIBLE_TRELLIS_VERSION}"
+        )
 
 
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+\.md)\)")
@@ -95,35 +144,53 @@ def validate_required_content() -> None:
             "retained",
         ],
         "research-workflow/workflow.md": [
-            "verification depth follows the task mode",
-            "is a skill only",
-            "Phase 2.2 owns the result-producing invocation and validation",
+            "trellis-compatibility: 0.6.16",
+            "Trellis 0.6.16 defaults Codex to `auto`",
+            "`codex.dispatch_mode: inline`",
+            "[workflow-state:task_error]",
+            "--allow-empty-context",
             "one result-producing invocation",
-            "Keep `research/` to Markdown investigation notes and small metadata",
-            "Exploratory tasks are PRD-only by default",
-            "seed-only manifests are valid otherwise",
-            "actual invocation, observation, findings, and output paths",
-            "limitation or uncertainty that changes the interpretation",
-            "does not approve a scientific claim",
-            "spec update only if durable knowledge",
-            "Never repeat a passed check",
-            "default exploratory",
+            "same invocation supplies the sanity observation",
+            "No separate test suite",
+            "automatic retry",
+            "repeat after a pass without new failure evidence",
+            "diff review only; do not run a build or test",
+            "smallest relevant check",
+            "Scientific metric values are never task-completion gates",
+            "unexpected scientific results are findings",
+            "retained results record the command",
+            "Do not dispatch implement or check sub-agents",
+            "Task completion does not approve a scientific claim",
+            ".codex/hooks/inject-workflow-state.py",
         ],
         "research-workflow/README.md": [
-            "verification depth follows the task mode",
-            "Phase 2.1 only prepares code and configuration",
-            "Exploratory tasks are PRD-only by default",
-            ".agents/skills",
-        ],
-        "research-workflow/agents/implement.md": [
-            "No execution or self-validation",
-            "Phase 2.2 of the workflow owns the single result-producing invocation",
-            "leave that execution to Phase 2.2",
+            "`research-workflow/workflow.md` is authoritative",
+            "`trellisVersion: 0.6.16`",
+            "Trellis 0.6.16 does not enforce",
+            "`codex.dispatch_mode: auto`",
+            "dispatch_mode: inline",
+            "--template research",
+            "--marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#",
+            "--workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#",
+            "task.py start <task-dir> --allow-empty-context",
+            "default apply mode exits before",
+            "does not patch",
+            ".codex/hooks/inject-workflow-state.py",
         ],
         "research-workflow/skills/trellis-research-check/SKILL.md": [
             "execute the experiment once",
             "result-producing",
             "the experiment again",
+            "does not require",
+        ],
+        "research-workflow/apply.sh": [
+            "apply mode is deprecated and performs no writes",
+            "this workflow targets Trellis",
+            "--create-new",
+            "workflow.md is user-managed",
+        ],
+        ".github/workflows/validate.yml": [
+            "npm install -g @mindfoldhq/trellis@0.6.16",
         ],
         "marketplace/specs/research-core/shared/project-layout.md": [
             "data/raw/",
@@ -237,6 +304,186 @@ def validate_required_content() -> None:
                 fail(f"{rel_path} missing required text: {needle}")
 
 
+WORKFLOW_STATE_RE = re.compile(
+    r"^\[(?P<close>/?)workflow-state:(?P<name>[A-Za-z0-9_-]+)\]$", re.M
+)
+WORKFLOW_MARKETPLACE_RE = re.compile(
+    r"--marketplace\s+"
+    r"gh:Zhou-Ruichen/trellis-for-research/marketplace#([^\s`]+)"
+)
+FORBIDDEN_SHELL_COMMANDS = {
+    "bash",
+    "chmod",
+    "chown",
+    "cp",
+    "dd",
+    "find",
+    "git",
+    "install",
+    "ln",
+    "mkdir",
+    "mv",
+    "node",
+    "perl",
+    "python",
+    "python3",
+    "rm",
+    "rmdir",
+    "rsync",
+    "ruby",
+    "sed",
+    "sh",
+    "tee",
+    "touch",
+    "truncate",
+    "zsh",
+}
+FILE_REDIRECTION_TOKENS = {">", ">>", "<", "<<", "<<<", "<>"}
+
+
+def validate_read_only_shell(path: Path, text: str) -> None:
+    """Reject common mutation commands and file redirections in apply.sh."""
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        lexer = shlex.shlex(
+            line,
+            posix=True,
+            punctuation_chars="|&;()<>",
+        )
+        lexer.whitespace_split = True
+        lexer.commenters = "#"
+        try:
+            tokens = list(lexer)
+        except ValueError as exc:
+            fail(f"{path.relative_to(ROOT)}:{line_number} is invalid shell: {exc}")
+
+        for index, token in enumerate(tokens):
+            if token in FORBIDDEN_SHELL_COMMANDS:
+                fail(
+                    f"{path.relative_to(ROOT)}:{line_number} contains "
+                    f"forbidden command {token!r}"
+                )
+            if token not in FILE_REDIRECTION_TOKENS:
+                continue
+            target = tokens[index + 1] if index + 1 < len(tokens) else ""
+            if token == ">" and target == "/dev/null":
+                continue
+            fail(
+                f"{path.relative_to(ROOT)}:{line_number} contains "
+                f"file redirection {token!r}"
+            )
+
+
+def validate_workflow_contract() -> None:
+    if not WORKFLOW_SOURCE.is_file():
+        fail("authoritative research workflow is missing")
+    if not WORKFLOW_MIRROR.is_file():
+        fail("marketplace workflow mirror is missing")
+    if WORKFLOW_SOURCE.read_bytes() != WORKFLOW_MIRROR.read_bytes():
+        fail("marketplace workflow mirror differs from authoritative source")
+
+    text = WORKFLOW_SOURCE.read_text(encoding="utf-8")
+    stack: list[str] = []
+    opened: list[str] = []
+    for match in WORKFLOW_STATE_RE.finditer(text):
+        name = match.group("name")
+        if not match.group("close"):
+            if name in opened:
+                fail(f"duplicate workflow-state block: {name}")
+            opened.append(name)
+            stack.append(name)
+            continue
+        if not stack or stack[-1] != name:
+            fail(f"unbalanced workflow-state close: {name}")
+        stack.pop()
+    if stack:
+        fail(f"unclosed workflow-state block: {stack[-1]}")
+    if tuple(opened) != REQUIRED_WORKFLOW_STATES:
+        fail(
+            "workflow-state blocks must be exactly: "
+            + ", ".join(REQUIRED_WORKFLOW_STATES)
+        )
+
+    malformed = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if (
+            "workflow-state:" in stripped
+            and stripped.startswith("[")
+            and stripped.endswith("]")
+            and WORKFLOW_STATE_RE.fullmatch(line) is None
+        ):
+            malformed.append(line)
+    if malformed:
+        fail(f"malformed workflow-state block line: {malformed[0]}")
+
+    if (ROOT / "research-workflow/agents/implement.md").exists():
+        fail("custom research implement agent must remain removed")
+
+    marker_match = re.search(r"trellis-compatibility:\s*([^\s]+)", text)
+    if not marker_match or marker_match.group(1) != COMPATIBLE_TRELLIS_VERSION:
+        fail("workflow compatibility marker differs from the validator version")
+
+    apply_path = ROOT / "research-workflow/apply.sh"
+    apply_text = apply_path.read_text(encoding="utf-8")
+    version_match = re.search(
+        r'^EXPECTED_TRELLIS_VERSION="([^"]+)"$', apply_text, re.M
+    )
+    if not version_match or version_match.group(1) != COMPATIBLE_TRELLIS_VERSION:
+        fail("apply.sh Trellis version differs from the validator version")
+    source_match = re.search(
+        r"^MARKETPLACE_SOURCE='[^']+#(v\d+\.\d+\.\d+)'$", apply_text, re.M
+    )
+    latest = latest_release_version()
+    if not source_match or source_match.group(1) != latest:
+        fail(f"apply.sh marketplace source must pin latest release {latest}")
+    validate_read_only_shell(apply_path, apply_text)
+
+
+def latest_release_version() -> str:
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    match = re.search(r"^## (v\d+\.\d+\.\d+) - \d{4}-\d{2}-\d{2}", changelog, re.M)
+    if not match:
+        fail("CHANGELOG.md has no versioned release heading")
+    return match.group(1)
+
+
+def validate_workflow_install_docs() -> None:
+    latest = latest_release_version()
+    expected_source = (
+        "gh:Zhou-Ruichen/trellis-for-research/marketplace#" + latest
+    )
+    for rel_path in ("README.md", "research-workflow/README.md"):
+        text = (ROOT / rel_path).read_text(encoding="utf-8")
+        if "--template research" not in text:
+            fail(f"{rel_path} lacks the official workflow template option")
+        if "--workflow research" not in text:
+            fail(f"{rel_path} lacks the combined new-project workflow option")
+        if f"--workflow-source {expected_source}" not in text:
+            fail(f"{rel_path} does not pin the new-project workflow source to {latest}")
+        if "dispatch_mode: inline" not in text:
+            fail(f"{rel_path} lacks the explicit Codex inline setting")
+        if re.search(
+            r"defaults(?: Codex)? to `(?:codex\.dispatch_mode: )?auto`", text
+        ) is None:
+            fail(f"{rel_path} does not state the Trellis 0.6.16 Codex default")
+        if f"--marketplace {expected_source}" not in text:
+            fail(f"{rel_path} does not pin the workflow marketplace to {latest}")
+        if "<release-tag>" in text:
+            fail(f"{rel_path} still contains a release-tag placeholder")
+        if re.search(
+            r"--marketplace\s+"
+            r"gh:Zhou-Ruichen/trellis-for-research/marketplace(?:\s|$)",
+            text,
+        ):
+            fail(f"{rel_path} contains an unpinned workflow marketplace command")
+        refs = WORKFLOW_MARKETPLACE_RE.findall(text)
+        if not refs:
+            fail(f"{rel_path} lacks a workflow marketplace release reference")
+        for ref in refs:
+            if ref != latest:
+                fail(f"{rel_path} pins workflow ref {ref}; expected {latest}")
+
+
 def iter_repo_files() -> list[Path]:
     try:
         result = subprocess.run(
@@ -269,11 +516,13 @@ def validate_no_non_ascii() -> None:
         # example a Chinese result discussion). Only paths must stay ASCII there.
         # scientific-writing.md additionally carries the Chinese anti-AI-tone
         # word list; the banned phrases must appear verbatim to be matchable.
-        # research-workflow/ holds overlay masters derived from Trellis-managed
-        # project files; they keep upstream punctuation and CJK reply words.
+        # research-workflow/ and its exact marketplace workflow mirror keep
+        # Trellis workflow punctuation. The spec marketplace stays ASCII.
         if any(part == "examples" for part in rel_path.parts):
             continue
         if "research-workflow" in rel_path.parts:
+            continue
+        if rel_path == Path("marketplace/workflows/research/workflow.md"):
             continue
         if rel_path.name == "scientific-writing.md" and "marketplace" in rel_path.parts:
             continue
@@ -343,6 +592,8 @@ def validate_trellis_spec_shape() -> None:
             stderr=subprocess.DEVNULL,
         )
         for template in load_index()["templates"]:
+            if template["type"] != "spec":
+                continue
             template_id = template["id"]
             if template_id not in expected_by_template:
                 fail(f"missing spec-shape expectations for template {template_id!r}")
@@ -361,23 +612,21 @@ def validate_trellis_spec_shape() -> None:
 
 
 def validate_readme_pins_latest_version() -> None:
-    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    match = re.search(r"^## (v\d+\.\d+\.\d+) - \d{4}-\d{2}-\d{2}", changelog, re.M)
-    if not match:
-        fail("CHANGELOG.md has no versioned release heading")
-        return
-    latest = match.group(1)
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
-    if not pins:
-        fail(f"README.md pins no version; expected {latest}")
-    for pin in set(pins):
-        if pin != latest:
-            fail(f"README.md pins {pin}; latest CHANGELOG release is {latest}")
+    latest = latest_release_version()
+    for rel_path in ("README.md", "research-workflow/README.md"):
+        readme = (ROOT / rel_path).read_text(encoding="utf-8")
+        pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
+        if not pins:
+            fail(f"{rel_path} pins no version; expected {latest}")
+        for pin in set(pins):
+            if pin != latest:
+                fail(f"{rel_path} pins {pin}; latest CHANGELOG release is {latest}")
 
 
 def main() -> None:
     validate_index()
+    validate_workflow_contract()
+    validate_workflow_install_docs()
     validate_markdown_links()
     validate_required_content()
     validate_no_non_ascii()

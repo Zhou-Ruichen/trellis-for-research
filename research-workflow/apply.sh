@@ -1,21 +1,18 @@
 #!/bin/bash
-# Apply the research workflow overlay to a Trellis project.
+# Deprecated overlay installer. This script is intentionally read-only.
 #
 # Usage:
-#   ./apply.sh <project-dir>            # apply (with per-file backups, idempotent)
-#   ./apply.sh <project-dir> --dry-run  # show what would change
-#   ./apply.sh <project-dir> --verify   # read-only check that the overlay is in place
-#
-# Idempotent: files already identical to the master copies are left untouched
-# and produce no backup. Backups use a timestamp suffix and are never cleaned
-# by this script.
+#   ./apply.sh <project-dir>             # refuse legacy mutation and print migration command
+#   ./apply.sh <project-dir> --dry-run   # compare the project workflow with this release
+#   ./apply.sh <project-dir> --verify    # verify an official marketplace installation
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MASTER_WORKFLOW="$SCRIPT_DIR/workflow.md"
-MASTER_IMPLEMENT="$SCRIPT_DIR/agents/implement.md"
-MASTER_SKILL="$SCRIPT_DIR/skills/trellis-research-check/SKILL.md"
+EXPECTED_TRELLIS_VERSION="0.6.16"
+WORKFLOW_ID="research"
+MARKETPLACE_SOURCE='gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0'
 
 MODE="${2:-apply}"
 MODE="${MODE#--}"
@@ -23,91 +20,60 @@ case "$MODE" in
   apply|dry-run|verify) ;;
   *) echo "FATAL: unknown mode: $MODE (use apply, --dry-run, or --verify)"; exit 2 ;;
 esac
+
 PROJ="${1:?usage: apply.sh <project-dir> [--dry-run|--verify]}"
 T="$PROJ/.trellis"
 
 [ -d "$T" ] || { echo "FATAL: $T not found (not a Trellis project?)"; exit 1; }
 
-ts() { date +%Y-%m-%dT%H-%M-%S; }
-
-# install <dest> <src>: backup then copy if different; skip silently if identical
-install_file() {
-  local dest="$1" src="$2"
-  if [ ! -f "$dest" ]; then
-    echo "  INSTALL (new)  ${dest#$PROJ/}"
-    if [ "$MODE" = apply ]; then
-      mkdir -p "$(dirname "$dest")"
-      cp "$src" "$dest"
-    fi
-    return 0
-  fi
-  if cmp -s "$dest" "$src"; then
-    echo "  OK (same)      ${dest#$PROJ/}"
-    return 0
-  fi
-  echo "  REPLACE        ${dest#$PROJ/}"
-  if [ "$MODE" = apply ]; then
-    cp "$dest" "${dest}.backup-$(ts)"
-    cp "$src" "$dest"
-  fi
-  return 0
+print_migration() {
+  echo "Use the Trellis marketplace workflow command with a published release tag:"
+  echo "  trellis workflow --template $WORKFLOW_ID --marketplace $MARKETPLACE_SOURCE --create-new"
+  echo "Review .trellis/workflow.md.new, then rerun without --create-new and add --force only when replacement is intended."
 }
 
-# The official trellis-check skill is NOT patched. Routing lives entirely in
-# workflow.md (state blocks, Phase 2.2, Active Task Routing) and in the
-# trellis-research-check skill's own description.
-
-verify_state_blocks() {
-  local n o
-  n=$(grep -c "^\[workflow-state:" "$T/workflow.md" || true)
-  o=$(grep -c "^\[/workflow-state:" "$T/workflow.md" || true)
-  if [ "$n" = "$o" ] && [ "$n" -ge 6 ]; then
-    echo "  OK             workflow-state blocks parseable ($n blocks)"
-  else
-    echo "  FAIL           workflow-state blocks: $n open / $o close"
-    return 1
-  fi
-}
-
-verify_file() {
-  local dest="$1" src="$2" label="$3"
-  if cmp -s "$dest" "$src"; then
-    echo "  OK             $label matches master"
-    return 0
-  fi
-  echo "  FAIL           $label differs from master"
-  return 1
-}
-
-verify_overlay() {
-  local ok=0
-  verify_file "$T/workflow.md" "$MASTER_WORKFLOW" "workflow.md" || ok=1
-  verify_file "$T/agents/implement.md" "$MASTER_IMPLEMENT" "implement agent" || ok=1
-  verify_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL" "research-check skill (.claude/skills)" || ok=1
-  verify_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL" "research-check skill (.agents/skills)" || ok=1
-  verify_state_blocks || ok=1
-  [ "$ok" = 0 ] && echo "== verify: PASS" || echo "== verify: FAIL"
-  return "$ok"
-}
-
-echo "== research-workflow overlay: $PROJ ($MODE)"
-
-if [ "$MODE" = verify ]; then
-  if verify_overlay; then exit 0; else exit 1; fi
-fi
-
-install_file "$T/workflow.md" "$MASTER_WORKFLOW"
-install_file "$T/agents/implement.md" "$MASTER_IMPLEMENT"
-# skill for both platforms, unconditionally: Claude (.claude/skills) and
-# Codex (.agents/skills, the shared layer Trellis uses for Codex skills).
-# Projects commonly carry a root AGENTS.md for Codex even without an
-# existing .agents tree, so both locations are always populated.
-install_file "$PROJ/.claude/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
-install_file "$PROJ/.agents/skills/trellis-research-check/SKILL.md" "$MASTER_SKILL"
 if [ "$MODE" = apply ]; then
-  if verify_overlay; then
-    echo "== applied. Restart AI sessions in this project to pick up the new workflow."
-  else
-    exit 1
-  fi
+  echo "FATAL: apply mode is deprecated and performs no writes."
+  echo "The old overlay could replace Trellis-managed runtime files with older copies."
+  print_migration
+  exit 2
 fi
+
+command -v trellis >/dev/null 2>&1 || { echo "FATAL: trellis CLI not found"; exit 1; }
+ACTUAL_TRELLIS_VERSION="$(trellis --version)"
+if [ "$ACTUAL_TRELLIS_VERSION" != "$EXPECTED_TRELLIS_VERSION" ]; then
+  echo "FATAL: this workflow targets Trellis $EXPECTED_TRELLIS_VERSION; found $ACTUAL_TRELLIS_VERSION."
+  echo "Obtain a workflow release compatible with the installed CLI before replacing workflow.md."
+  exit 1
+fi
+
+if [ ! -f "$T/workflow.md" ]; then
+  echo "FATAL: $T/workflow.md not found"
+  exit 1
+fi
+
+if cmp -s "$T/workflow.md" "$MASTER_WORKFLOW"; then
+  echo "OK: .trellis/workflow.md matches the research workflow source."
+else
+  if [ "$MODE" = dry-run ]; then
+    echo "WOULD REPLACE: .trellis/workflow.md differs from the research workflow source."
+    print_migration
+    exit 0
+  fi
+  echo "FAIL: .trellis/workflow.md differs from the research workflow source."
+  exit 1
+fi
+
+open_blocks=$(grep -c '^\[workflow-state:' "$T/workflow.md" || true)
+close_blocks=$(grep -c '^\[/workflow-state:' "$T/workflow.md" || true)
+if [ "$open_blocks" != "$close_blocks" ] || [ "$open_blocks" -lt 7 ]; then
+  echo "FAIL: workflow-state blocks are not balanced ($open_blocks open / $close_blocks close)."
+  exit 1
+fi
+
+if [ -f "$T/.template-hashes.json" ] && grep -q '"\.trellis/workflow\.md"' "$T/.template-hashes.json"; then
+  echo "FAIL: .trellis/workflow.md remains Trellis hash-managed; reinstall through 'trellis workflow'."
+  exit 1
+fi
+
+echo "PASS: workflow matches, state blocks are balanced, Trellis is $EXPECTED_TRELLIS_VERSION, and workflow.md is user-managed."

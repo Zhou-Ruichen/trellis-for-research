@@ -1,111 +1,131 @@
-# Research Workflow Overlay
+# Research Workflow
 
-A lighter `.trellis` workflow for exploratory research. It replaces the
-software-engineering default (implement -> full check -> verify) with a
-two-mode flow where verification depth follows the task mode and evidence
-recording follows the run tier, not task size.
+An inline workflow for Trellis 0.6.16. It keeps Trellis task-state and safety
+behavior while removing the engineering workflow's implement/check dispatch,
+curated JSONL context, and repeated verification cycle.
 
-## Mode and evidence tier
+## Sources
 
-Two independent questions are separated on purpose:
+`research-workflow/workflow.md` is authoritative. The marketplace requires a
+Markdown file inside its own root, so
+`marketplace/workflows/research/workflow.md` is an exact mirror.
+`python3 scripts/validate.py` compares their bytes and fails on drift.
 
-- **Mode** (code): `prd.md` line 1 declares `Mode: exploratory` (default when
-  absent) or `Mode: durable` (code the project keeps and maintains: loaders,
-  pipelines, data contracts). The mode controls how code is written and how
-  deeply it is checked. Do not promote a task to durable on the AI's own
-  judgment; ask the user.
-- **Evidence tier** (runs): scratch / smoke / retained, decided per run per
-  `spec/shared/reproducibility.md`. It controls what the run records.
+The marketplace entry has stable ID `research`, type `workflow`, and a
+`trellisVersion: 0.6.16` audit marker. Trellis 0.6.16 does not enforce that
+field during installation. The workflow repeats the target version in its
+header, and the deprecated verifier requires an exact CLI version match.
 
-A retained result (paper-table evidence) does not make exploratory code
-durable: a 25-line script for a paper table stays exploratory; its run
-records config, command, git revision, environment, and results.
+## Behavior
 
-## What changes relative to the stock workflow
+`prd.md` line 1 selects one mode:
 
-1. `workflow.md` (master copy here):
-   - Request Triage and the `no_task` / `planning` breadcrumbs set the mode
-     at task creation and separate it from the evidence tier.
-   - The `in_progress` breadcrumbs carry two flows plus a stop condition:
-     once the requested result is established and the mode's checks pass,
-     stop. No extra certainty without a concrete failure signal; no re-running
-     checks that already passed; an unexpected scientific result is a finding,
-     not a bug.
-   - Phase 2.1 only prepares code and configuration. It does not execute the
-     experiment or run a quality check.
-   - Phase 2.2 is split by mode: exploratory performs the single
-     result-producing invocation and sanity check via `trellis-research-check`;
-     durable runs the full `trellis-check`.
-     Any added check must target a concrete, plausible failure and be the
-     cheapest check that answers it.
-   - Phase 3.3 (spec update) first decides whether durable knowledge exists;
-     if not, the task records "no durable knowledge" and moves on without
-     loading the update-spec skill.
-   - Task `research/` directories hold Markdown investigation notes and small
-     metadata only. Experiment artifacts stay under project `outputs/`, and
-     task results link to them.
-   - Exploratory tasks are PRD-only by default, even for multi-step runs.
-     `design.md`, `implement.md`, and jsonl context are added only when
-     implementation or checking needs them. Phase 2.2 owns check commands, and
-     `result.md` records what actually ran plus limitations or uncertainties
-     that change the interpretation. Task completion does not approve a
-     manuscript or external claim.
-2. `agents/implement.md` (master copy here): the channel implement agent
-   reads the mode and writes the minimum code. It performs no self
-   validation or execution; Phase 2.2 of the workflow owns the result-producing
-   invocation and quality check, so the experiment runs exactly once.
-3. `skills/trellis-research-check/`: a one-pass sanity skill for exploratory
-   tasks (executes, shapes/units, NaN/Inf, result from the invocation just
-   executed; provenance identifiers only for retained runs; explicitly no
-   hashes, no repeats, no auto-fix). It is a skill only — there is no
-   sub-agent form; the main session loads it. `apply.sh` always installs it
-   to both the Claude Code location (`.claude/skills/`) and the Codex
-   location (`.agents/skills/`, the shared layer Trellis uses for Codex
-   skills); the project is expected to run Claude and Codex together.
+- `Mode: exploratory`: edit first, then make one result-producing invocation.
+  The same invocation supplies the sanity observation. There is no separate
+  test suite, automatic retry, or repeat after a pass without new failure
+  evidence.
+- `Mode: documentation`: documentation, archive, and configuration-only work
+  receives diff review only. No build or test runs. Configuration that changes
+  executable behavior belongs in durable mode.
+- `Mode: durable`: use the smallest relevant check. Do not create repeated
+  full-suite cycles. Project instructions that require explicit user approval
+  before tests or builds remain controlling.
 
-The official `trellis-check` skill is not patched. Routing lives entirely in
-`workflow.md` (state blocks, Phase 2.2, Active Task Routing) and in the
-research-check skill's own description, so the overlay only owns its own
-files.
+Unexpected scientific results are findings. Scientific metric values do not
+decide task completion. Retained scientific results still follow the project's
+source, lineage, provenance, uncertainty, and claim-review requirements.
 
-## Usage
+The main session owns implementation and checking. Trellis 0.6.16 defaults Codex to `codex.dispatch_mode: auto`, so a Codex project must explicitly set:
 
-```bash
-# after trellis init in a project:
-./research-workflow/apply.sh <project-dir>            # apply
-./research-workflow/apply.sh <project-dir> --dry-run  # preview
-./research-workflow/apply.sh <project-dir> --verify   # read-only check
+```yaml
+codex:
+  dispatch_mode: inline
 ```
 
-Idempotent: files already matching the masters are left alone and produce no
-new backups. Replaced files get a `.backup-<timestamp>` copy next to them.
-Restart AI sessions in the project after applying so hooks reload the
-workflow.
+This workflow then avoids implement/check sub-agents and does not patch
+`.trellis/agents/implement.md`.
 
-## Coexistence with `trellis update`
+Trellis 0.6.16 refuses a seeded empty context manifest at task start unless the
+caller explicitly permits it. This workflow reads task artifacts and relevant
+specs directly, so activation uses:
 
-- `.trellis/workflow.md` and `.trellis/agents/implement.md` are tracked by
-  `.template-hashes.json`. A later `trellis update` will detect these local
-  modifications and ask; choose to keep the local version, or re-run
-  `apply.sh` after updating.
-- `trellis-research-check` is a file owned by this overlay; the Trellis
-  updater does not manage it.
+```bash
+python3 ./.trellis/scripts/task.py start <task-dir> --allow-empty-context
+```
 
-## Maintaining the workflow
+Seed-only context is not described as validated context. The explicit flag
+records that empty sub-agent context is intentional.
 
-The `[workflow-state:*]` blocks in `workflow.md` are the source for per-turn
-breadcrumbs. The hook parser reads those blocks and has no embedded copy. Keep
-every `[required · once]` step represented in the matching block, including
-task activation, conditional spec update, and commit.
+## Installation
 
-The live scopes are `no_task`, `planning`, `planning-inline`, `in_progress`,
-and `in_progress-inline`. The `completed` block remains for compatibility but
-is not reached by the normal archive flow because archiving also clears the
-active-task pointer. A custom status requires both a matching block and a
-lifecycle hook that writes that status to `task.json`.
+For a new non-DL research repository, install the spec and workflow together:
 
-After changing a step or breadcrumb, run `python3 scripts/validate.py`, apply
-the overlay to a temporary initialized project, and verify it with
-`research-workflow/apply.sh <project-dir> --verify`. The installed Trellis
-runtime contract remains authoritative at
-`.trellis/spec/cli/backend/workflow-state-contract.md`.
+```bash
+trellis init \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-core \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --claude --codex
+```
+
+Replace `research-core` with `dl-earth-research` for geoscience deep learning.
+Then set `codex.dispatch_mode: inline` in `.trellis/config.yaml` as shown above.
+
+For an already initialized Trellis project, install only the workflow:
+
+```bash
+trellis workflow \
+  --template research \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0
+```
+
+Both commands pin `v0.4.0`. Do not use `main` for normal installation.
+
+Trellis treats every non-native workflow as user-managed. After installation,
+0.6.16 removes `.trellis/workflow.md` from `.template-hashes.json`; later
+`trellis update` runs cannot silently restore native workflow bytes over it.
+
+## Safe upgrade and migration
+
+For an existing project:
+
+1. Run `trellis update --create-new` and review the generated runtime sidecars.
+2. Set `codex.dispatch_mode: inline` in `.trellis/config.yaml` for Codex.
+3. Run the marketplace workflow command with `--create-new` and compare
+   `.trellis/workflow.md.new` with the active workflow.
+4. Rerun without `--create-new` only after review. Add `--force` only when
+   replacing local workflow edits is intended.
+5. Restart AI sessions after the active workflow changes.
+
+`apply.sh` is deprecated and read-only. Its default apply mode exits before
+writing. `--dry-run` reports whether the active workflow differs;
+`--verify` checks exact workflow equality, Trellis 0.6.16, balanced state
+blocks, and absence of the workflow template hash.
+
+```bash
+./research-workflow/apply.sh <project-dir> --dry-run
+./research-workflow/apply.sh <project-dir> --verify
+```
+
+The script never copies workflow, agent, or skill files. The optional
+`skills/trellis-research-check/` directory preserves a standalone copy of the
+embedded exploratory checklist, but marketplace installation does not depend
+on it.
+
+## Maintenance
+
+Keep all edits in `research-workflow/workflow.md`, then update the marketplace
+mirror in the same change. Run only:
+
+```bash
+python3 scripts/validate.py
+./research-workflow/apply.sh <temporary-project> --verify
+```
+
+The `[workflow-state:*]` blocks are the source for per-turn breadcrumbs. The
+validator checks balanced names and the required `no_task`, `task_error`,
+`planning`, `planning-inline`, `in_progress`, `in_progress-inline`, and
+`completed` states. The parser is installed in each configured platform hook
+directory, for example `.codex/hooks/inject-workflow-state.py` or
+`.claude/hooks/inject-workflow-state.py`.

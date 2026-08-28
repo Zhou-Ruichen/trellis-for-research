@@ -1,14 +1,18 @@
 # Trellis for Research
 
-Reusable Trellis spec templates and a two-mode workflow for computational
+Reusable Trellis spec templates and an inline workflow for computational
 research.
 
-This repository supplies two parts:
+This repository supplies two kinds of Trellis marketplace template:
 
-- `marketplace/`: spec templates installed into `.trellis/spec/`;
-- `research-workflow/`: a workflow overlay that gives exploratory code one
-  result-producing sanity check and keeps the full Trellis check for durable
-  code.
+- `spec` templates installed into `.trellis/spec/`;
+- a `workflow` template installed into `.trellis/workflow.md` through
+  `trellis workflow`.
+
+`research-workflow/workflow.md` is the authoritative workflow source. The
+marketplace copy is byte-for-byte identical and `scripts/validate.py` rejects
+drift. `research-workflow/apply.sh` is a deprecated, read-only migration
+checker; it no longer installs or replaces files.
 
 It is not a project scaffold or a Trellis fork.
 
@@ -68,7 +72,7 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --template research-core \
   --claude --codex
 ```
@@ -77,7 +81,7 @@ For deep-learning geoscience research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --template dl-earth-research \
   --claude --codex
 ```
@@ -97,7 +101,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --template research-core \
   --append \
   --claude --codex
@@ -108,11 +112,92 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --template research-core \
   --overwrite \
   --claude --codex
 ```
+
+## Research Workflow
+
+The workflow targets Trellis 0.6.16. For a new non-DL research repository,
+install the `research-core` spec and `research` workflow together from the same
+release:
+
+```sh
+trellis init \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-core \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --claude --codex
+```
+
+For geoscience deep learning, replace `research-core` with
+`dl-earth-research`. Codex dispatch defaults to `auto` in Trellis 0.6.16, so
+set inline dispatch after initialization:
+
+```yaml
+codex:
+  dispatch_mode: inline
+```
+
+With that setting, implementation and checking stay in the main session. The
+workflow does not require custom implement or check agents and does not curate
+JSONL context for those agents. The marketplace `trellisVersion` field is an
+audit marker; Trellis 0.6.16 does not enforce it during installation.
+
+For an already initialized Trellis project, install only the workflow with:
+
+```sh
+trellis workflow \
+  --template research \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0
+```
+
+Both commands pin `v0.4.0`. Do not use `main` for a normal project install.
+
+The installation has three execution paths:
+
+- Exploratory research makes one result-producing invocation. That invocation
+  supplies the sanity observation; there is no separate test suite, automatic
+  retry, or repeat after a pass without new failure evidence.
+- Documentation, archive, and configuration-only tasks receive diff review
+  only, with no build or test. A configuration change that affects executable
+  behavior is durable work instead.
+- Durable code receives only the smallest relevant check. Project instructions
+  that require user approval before tests or builds remain controlling.
+
+Scientific metric values do not determine task completion. Unexpected
+scientific results are recorded as findings, and retained results keep the
+project's provenance and claim-review requirements.
+
+For an existing project, use this sequence:
+
+1. Run `trellis update --create-new` and review the runtime sidecars before
+   accepting Trellis-managed changes.
+2. Set `codex.dispatch_mode: inline` explicitly in `.trellis/config.yaml` for
+   Codex projects. The 0.6.16 default is `auto`.
+3. Run the workflow command above with `--create-new`. This writes
+   `.trellis/workflow.md.new` without changing the active workflow or its hash
+   state.
+4. Compare the active file with the `.new` file. When replacement is intended,
+   rerun the workflow command without `--create-new`; add `--force` only after
+   reviewing local workflow edits.
+5. Restart AI sessions. The non-native workflow is user-managed, so Trellis
+   0.6.16 removes `.trellis/workflow.md` from `.template-hashes.json` and later
+   `trellis update` runs do not silently restore the native workflow.
+
+Projects previously using the overlay can preview migration without writes:
+
+```sh
+./research-workflow/apply.sh <project-dir> --dry-run
+```
+
+The old script's default apply mode now fails before writing. The marketplace
+workflow does not reference `.trellis/agents/implement.md`; let `trellis
+update` manage that runtime file and do not copy the removed repository patch
+back into a project.
 
 ## Adopting Into An Existing Project
 
@@ -166,7 +251,12 @@ python3 scripts/validate.py
 The validator checks:
 
 - Trellis marketplace `index.json` schema;
-- template path existence;
+- spec directory and workflow Markdown path existence;
+- the declared Trellis 0.6.16 audit marker and explicit Codex inline setting;
+- authoritative workflow and marketplace mirror equality;
+- balanced workflow-state blocks and required research stop rules;
+- pinned workflow release references and rejection of common write commands or
+  file redirections in the deprecated script;
 - markdown links inside the spec;
 - core research requirements;
 - ASCII-only paths and contents;
@@ -180,9 +270,12 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --template research-core \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --claude --codex -y
+grep -F '<!-- trellis-compatibility: 0.6.16 -->' .trellis/workflow.md
 find .trellis/spec -type f | sort
 ```
 
@@ -217,15 +310,14 @@ find .trellis/spec -type f | sort
 - `shared/research-minimal.md` sets the highest-priority minimal-code rules:
   mode-conditional defaults, a utility test for any added check, and a stop
   condition once the result is established.
-- `research-workflow/` provides an overlay `workflow.md`, an overlay
-  implement agent, and a `trellis-research-check` one-pass sanity skill that
-  together make verification depth follow the task mode (exploratory by
-  default, durable on request). Apply it to a project with
-  `research-workflow/apply.sh <project-dir>`.
+- The marketplace `research` workflow provides inline exploratory,
+  documentation/configuration-only, and durable paths. The optional
+  `trellis-research-check` skill repeats the embedded exploratory checklist for
+  standalone use; it is not an installation dependency.
 - Exploratory Trellis tasks use `prd.md` and `result.md` by default.
-  `research/`, `design.md`, `implement.md`, and jsonl context are added only
-  when implementation or checking needs information not already in those two
-  files.
+  `research/`, `design.md`, and `implement.md` are added only when their stated
+  planning condition applies. The inline workflow does not curate JSONL
+  sub-agent context.
 - Retained runs do not overwrite earlier evidence when the question, method,
   data, split, preprocessing, metric, baseline, or claim scope changes. Task
   completion records completed work; manuscript and external claims still
@@ -252,6 +344,9 @@ find .trellis/spec -type f | sort
 ```text
 marketplace/
   index.json
+  workflows/
+    research/
+      workflow.md    # validated mirror of the authoritative source
   specs/
     dl-earth-research/
       shared/        # incl. scientific-writing.md
@@ -265,9 +360,9 @@ marketplace/
       evaluation/
       guides/        # incl. write-results.md
 research-workflow/
-  workflow.md
-  agents/implement.md
-  skills/trellis-research-check/
+  workflow.md        # authoritative source
+  apply.sh           # deprecated read-only migration checker
+  skills/trellis-research-check/  # optional standalone copy
 examples/
   project-layout/    # layout reference
   minimal-run/       # runnable end-to-end demo

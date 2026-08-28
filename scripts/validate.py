@@ -19,6 +19,11 @@ WORKFLOW_ID = "research"
 WORKFLOW_SOURCE = ROOT / "research-workflow/workflow.md"
 WORKFLOW_MIRROR = MARKETPLACE / "workflows/research/workflow.md"
 COMPATIBLE_TRELLIS_VERSION = "0.6.16"
+INSTALL_READMES = (
+    "README.md",
+    "README.zh-CN.md",
+    "research-workflow/README.md",
+)
 REQUIRED_WORKFLOW_STATES = (
     "no_task",
     "task_error",
@@ -452,7 +457,7 @@ def validate_workflow_install_docs() -> None:
     expected_source = (
         "gh:Zhou-Ruichen/trellis-for-research/marketplace#" + latest
     )
-    for rel_path in ("README.md", "research-workflow/README.md"):
+    for rel_path in INSTALL_READMES:
         text = (ROOT / rel_path).read_text(encoding="utf-8")
         if "--template research" not in text:
             fail(f"{rel_path} lacks the official workflow template option")
@@ -462,9 +467,11 @@ def validate_workflow_install_docs() -> None:
             fail(f"{rel_path} does not pin the new-project workflow source to {latest}")
         if "dispatch_mode: inline" not in text:
             fail(f"{rel_path} lacks the explicit Codex inline setting")
-        if re.search(
+        english_default = re.search(
             r"defaults(?: Codex)? to `(?:codex\.dispatch_mode: )?auto`", text
-        ) is None:
+        )
+        chinese_default = "\u9ed8\u8ba4\u503c\u662f `auto`" in text
+        if english_default is None and not chinese_default:
             fail(f"{rel_path} does not state the Trellis 0.6.16 Codex default")
         if f"--marketplace {expected_source}" not in text:
             fail(f"{rel_path} does not pin the workflow marketplace to {latest}")
@@ -519,6 +526,8 @@ def validate_no_non_ascii() -> None:
         # research-workflow/ and its exact marketplace workflow mirror keep
         # Trellis workflow punctuation. The spec marketplace stays ASCII.
         if any(part == "examples" for part in rel_path.parts):
+            continue
+        if rel_path == Path("README.zh-CN.md"):
             continue
         if "research-workflow" in rel_path.parts:
             continue
@@ -613,7 +622,7 @@ def validate_trellis_spec_shape() -> None:
 
 def validate_readme_pins_latest_version() -> None:
     latest = latest_release_version()
-    for rel_path in ("README.md", "research-workflow/README.md"):
+    for rel_path in INSTALL_READMES:
         readme = (ROOT / rel_path).read_text(encoding="utf-8")
         pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
         if not pins:

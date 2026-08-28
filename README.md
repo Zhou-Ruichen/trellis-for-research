@@ -1,5 +1,7 @@
 # Trellis for Research
 
+[Chinese installation guide](README.zh-CN.md)
+
 Reusable Trellis spec templates and an inline workflow for computational
 research.
 

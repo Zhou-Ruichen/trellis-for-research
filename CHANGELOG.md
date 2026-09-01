@@ -5,13 +5,18 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
-## Unreleased
+## v0.4.3 - 2026-09-02
 
 ### Changed
 - Moved the "metric values are observations, not pass/fail criteria" principle
   into the exploratory stop condition in `shared/research-minimal.md`: a
   negative or null result is recorded as evidence and answered with the next
   run the task plan registered, not with a stop or a route-level conclusion.
+- Stated that completing a task or a full set of runs does not end
+  exploration: opening a sealed evaluation (final test period, held-out data)
+  or freezing the explored configuration closes the exploratory phase and
+  requires the task's registered decision to be answered and user
+  confirmation. The workflow's completed state points to this rule.
 - Required sub-agent handoffs in the research workflow to carry the task's
   prd.md decision and the research-minimal constraints; sub-agent output is
   reviewed against that task record.

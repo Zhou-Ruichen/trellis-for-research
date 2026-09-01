@@ -85,7 +85,9 @@ PR actions follow the user.
 
 [workflow-state:completed]
 The recorded result is complete. Archive or journal it only when future work
-benefits from that record.
+benefits from that record. Completing the task does not open a sealed
+evaluation or freeze the explored configuration; that step follows the
+registered decision and the user, per `shared/research-minimal.md`.
 [/workflow-state:completed]
 
 ## Phase 1: Prepare

@@ -12,7 +12,7 @@
 
 ## 版本
 
-当前发布版 `v0.4.2` 使用 Trellis `0.7.0-beta.3` 的 Marketplace Workflow 接口，请显式安装该版本：
+当前发布版 `v0.4.3` 使用 Trellis `0.7.0-beta.3` 的 Marketplace Workflow 接口，请显式安装该版本：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
@@ -29,10 +29,10 @@ trellis --version
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --claude --codex
 ```
 
@@ -40,10 +40,10 @@ trellis init \
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-deep-learning \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --claude --codex
 ```
 
@@ -63,10 +63,10 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-deep-learning \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --claude --codex -y
 ```
 
@@ -76,7 +76,7 @@ trellis init \
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-computational \
   --append \
   --claude --codex
@@ -91,7 +91,7 @@ trellis init \
 ```sh
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --force
 ```
 

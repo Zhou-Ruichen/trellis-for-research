@@ -35,5 +35,9 @@ Stop condition: the task is done once the requested result is established,
 every run the design requires has completed, and the mode's sanity checks
 pass. Metric values are observations, not pass/fail criteria: a negative or
 null result is recorded as evidence and answered with the next run the task
-plan registered, not with a stop or a route-level conclusion. Do not seek
-additional certainty without a concrete failure signal.
+plan registered, not with a stop or a route-level conclusion. Completing a
+task or a full set of runs does not end exploration on its own: opening a
+sealed evaluation (final test period, held-out data) or freezing the
+explored configuration closes the exploratory phase, so take that step only
+when the task's registered decision is answered and the user confirms.
+Do not seek additional certainty without a concrete failure signal.

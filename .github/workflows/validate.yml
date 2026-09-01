@@ -19,7 +19,7 @@ jobs:
           node-version: "22"
 
       - name: Install Trellis
-        run: npm install -g @mindfoldhq/trellis@beta
+        run: npm install -g @mindfoldhq/trellis@0.7.0-beta.3
 
       - name: Validate marketplace
         run: python3 scripts/validate.py

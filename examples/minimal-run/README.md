@@ -1,6 +1,6 @@
 # Minimal Runnable Example
 
-A tiny, self-contained project that demonstrates the `research-core`
+A tiny, self-contained project that demonstrates the `research-computational`
 retained-run flow: a data manifest, a config, a training run,
 a retained-run manifest with environment freeze, and a curated report written in
 the scientific style the spec requires.

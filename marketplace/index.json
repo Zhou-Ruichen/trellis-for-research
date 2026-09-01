@@ -2,31 +2,29 @@
   "version": 1,
   "templates": [
     {
-      "id": "dl-earth-research",
+      "id": "research-deep-learning",
       "type": "spec",
-      "name": "Geoscience Deep Learning",
-      "description": "Research specs for geoscience deep learning: geospatial data, PyTorch training, checkpoints, evaluation, reproducibility, and scientific writing.",
-      "path": "marketplace/specs/dl-earth-research",
+      "name": "Deep Learning Research",
+      "description": "Research specs for deep learning across scientific domains: data, PyTorch training, checkpoints, evaluation, reproducibility, and scientific writing.",
+      "path": "marketplace/specs/research-deep-learning",
       "tags": [
         "python",
         "deep-learning",
         "pytorch",
         "mixed-language",
         "research",
-        "geoscience",
-        "swot",
-        "netcdf",
-        "zarr",
+        "experiments",
+        "evaluation",
         "reproducibility",
         "scientific-writing"
       ]
     },
     {
-      "id": "research-core",
+      "id": "research-computational",
       "type": "spec",
       "name": "General Computational Research",
       "description": "Language-agnostic research specs for statistical analysis, simulations, traditional machine learning, data processing, evaluation, reproducibility, and scientific writing.",
-      "path": "marketplace/specs/research-core",
+      "path": "marketplace/specs/research-computational",
       "tags": [
         "research",
         "reproducibility",
@@ -37,6 +35,19 @@
         "mixed-language",
         "anti-bloat",
         "scientific-writing"
+      ]
+    },
+    {
+      "id": "research",
+      "type": "workflow",
+      "name": "Research Workflow",
+      "description": "Small research workflow with direct single-session work, optional task records, focused checks, and no forced sub-agent or delivery process.",
+      "path": "workflows/research.md",
+      "tags": [
+        "research",
+        "exploratory",
+        "scientific-writing",
+        "minimal"
       ]
     }
   ]

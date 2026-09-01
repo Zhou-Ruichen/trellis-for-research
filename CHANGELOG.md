@@ -5,6 +5,33 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.4.0 - 2026-09-01
+
+### Changed
+- Renamed the spec template ids and directories to the shared
+  `research-<scope>[-<method>]` form: `research-computational` and
+  `research-deep-learning`. The deep-learning spec now applies across research
+  domains; geospatial rules are conditional on the data. Older tags retain the
+  former ids.
+- Reduced the research workflow to a small task record around the question,
+  work, focused check, and result. Small and single-session work now proceeds
+  without a Trellis task; commits, journals, archives, and sub-agents are used
+  only when they help the research.
+- Published the research workflow as a Trellis 0.7 marketplace workflow while
+  keeping the six 0.7 workflow-state blocks and stock task commands.
+- Added separate focused-check paths for exploratory experiments, maintained
+  code, scientific prose, and documentation or configuration work.
+- Preserved one-time validation of external data fields that can change a
+  scientific result while rejecting repeated defensive checks and unnecessary
+  checksum machinery.
+- Extended plain-language guidance to README files, documentation, and task
+  results; separated supported findings from candidate mechanisms and retained
+  exact technical detail in Methods.
+- Removed the shell overlay installer and its duplicate implement/check files;
+  Trellis now installs and updates the workflow through its native marketplace
+  commands. CI is pinned to `0.7.0-beta.3`, and validation checks the workflow
+  entry and exact workflow-state parsing.
+
 ## v0.3.10 - 2026-08-18
 
 The repository name and template labels now describe both the spec marketplace

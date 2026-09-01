@@ -41,13 +41,18 @@ def validate_index() -> None:
         for key in ("id", "type", "name", "path"):
             if not isinstance(template.get(key), str):
                 fail(f"template entry must include string {key!r}: {template}")
-        if template["type"] != "spec":
-            fail(f"unsupported template type {template['type']!r}; expected 'spec'")
-        template_path = ROOT / template["path"]
-        if not template_path.is_dir():
-            fail(f"template path does not exist: {template['path']}")
-        if not (template_path / "README.md").is_file():
-            fail(f"template path lacks README.md: {template['path']}")
+        if template["type"] == "spec":
+            template_path = ROOT / template["path"]
+            if not template_path.is_dir():
+                fail(f"spec template path does not exist: {template['path']}")
+            if not (template_path / "README.md").is_file():
+                fail(f"spec template path lacks README.md: {template['path']}")
+        elif template["type"] == "workflow":
+            template_path = MARKETPLACE / template["path"]
+            if not template_path.is_file() or template_path.suffix != ".md":
+                fail(f"workflow template must be a Markdown file: {template['path']}")
+        else:
+            fail(f"unsupported template type {template['type']!r}")
 
 
 LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+\.md)\)")
@@ -71,12 +76,12 @@ def validate_markdown_links() -> None:
 
 def validate_required_content() -> None:
     required = {
-        "marketplace/specs/research-core/README.md": [
+        "marketplace/specs/research-computational/README.md": [
             "General Computational Research",
             "Template Fit",
-            "dl-earth-research",
+            "research-deep-learning",
         ],
-        "marketplace/specs/research-core/shared/research-minimal.md": [
+        "marketplace/specs/research-computational/shared/research-minimal.md": [
             "exploratory",
             "smallest change",
             "concrete, likely failure",
@@ -85,7 +90,7 @@ def validate_required_content() -> None:
             "durable",
             "retained",
         ],
-        "marketplace/specs/dl-earth-research/shared/research-minimal.md": [
+        "marketplace/specs/research-deep-learning/shared/research-minimal.md": [
             "exploratory",
             "smallest change",
             "concrete, likely failure",
@@ -94,52 +99,32 @@ def validate_required_content() -> None:
             "durable",
             "retained",
         ],
-        "research-workflow/workflow.md": [
-            "verification depth follows the task mode",
-            "is a skill only",
-            "Phase 2.2 owns the result-producing invocation and validation",
-            "one result-producing invocation",
-            "Keep `research/` to Markdown investigation notes and small metadata",
-            "Exploratory tasks are PRD-only by default",
-            "seed-only manifests are valid otherwise",
-            "actual invocation, observation, findings, and output paths",
-            "limitation or uncertainty that changes the interpretation",
-            "does not approve a scientific claim",
-            "spec update only if durable knowledge",
-            "Never repeat a passed check",
-            "default exploratory",
+        "marketplace/workflows/research.md": [
+            "small research record",
+            "## Phase Index",
+            "Create a Trellis task only",
+            "Validate external data once",
+            "Sub-agents are optional",
+            "Pure prose tasks do not create or run code",
+            "Trellis does not add lint, type checking, tests, or full-suite",
+            "Never reset, discard changes",
+            "Finish without ceremony",
         ],
-        "research-workflow/README.md": [
-            "verification depth follows the task mode",
-            "Phase 2.1 only prepares code and configuration",
-            "Exploratory tasks are PRD-only by default",
-            ".agents/skills",
-        ],
-        "research-workflow/agents/implement.md": [
-            "No execution or self-validation",
-            "Phase 2.2 of the workflow owns the single result-producing invocation",
-            "leave that execution to Phase 2.2",
-        ],
-        "research-workflow/skills/trellis-research-check/SKILL.md": [
-            "execute the experiment once",
-            "result-producing",
-            "the experiment again",
-        ],
-        "marketplace/specs/research-core/shared/project-layout.md": [
+        "marketplace/specs/research-computational/shared/project-layout.md": [
             "data/raw/",
             "data/interim/",
             "data/processed/",
             "outputs/<run_id>/",
             "existing documented layout",
         ],
-        "marketplace/specs/research-core/shared/anti-bloat.md": [
+        "marketplace/specs/research-computational/shared/anti-bloat.md": [
             "Delete superseded code",
             "Repo-wide sweeps",
             "experiment record",
             "*_v2",
             "*_final",
         ],
-        "marketplace/specs/research-core/shared/reproducibility.md": [
+        "marketplace/specs/research-computational/shared/reproducibility.md": [
             "manifest.json",
             "metrics.json",
             "Do not invent",
@@ -151,30 +136,30 @@ def validate_required_content() -> None:
             "Once a retained run or comparison starts",
             "does not approve a scientific claim",
         ],
-        "marketplace/specs/research-core/data/index.md": [
+        "marketplace/specs/research-computational/data/index.md": [
             "Manifest Rule",
             "Boundary Validation",
             "leakage",
         ],
-        "marketplace/specs/research-core/evaluation/index.md": [
+        "marketplace/specs/research-computational/evaluation/index.md": [
             "Retained evaluation runs",
             "Comparison",
             "reports",
         ],
-        "marketplace/specs/dl-earth-research/shared/project-layout.md": [
+        "marketplace/specs/research-deep-learning/shared/project-layout.md": [
             "data/raw/",
             "data/interim/",
             "data/processed/",
             "outputs/<run_id>/",
         ],
-        "marketplace/specs/dl-earth-research/shared/anti-bloat.md": [
+        "marketplace/specs/research-deep-learning/shared/anti-bloat.md": [
             "Delete superseded code",
             "Repo-wide sweeps",
             "experiment record",
             "*_v2.py",
             "*_final.py",
         ],
-        "marketplace/specs/dl-earth-research/shared/reproducibility.md": [
+        "marketplace/specs/research-deep-learning/shared/reproducibility.md": [
             "manifest.json",
             "metrics.json",
             "Do not invent",
@@ -186,44 +171,46 @@ def validate_required_content() -> None:
             "Once a retained run or comparison starts",
             "does not approve a scientific claim",
         ],
-        "marketplace/specs/dl-earth-research/data/index.md": [
-            "SWOT",
+        "marketplace/specs/research-deep-learning/data/index.md": [
+            "Format-Specific Rules",
             "Data Lake Rule",
             "Manifest Rule",
         ],
-        "marketplace/specs/dl-earth-research/evaluation/index.md": [
+        "marketplace/specs/research-deep-learning/evaluation/index.md": [
             "Retained evaluation runs",
             "Scratch and smoke evaluation runs",
             "Retained prediction products",
         ],
-        "marketplace/specs/dl-earth-research/training/index.md": [
+        "marketplace/specs/research-deep-learning/training/index.md": [
             "PyTorch",
             "Lightning",
             "smoke",
         ],
-        "marketplace/specs/research-core/shared/scientific-writing.md": [
+        "marketplace/specs/research-computational/shared/scientific-writing.md": [
             "Engineering Term Isolation",
+            "## Methods",
             "Anti AI Tone",
             "Write Like A Human",
             "Over-Ornamentation",
             "Bilingual Policy",
             "Self-Check Before Submitting Prose",
         ],
-        "marketplace/specs/dl-earth-research/shared/scientific-writing.md": [
+        "marketplace/specs/research-deep-learning/shared/scientific-writing.md": [
             "Engineering Term Isolation",
+            "## Methods",
             "Anti AI Tone",
             "Write Like A Human",
             "Over-Ornamentation",
             "Bilingual Policy",
             "Self-Check Before Submitting Prose",
         ],
-        "marketplace/specs/research-core/guides/write-results.md": [
+        "marketplace/specs/research-computational/guides/write-results.md": [
             "Write A Results Discussion",
             "scientific question",
             "Completion Checklist",
             "A completed Trellis task does not approve a scientific claim",
         ],
-        "marketplace/specs/dl-earth-research/guides/write-results.md": [
+        "marketplace/specs/research-deep-learning/guides/write-results.md": [
             "Write A Results Discussion",
             "scientific question",
             "Completion Checklist",
@@ -235,6 +222,32 @@ def validate_required_content() -> None:
         for needle in needles:
             if needle not in text:
                 fail(f"{rel_path} missing required text: {needle}")
+
+
+def validate_workflow_states() -> None:
+    workflow = (ROOT / "marketplace/workflows/research.md").read_text(encoding="utf-8")
+    pattern = re.compile(
+        r"^\[workflow-state:([A-Za-z0-9_-]+)\]\s*\n"
+        r"(.*?)\n\s*\[/workflow-state:\1\]$",
+        re.M | re.S,
+    )
+    expected = [
+        "no_task",
+        "planning",
+        "planning-inline",
+        "in_progress",
+        "in_progress-inline",
+        "completed",
+    ]
+    matches = list(pattern.finditer(workflow))
+    markers = re.findall(r"^\[/?workflow-state:[^\]]+\]$", workflow, re.M)
+    if [match.group(1) for match in matches] != expected or len(markers) != 2 * len(
+        expected
+    ):
+        fail(
+            "marketplace/workflows/research.md must contain the six Trellis 0.7 "
+            "workflow states in interface order"
+        )
 
 
 def iter_repo_files() -> list[Path]:
@@ -269,11 +282,7 @@ def validate_no_non_ascii() -> None:
         # example a Chinese result discussion). Only paths must stay ASCII there.
         # scientific-writing.md additionally carries the Chinese anti-AI-tone
         # word list; the banned phrases must appear verbatim to be matchable.
-        # research-workflow/ holds overlay masters derived from Trellis-managed
-        # project files; they keep upstream punctuation and CJK reply words.
         if any(part == "examples" for part in rel_path.parts):
-            continue
-        if "research-workflow" in rel_path.parts:
             continue
         if rel_path.name == "scientific-writing.md" and "marketplace" in rel_path.parts:
             continue
@@ -291,7 +300,7 @@ def validate_trellis_spec_shape() -> None:
         return
 
     expected_by_template = {
-        "dl-earth-research": [
+        "research-deep-learning": [
             "README.md",
             "shared/index.md",
             "shared/project-layout.md",
@@ -309,7 +318,7 @@ def validate_trellis_spec_shape() -> None:
             "guides/debug-nan-oom.md",
             "guides/code-review.md",
         ],
-        "research-core": [
+        "research-computational": [
             "README.md",
             "shared/index.md",
             "shared/project-layout.md",
@@ -343,6 +352,8 @@ def validate_trellis_spec_shape() -> None:
             stderr=subprocess.DEVNULL,
         )
         for template in load_index()["templates"]:
+            if template["type"] != "spec":
+                continue
             template_id = template["id"]
             if template_id not in expected_by_template:
                 fail(f"missing spec-shape expectations for template {template_id!r}")
@@ -380,6 +391,7 @@ def main() -> None:
     validate_index()
     validate_markdown_links()
     validate_required_content()
+    validate_workflow_states()
     validate_no_non_ascii()
     validate_readme_pins_latest_version()
     validate_trellis_spec_shape()

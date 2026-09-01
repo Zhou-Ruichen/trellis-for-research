@@ -1,46 +1,46 @@
 # Trellis for Research
 
-Reusable Trellis spec templates and a two-mode workflow for computational
-research.
+Small Trellis spec templates and a research workflow for computational
+projects. Trellis records research when a durable record helps; it does not add
+approval stages to ordinary work.
 
-This repository supplies two parts:
+This repository supplies two marketplace resources:
 
 - `marketplace/`: spec templates installed into `.trellis/spec/`;
-- `research-workflow/`: a workflow overlay that gives exploratory code one
-  result-producing sanity check and keeps the full Trellis check for durable
-  code.
+- `marketplace/workflows/research.md`: a Trellis 0.7 workflow that keeps small
+  work direct, gives exploratory experiments one focused check, and leaves
+  durable-code checks to the task and project instructions.
 
 It is not a project scaffold or a Trellis fork.
 
-The templates currently cover:
+Choose one spec template for a repository; both use the same `research`
+workflow. The templates currently cover:
 
-- `research-core` (General Computational Research): language-agnostic rules for
+- `research-computational` (General Computational Research): language-agnostic rules for
   non-DL analysis, simulations, traditional ML, data processing, evaluation,
   and reproducible result claims.
-- `dl-earth-research` (Geoscience Deep Learning): PyTorch-oriented training,
-  evaluation, checkpoints, geospatial data, and anti-bloat conventions.
+- `research-deep-learning` (Deep Learning Research): PyTorch-oriented training,
+  evaluation, checkpoints, experiment records, and anti-bloat conventions.
 
-The Geoscience Deep Learning template targets:
+The Deep Learning Research template targets:
 
 - deep-learning training and evaluation;
-- SWOT, altimetry, gravity, bathymetry, and related geoscience data workflows;
+- scientific data from any domain or modality;
 - reproducible experiment management;
 - anti-bloat rules for research code: superseded variants are deleted (git
   history is the archive), while run artifacts and experiment records are
   protected.
 
-Both templates also include a scientific-writing layer that keeps reports and
-discussions readable as science rather than engineering logs: prose leads with
-the finding, engineering terms stay in code and methods, AI tone (both the
-mechanical "does not speak human" style and the flowery over-ornamented style,
-in English or Chinese) is stripped, and bilingual prose (including Chinese) is
-supported.
+Both templates include scientific-writing guidance for evidence-supported
+claims, exact Methods descriptions, and plain English or Chinese. The rules
+identify mechanical and ornamental AI-style prose, but they are instructions
+and a self-check, not a deterministic text filter.
 
 ## Scope
 
-- General Computational Research (`research-core`) is language-agnostic and
+- General Computational Research (`research-computational`) is language-agnostic and
   layout-tolerant. It is the default choice for non-DL computational research.
-- Geoscience Deep Learning (`dl-earth-research`) is Python-first, not
+- Deep Learning Research (`research-deep-learning`) is Python-first, not
   Python-only. The layout and style bindings
   (`src/<pkg>/`, `pyproject.toml`, `python-style.md`) target Python/PyTorch,
   which is the expected main language. Its anti-bloat, reproducibility, run
@@ -52,35 +52,60 @@ supported.
 - Designed for new projects. Existing projects with a customized spec should
   follow the adoption section below instead of `--overwrite`.
 - Covers code structure, experiment management, data handling, and anti-bloat.
-  CI/CD, deployment, and monitoring are intentionally out of scope; add them as
-  separate spec layers if a project needs them.
+  It does not prescribe CI/CD, deployment, or monitoring; project rules may add
+  them when the research repository uses them.
 
 ## Template Selection
 
 | Template | Use when | Avoid when |
 | --- | --- | --- |
-| General Computational Research (`research-core`) | Non-DL research, simulation, traditional ML, data analysis, reproducible pipelines, existing projects that need research discipline | The project needs DL-specific training/checkpoint/ablation rules |
-| Geoscience Deep Learning (`dl-earth-research`) | Geoscience projects with deep-learning training, PyTorch evaluation, checkpoints, ablations, or geospatial data workflows | The project is non-DL and only needs generic research reproducibility |
+| General Computational Research (`research-computational`) | Non-DL research, simulation, traditional ML, data analysis, reproducible pipelines, existing projects that need research discipline | The project needs DL-specific training/checkpoint/ablation rules |
+| Deep Learning Research (`research-deep-learning`) | Research projects with deep-learning training, evaluation, checkpoints, or model comparisons | The project is non-DL and only needs general research reproducibility |
 
 Use the tagged registry for repeatable installs.
+
+The workflow targets Trellis `0.7.0-beta.3` and the 0.7 marketplace workflow
+interface. The stable npm tag is still 0.6.x as of this revision, so install the
+0.7 beta explicitly until 0.7 becomes the stable release:
+
+```sh
+npm install -g @mindfoldhq/trellis@0.7.0-beta.3
+```
 
 For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
-  --template research-core \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-computational \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --claude --codex
 ```
 
-For deep-learning geoscience research:
+For deep-learning research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
-  --template dl-earth-research \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-deep-learning \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --claude --codex
 ```
+
+For an existing Trellis 0.7 project, select or refresh the workflow through the
+same marketplace entry:
+
+```sh
+trellis workflow \
+  --template research \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --force
+```
+
+Trellis treats a non-native selected workflow as user-managed, so
+`trellis update` does not silently restore the native workflow over it.
 
 Use the unpinned `main` registry only when you intentionally want the latest
 template changes:
@@ -88,7 +113,9 @@ template changes:
 ```sh
 trellis init \
   --registry gh:Zhou-Ruichen/trellis-for-research/marketplace \
-  --template research-core \
+  --template research-computational \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace \
   --claude --codex
 ```
 
@@ -97,8 +124,8 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
-  --template research-core \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-computational \
   --append \
   --claude --codex
 ```
@@ -108,8 +135,8 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
-  --template research-core \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-computational \
   --overwrite \
   --claude --codex
 ```
@@ -120,7 +147,7 @@ trellis init \
 already has a customized spec (project-specific directory structure, data
 contracts, captured learnings), do not overwrite it. Instead:
 
-- Prefer `research-core` for generic adoption.
+- Prefer `research-computational` for generic adoption.
 - Copy only the layout-independent guides (`shared/anti-bloat.md` and
   `shared/reproducibility.md`) into the existing spec layer if full template
   installation would conflict with project-specific structure.
@@ -169,8 +196,9 @@ The validator checks:
 - template path existence;
 - markdown links inside the spec;
 - core research requirements;
+- the six workflow-state interface blocks;
 - ASCII-only paths and contents;
-- local `.trellis/spec` installation shape when the `trellis` CLI is installed.
+- local `.trellis/spec` installation shape and the research workflow template.
 
 The validator cannot prove remote registry installation until this repository is
 published. After publishing, verify with:
@@ -180,18 +208,25 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.3.10 \
-  --template research-core \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --template research-computational \
+  --workflow research \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
   --claude --codex -y
 find .trellis/spec -type f | sort
+find .trellis/workflows -type f | sort
+trellis workflow \
+  --template research \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --force
 ```
 
-## What The Templates Enforce
+## What The Templates Provide
 
-- `research-core` preserves existing project layout while enforcing retained
-  evidence for result claims.
-- `dl-earth-research` recommends modern Python layout with importable code
-  under `src/<pkg>/`.
+- `research-computational` preserves existing project layout and records the
+  evidence behind result claims.
+- `research-deep-learning` keeps an existing repository's documented layout and
+  recommends importable code under `src/<pkg>/` only for new Python projects.
 - Configs, parameters, or retained commands are the source of truth for run
   knobs.
 - `data/` is allowed, but it must be organized by lifecycle and tracked with
@@ -209,38 +244,31 @@ find .trellis/spec -type f | sort
   stack), then the standard library, then one line; only after all four fail,
   the minimum implementation the task needs. One-off test code is deleted
   once it answers its question; `tests/` holds only durable checks.
-- Verification boundaries fit exploratory research: hard gates apply to code
-  (runs, shapes and units, loud boundary errors, construction-level sanity
-  properties) and never to scientific outcomes. No TDD, coverage targets, or
-  metric-value assertions; a missed target is reported as a finding, not a
-  task failure. Validation commands check executability and sanity only.
+- Checks fit the research decision: external data is checked once where it
+  enters, an exploratory experiment uses its first successful result-producing
+  invocation, and scientific outcomes are reported rather than treated as
+  software failures. Trellis does not add TDD, coverage targets, full test
+  suites, or metric-value assertions on its own.
 - `shared/research-minimal.md` sets the highest-priority minimal-code rules:
   mode-conditional defaults, a utility test for any added check, and a stop
   condition once the result is established.
-- `research-workflow/` provides an overlay `workflow.md`, an overlay
-  implement agent, and a `trellis-research-check` one-pass sanity skill that
-  together make verification depth follow the task mode (exploratory by
-  default, durable on request). Apply it to a project with
-  `research-workflow/apply.sh <project-dir>`.
-- Exploratory Trellis tasks use `prd.md` and `result.md` by default.
-  `research/`, `design.md`, `implement.md`, and jsonl context are added only
-  when implementation or checking needs information not already in those two
-  files.
+- The `research` marketplace workflow is the only workflow customization.
+  Small and single-session work does not require a Trellis task. Recorded tasks
+  use `prd.md` and `result.md`; other artifacts are added only for a real
+  interface, dependency, collaboration, or context need.
 - Retained runs do not overwrite earlier evidence when the question, method,
   data, split, preprocessing, metric, baseline, or claim scope changes. Task
   completion records completed work; manuscript and external claims still
   require researcher review of the evidence, scope, uncertainty, and limits.
-- Result discussions, methods, and reports lead with the scientific finding,
-  keep engineering terms out of prose, and strip AI tone (mechanical stiffness
-  and flowery over-ornamentation) with verbatim banned-phrase lists in
-  English and Chinese; the scientific-writing
-  layer (`shared/scientific-writing.md` and `guides/write-results.md` in each
-  template) defines the rules and a self-check.
+- Results and discussions state supported findings before engineering status;
+  Methods retain the exact technical detail needed for reproduction. The
+  scientific-writing layer gives English and Chinese examples of mechanical or
+  ornamental AI-style prose and a short self-check.
 
 ## Examples
 
 - `examples/project-layout/` shows the target directory shape for a new
-  `dl-earth-research` project. It is a layout reference, not runnable code.
+  `research-deep-learning` project. It is a layout reference, not runnable code.
 - `examples/minimal-run/` is a minimal runnable project: synthetic
   one-feature linear regression that demonstrates a retained run
   (data manifest, config, training, retained-run manifest with environment
@@ -253,21 +281,19 @@ find .trellis/spec -type f | sort
 marketplace/
   index.json
   specs/
-    dl-earth-research/
+    research-deep-learning/
       shared/        # incl. scientific-writing.md
       data/
       training/
       evaluation/
       guides/        # incl. write-results.md
-    research-core/
+    research-computational/
       shared/        # incl. scientific-writing.md
       data/
       evaluation/
       guides/        # incl. write-results.md
-research-workflow/
-  workflow.md
-  agents/implement.md
-  skills/trellis-research-check/
+  workflows/
+    research.md
 examples/
   project-layout/    # layout reference
   minimal-run/       # runnable end-to-end demo

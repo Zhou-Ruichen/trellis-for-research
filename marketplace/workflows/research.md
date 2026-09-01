@@ -18,7 +18,9 @@ Trellis files exist only when they preserve a question, decision, or result.
    data, result evidence, untracked files, and unrelated suspected-dead code
    unless the user requests cleanup.
 6. Sub-agents are optional. Use them only when separate context or parallel work
-   helps the task.
+   helps the task. A handoff includes the task's prd.md decision and the
+   constraints of `shared/research-minimal.md`; review sub-agent output against
+   that record, not against a generic production checklist.
 
 ## Trellis 0.7 Interface
 

@@ -31,6 +31,9 @@ interpret or reproduce the result. Record a checksum only when exact byte
 identity matters; checksum logic never appears scattered through experiment
 code.
 
-Stop condition: once the requested result is established and the mode's
-sanity checks pass, the task is done. Do not seek additional certainty
-without a concrete failure signal.
+Stop condition: the task is done once the requested result is established,
+every run the design requires has completed, and the mode's sanity checks
+pass. Metric values are observations, not pass/fail criteria: a negative or
+null result is recorded as evidence and answered with the next run the task
+plan registered, not with a stop or a route-level conclusion. Do not seek
+additional certainty without a concrete failure signal.

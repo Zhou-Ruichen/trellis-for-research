@@ -5,6 +5,20 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## Unreleased
+
+### Changed
+- Moved the "metric values are observations, not pass/fail criteria" principle
+  into the exploratory stop condition in `shared/research-minimal.md`: a
+  negative or null result is recorded as evidence and answered with the next
+  run the task plan registered, not with a stop or a route-level conclusion.
+- Required sub-agent handoffs in the research workflow to carry the task's
+  prd.md decision and the research-minimal constraints; sub-agent output is
+  reviewed against that task record.
+- Noted in the README that stock Trellis bootstrap task scaffolding (for
+  example `.trellis/tasks/00-bootstrap-guidelines/`) is not part of this
+  template and can be deleted after adoption.
+
 ## v0.4.2 - 2026-09-01
 
 ### Changed

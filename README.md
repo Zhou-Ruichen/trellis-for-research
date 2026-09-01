@@ -182,6 +182,10 @@ Recommended strategy: overlay, do not replace.
   divergence in the project spec so it is visible.
 - Confirm the exact placeholder set against the Trellis version in use, then
   keep this template as the research layer on top of it.
+- Stock bootstrap task scaffolding (for example
+  `.trellis/tasks/00-bootstrap-guidelines/`) is not part of this template;
+  delete it. The research workflow creates task records on demand, only when
+  work meets the task criteria.
 
 ## Local Validation
 

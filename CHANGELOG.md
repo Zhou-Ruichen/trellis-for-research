@@ -5,6 +5,16 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.4.2 - 2026-09-01
+
+### Changed
+- Limited the deep-learning test examples to durable modules; exploratory code
+  adds a test only for a named concrete failure.
+- Unified code replacement guidance: check the replacement before removing the
+  superseded tracked implementation.
+- Made the research workflow usable with other installed specs by treating
+  `shared/research-minimal.md` as optional.
+
 ## v0.4.1 - 2026-09-01
 
 ### Changed

@@ -55,7 +55,7 @@ will keep using it.
 ## Replace Without Accumulating
 
 When the current task replaces tracked code, remove the superseded implementation
-after the replacement is ready. Git history preserves it. Do not keep `_old`,
+after the replacement has been checked. Git history preserves it. Do not keep `_old`,
 `_final`, backup directories, compatibility wrappers, duplicate tests, or source
 versions without a current reason to coexist.
 

@@ -76,10 +76,10 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --claude --codex
 ```
 
@@ -87,10 +87,10 @@ For deep-learning research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --template research-deep-learning \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --claude --codex
 ```
 
@@ -100,7 +100,7 @@ same marketplace entry:
 ```sh
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --force
 ```
 
@@ -124,7 +124,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --template research-computational \
   --append \
   --claude --codex
@@ -135,7 +135,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --template research-computational \
   --overwrite \
   --claude --codex
@@ -208,16 +208,16 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --claude --codex -y
 find .trellis/spec -type f | sort
 find .trellis/workflows -type f | sort
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.2 \
   --force
 ```
 

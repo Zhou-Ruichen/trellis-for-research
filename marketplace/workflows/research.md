@@ -13,9 +13,10 @@ Trellis files exist only when they preserve a question, decision, or result.
    only for a concrete failure that would change the result or next action.
 4. Run every comparison, seed, fold, or repeat required by the scientific
    question. Do not repeat an identical successful command only for reassurance.
-5. Reuse existing code before adding files or abstractions. Remove tracked code
-   that the current task replaces; preserve data, result evidence, untracked
-   files, and unrelated suspected-dead code unless the user requests cleanup.
+5. Reuse existing code before adding files or abstractions. Once the replacement
+   has been checked, remove tracked code that the current task replaces; preserve
+   data, result evidence, untracked files, and unrelated suspected-dead code
+   unless the user requests cleanup.
 6. Sub-agents are optional. Use them only when separate context or parallel work
    helps the task.
 
@@ -105,8 +106,10 @@ must survive the session.
 
 #### 1.3 Load relevant context
 
-Read the smallest relevant spec set. Start exploratory implementation with
-`shared/research-minimal.md`; add data or writing guidance only when applicable.
+Read the smallest relevant spec set. When the installed spec provides
+`shared/research-minimal.md`, start exploratory implementation there; otherwise
+read the smallest relevant files in the installed spec. Add data or writing
+guidance only when applicable.
 
 #### 1.4 Start work
 

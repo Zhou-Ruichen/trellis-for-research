@@ -74,6 +74,9 @@ def normalize_batch(x: torch.Tensor, mean: torch.Tensor, std: torch.Tensor) -> t
 
 ## Tests
 
+Write these for durable modules only. Exploratory code follows
+`research-minimal.md` and adds a test only for a named concrete failure.
+
 Minimum meaningful tests:
 
 - config loads;

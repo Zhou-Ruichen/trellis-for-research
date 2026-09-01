@@ -1,5 +1,7 @@
 # Trellis for Research
 
+[Chinese installation guide](README.zh-CN.md)
+
 Small Trellis spec templates and a research workflow for computational
 projects. Trellis records research when a durable record helps; it does not add
 approval stages to ordinary work.

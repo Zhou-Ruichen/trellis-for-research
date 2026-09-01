@@ -286,6 +286,8 @@ def validate_no_non_ascii() -> None:
         # word list; the banned phrases must appear verbatim to be matchable.
         if any(part == "examples" for part in rel_path.parts):
             continue
+        if rel_path == Path("README.zh-CN.md"):
+            continue
         if rel_path.name == "scientific-writing.md" and "marketplace" in rel_path.parts:
             continue
         data = path.read_bytes()

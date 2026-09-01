@@ -12,7 +12,7 @@
 
 ## 版本
 
-当前发布版 `v0.4.2` 使用 Trellis `0.7.0-beta.3` 的 Marketplace Workflow 接口。Trellis 0.7 成为稳定版前，显式安装该版本：
+当前发布版 `v0.4.2` 使用 Trellis `0.7.0-beta.3` 的 Marketplace Workflow 接口，请显式安装该版本：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
@@ -20,6 +20,8 @@ trellis --version
 ```
 
 固定 Git 标签可以避免安装结果随 `main` 变化。
+
+`v0.4.2` 已使用 Trellis `0.7.0-beta.3` 从 GitHub 完成远程安装检查，`research-deep-learning` 模板和 `research` Workflow 均可安装。
 
 ## 新项目
 

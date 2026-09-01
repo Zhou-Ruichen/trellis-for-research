@@ -67,8 +67,7 @@ and a self-check, not a deterministic text filter.
 Use the tagged registry for repeatable installs.
 
 The workflow targets Trellis `0.7.0-beta.3` and the 0.7 marketplace workflow
-interface. The stable npm tag is still 0.6.x as of this revision, so install the
-0.7 beta explicitly until 0.7 becomes the stable release:
+interface. Install that version explicitly:
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
@@ -202,8 +201,9 @@ The validator checks:
 - ASCII-only paths and contents;
 - local `.trellis/spec` installation shape and the research workflow template.
 
-The validator cannot prove remote registry installation until this repository is
-published. After publishing, verify with:
+The published `v0.4.2` registry was installed successfully with Trellis
+`0.7.0-beta.3`, including the `research-deep-learning` template and the
+`research` workflow. Reproduce the remote installation check with:
 
 ```sh
 tmpdir="$(mktemp -d)"

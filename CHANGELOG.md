@@ -5,6 +5,27 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.4.1 - 2026-09-01
+
+### Changed
+- Shortened the research workflow while retaining the six Trellis 0.7 state
+  blocks and direct path for ordinary work.
+- Replaced the single successful-run wording with the comparisons, seeds,
+  folds, and repeats required by the scientific design; identical successful
+  commands are not repeated only for reassurance.
+- Reduced repository-maintenance guidance to reuse, parameterized variants,
+  extraction after real durable duplication, and removal of code replaced by
+  the current task. Research evidence and unrelated files remain outside that
+  cleanup scope.
+- Clarified that `v1` and `v2` are valid for datasets, schemas, interfaces,
+  releases, and protocols that intentionally coexist; only purposeless source
+  copies are rejected.
+- Let retained runs point to an existing lockfile, container, or environment
+  record. Per-run freezes are used only when no stable record exists or the run
+  depends on drifting environment state.
+- Removed repeated pre-development, completion, and code-review checklists that
+  restated the workflow.
+
 ## v0.4.0 - 2026-09-01
 
 ### Changed

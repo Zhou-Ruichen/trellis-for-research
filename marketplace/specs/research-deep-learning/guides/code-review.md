@@ -1,39 +1,27 @@
 # Guide: Research Code Review
 
-Use this checklist before considering a change complete.
+Review the change against the task, not against a generic production checklist.
 
-## Correctness
+## Behavior And Evidence
 
-- [ ] The code addresses the real failure or requested behavior.
-- [ ] Data assumptions are explicit.
-- [ ] Shape, dtype, device, and coordinate conventions are clear where relevant.
-- [ ] Errors fail loudly at boundaries instead of producing fake success.
+- The code addresses the requested behavior or observed failure.
+- External data assumptions that affect the result are explicit at the boundary.
+- Result claims point to the config, seed, data, environment record, metrics,
+  outputs, and assumptions that support them.
+- Errors are not hidden by fallback branches, swallowed exceptions, or fake
+  success messages.
 
-## Reproducibility
+## Repository Maintenance
 
-- [ ] Config is the source of truth.
-- [ ] Retained run outputs include config snapshot, manifest, seed,
-      environment freeze, and metrics.
-- [ ] Any result claim is backed by an actual file.
-- [ ] Data products have manifests and rebuild instructions.
+- Existing loaders, transforms, model blocks, metrics, and plots were reused
+  when they already owned the behavior.
+- Experiment variants are configs rather than copied training scripts.
+- New shared code corresponds to repeated durable logic, not possible future use.
+- Tracked code replaced by this task was removed. Research evidence, data,
+  untracked files, and unrelated suspected-dead code were preserved.
 
-## Anti-Bloat
+## Checks
 
-- [ ] No copied train/eval/data scripts.
-- [ ] No `*_v2.py`, `*_final.py`, or backup source directories.
-- [ ] New reusable logic is in `src/<pkg>/`.
-- [ ] One-off exploration stayed in `notebooks/` or a thin script.
-- [ ] Superseded variants were deleted, not left to accumulate; every deletion
-      is listed, and no experiment record (`outputs/`, manifests, configs
-      referenced by results) was removed without asking.
-
-## Verification
-
-- [ ] Ran the narrowest meaningful command.
-- [ ] If no command was run, the reason is stated.
-- [ ] Test scope matches the risk of the change.
-- [ ] Metric values are reported rather than used as task pass/fail criteria;
-      a missed target remains a finding.
-- [ ] No TDD scaffolding or result assertions were added; sanity checks
-      verify code, not outcomes.
-- [ ] One-off test and diagnostic code was deleted, not committed.
+Use only checks authorized by the task, project, or user. Record what was checked
+or state that no executable verification was requested. Scientific metric values
+are observations, not software pass/fail thresholds.

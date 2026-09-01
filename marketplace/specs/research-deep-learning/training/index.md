@@ -125,8 +125,8 @@ The configuration should:
 - verify loss is finite;
 - write enough log or metrics evidence to debug failures.
 
-A smoke run only needs the full manifest and environment freeze if it is
-promoted to a retained run.
+A small execution check needs a full manifest only when it is promoted to a
+retained result. Its environment may reference the project's existing record.
 
 ## Quality Check
 

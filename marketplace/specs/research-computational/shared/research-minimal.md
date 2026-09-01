@@ -3,8 +3,8 @@
 On conflict with any other spec file, this one wins for exploratory work.
 
 Goal: validate ideas and get experiments running. This is not production
-code. Write the smallest change that answers the question; prefer one line
-from an existing library over new code (see the reuse ladder in
+code. Write the smallest change that answers the question; prefer existing
+project code or a library function over new code (see the reuse order in
 [anti-bloat.md](./anti-bloat.md)).
 
 Two independent questions are in play: the mode controls how code is written

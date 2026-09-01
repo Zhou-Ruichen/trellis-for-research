@@ -25,7 +25,7 @@ Use these guides for common research-code workflows.
 | Rule | Reference |
 | --- | --- |
 | Use parameters, configs, or retained commands instead of copied scripts | [../shared/anti-bloat.md](../shared/anti-bloat.md) |
-| Retained runs need manifest, result files, data/source record, assumptions, and environment freeze | [../shared/reproducibility.md](../shared/reproducibility.md) |
+| Retained runs need manifest, result files, data/source record, assumptions, and an environment record | [../shared/reproducibility.md](../shared/reproducibility.md) |
 | Scratch and smoke runs stay lightweight unless promoted | [../shared/reproducibility.md](../shared/reproducibility.md) |
 | Durable data products need manifests | [../data/index.md](../data/index.md) |
 | Reports must point back to retained evidence | [../evaluation/index.md](../evaluation/index.md) |

@@ -20,24 +20,6 @@ locations take precedence. Do not migrate them unless the task asks for it.
 | [../training/index.md](../training/index.md) | Touching training or model code |
 | [../evaluation/index.md](../evaluation/index.md) | Touching metrics, predictions, figures, or reports |
 
-## Pre-Development Checklist
-
-- [ ] Can this be expressed as a config change instead of new code?
-- [ ] Is there an existing loader, transform, model block, metric, or utility to reuse?
-- [ ] Adding new code or a dependency? Climb the reuse ladder in
-      [anti-bloat.md](./anti-bloat.md) first.
-- [ ] Defining done for this task? Use the smallest relevant sanity check and
-      traceable evidence; report metric targets as observations
-      ([../evaluation/index.md](../evaluation/index.md)).
-- [ ] Is this exploratory? Keep it in `notebooks/` or a thin `scripts/` entrypoint.
-- [ ] Is this durable? Put reusable logic under `src/<pkg>/`.
-- [ ] Touching data? Check split, leakage, dtype, shape, and the metadata the model uses.
-- [ ] Touching results? Decide whether each run is scratch, smoke, or
-      retained; confirm where retained metrics, figures, config snapshots, and
-      run manifests are written.
-- [ ] Writing prose (report, discussion, methods, paper draft)? Plan to lead
-      with the scientific finding; see [scientific-writing.md](./scientific-writing.md).
-
 ## Rules
 
 - In a new project, use `src/<pkg>/` for reusable code. In an existing project,
@@ -54,22 +36,8 @@ locations take precedence. Do not migrate them unless the task asks for it.
   configs still referenced, anything untracked) need asking first. List every
   deletion in the completion report.
 - Do not productionize one-off exploration with factories, plugin systems, config classes, or extra CLI layers.
-- New code and dependencies follow the reuse ladder in anti-bloat.md; one-off
-  test code is deleted after it answers its question.
-
-## Quality Check
-
-Before claiming completion:
-
-- [ ] The change follows [project-layout.md](./project-layout.md).
-- [ ] No duplicate `*_v2.py`, `*_final.py`, copied experiment script, or backup directory was introduced.
-- [ ] New reusable logic lives under `src/<pkg>/`, not in notebooks or ad hoc scripts.
-- [ ] Any result claim is backed by a retained run artifact with config, seed,
-      environment freeze, data manifest, and metrics.
-- [ ] Human-facing prose follows
-      [scientific-writing.md](./scientific-writing.md): supported claims, plain
-      language, and exact Methods details without engineering state presented
-      as a scientific result.
-- [ ] Any data-writing task records what was written, where it came from, and how to rebuild it.
-- [ ] Metric values are reported rather than used as task pass/fail criteria;
-      one-off test and diagnostic code was deleted, not committed.
+- New code and dependencies follow [anti-bloat.md](./anti-bloat.md). Temporary
+  diagnostics are removed after they answer their question.
+- Result claims point to the config, seed, data, environment record, metrics,
+  and outputs that support them. Metric values remain observations, not task
+  pass/fail criteria.

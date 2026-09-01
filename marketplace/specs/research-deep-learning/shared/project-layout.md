@@ -62,7 +62,9 @@ Add `configs/data/` and `configs/model/` only when the config tree grows beyond
 
 - Use lower-case ASCII paths with underscores where needed.
 - Prefer action-object names: `build_dataset.py`, `train.py`, `evaluate.py`.
-- Do not use dates as normal versioning in source paths.
+- Use version labels for datasets, schemas, interfaces, releases, and protocols
+  that intentionally coexist. Keep one maintained filename for the current
+  source implementation instead of date, `v2`, `final`, or backup copies.
 - Do not use non-ASCII filenames for code that agents must modify. Put Chinese notes in markdown if needed.
 
 Bad:
@@ -95,7 +97,7 @@ Retained `outputs/<run_id>/` directories should contain:
 config.yaml
 manifest.json
 metrics.json
-environment.freeze.txt
+environment.record.txt  # only when no stable project record exists
 logs/
 checkpoints/
 predictions/

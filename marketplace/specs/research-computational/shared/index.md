@@ -28,25 +28,6 @@ iteration speed, readable code, and evidence-backed claims.
 | Review a change | [../guides/code-review.md](../guides/code-review.md) |
 | Verify a change | [../evaluation/index.md](../evaluation/index.md) and [../guides/code-review.md](../guides/code-review.md) |
 
-## Pre-Development Checklist
-
-- [ ] Can this be expressed as a config, parameter, or documented command
-      instead of copied code?
-- [ ] Is there an existing loader, transform, analysis routine, metric, or
-      helper to reuse?
-- [ ] Adding new code or a dependency? Climb the reuse ladder in
-      [anti-bloat.md](./anti-bloat.md) first.
-- [ ] Defining done for this task? Use the smallest relevant sanity check and
-      traceable evidence; report metric targets as observations
-      ([../evaluation/index.md](../evaluation/index.md)).
-- [ ] Is this exploratory? Keep it in `notebooks/`, scratch output, or a thin
-      script.
-- [ ] Is this durable? Put reusable logic in the project's existing source
-      location.
-- [ ] Touching data? Check provenance, schema, split/leakage risk, and manifest
-      rules.
-- [ ] Touching results? Decide whether each run is scratch, smoke, or retained.
-
 ## Rules
 
 - Respect the repository's current documented layout. Do not rename a mature
@@ -60,23 +41,8 @@ iteration speed, readable code, and evidence-backed claims.
   files.
 - Do not productionize one-off exploration with factories, plugin systems,
   config classes, or broad abstraction layers.
-- New code and dependencies follow the reuse ladder in anti-bloat.md; one-off
-  test code is deleted after it answers its question.
-
-## Quality Check
-
-- [ ] The change follows the repository's documented layout.
-- [ ] No duplicate `*_v2`, `*_final`, copied experiment script, or backup
-      directory was introduced.
-- [ ] Reusable logic lives in the existing source area, not only in notebooks
-      or ad hoc scripts.
-- [ ] Any result claim is backed by retained evidence with config, command,
-      data record, environment, metrics, and assumptions.
-- [ ] Human-facing prose follows
-      [scientific-writing.md](./scientific-writing.md): supported claims, plain
-      language, and exact Methods details without engineering state presented
-      as a scientific result.
-- [ ] Any data-writing task records what was written, where it came from, and
-      how to rebuild it.
-- [ ] Metric values are reported rather than used as task pass/fail criteria;
-      one-off test and diagnostic code was deleted, not committed.
+- New code and dependencies follow [anti-bloat.md](./anti-bloat.md). Temporary
+  diagnostics are removed after they answer their question.
+- Result claims point to the command, data, parameters, environment record, and
+  outputs that support them. Metric values remain observations, not task
+  pass/fail criteria.

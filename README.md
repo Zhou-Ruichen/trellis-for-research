@@ -76,10 +76,10 @@ For non-DL research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --claude --codex
 ```
 
@@ -87,10 +87,10 @@ For deep-learning research:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --template research-deep-learning \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --claude --codex
 ```
 
@@ -100,7 +100,7 @@ same marketplace entry:
 ```sh
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --force
 ```
 
@@ -124,7 +124,7 @@ that are missing and never touches files the project has customized:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --template research-computational \
   --append \
   --claude --codex
@@ -135,7 +135,7 @@ or incorrect spec:
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --template research-computational \
   --overwrite \
   --claude --codex
@@ -208,16 +208,16 @@ tmpdir="$(mktemp -d)"
 cd "$tmpdir"
 git init
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --claude --codex -y
 find .trellis/spec -type f | sort
 find .trellis/workflows -type f | sort
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.1 \
   --force
 ```
 
@@ -233,22 +233,23 @@ trellis workflow \
   manifests.
 - `outputs/<run_id>/` is the source of truth for retained run artifacts;
   scratch and smoke runs stay lightweight and disposable unless promoted.
-- No `train_v2.py`, `*_final.py`, duplicate experiment scripts, or backup
-  directories as normal development patterns.
+- Do not copy the current source implementation into `train_v2.py`, `*_final.py`,
+  or backup directories. Version labels remain valid for datasets, schemas,
+  interfaces, releases, and protocols that intentionally coexist.
 - Superseded code variants are deleted by the task that replaces them rather
   than accumulated; git history is the archive. Suspected-dead code, bulk
   cleanup, and run artifacts (`outputs/`, `data/manifests/`, configs still
   referenced by results) require asking first.
-- New code and dependencies follow a reuse ladder: this codebase first, then
-  an already-installed dependency (for research code, usually the scientific
-  stack), then the standard library, then one line; only after all four fail,
-  the minimum implementation the task needs. One-off test code is deleted
-  once it answers its question; `tests/` holds only durable checks.
+- Before adding durable code, search this repository, prefer parameters or
+  configs over copied scripts, reuse existing dependencies or the standard
+  library, then add the smallest missing implementation. Extract shared code
+  after meaningful durable duplication exists, not for possible future reuse.
 - Checks fit the research decision: external data is checked once where it
-  enters, an exploratory experiment uses its first successful result-producing
-  invocation, and scientific outcomes are reported rather than treated as
-  software failures. Trellis does not add TDD, coverage targets, full test
-  suites, or metric-value assertions on its own.
+  enters, the study runs every comparison, seed, fold, or repeat its design
+  requires, and identical successful commands are not repeated only for
+  reassurance. Scientific outcomes are reported rather than treated as software
+  failures. Trellis does not add TDD, coverage targets, full test suites, or
+  metric-value assertions on its own.
 - `shared/research-minimal.md` sets the highest-priority minimal-code rules:
   mode-conditional defaults, a utility test for any added check, and a stop
   condition once the result is established.
@@ -272,7 +273,7 @@ trellis workflow \
 - `examples/minimal-run/` is a minimal runnable project: synthetic
   one-feature linear regression that demonstrates a retained run
   (data manifest, config, training, retained-run manifest with environment
-  freeze, and a bilingual result discussion written in the scientific style).
+  snapshot, and a bilingual result discussion written in the scientific style).
   See `examples/minimal-run/README.md` for how to run it.
 
 ## Repository Layout

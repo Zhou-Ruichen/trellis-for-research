@@ -54,40 +54,68 @@ trellis init \
 For deep learning, use `--template research-deep-learning`.
 Remove the tag only when you intentionally want the published development branch.
 
-### Existing Projects
+### Existing Projects And Upgrades
 
-Preserve customized specs and project records. `--overwrite` replaces the entire
-`.trellis/spec/` directory; reserve it for untouched generic defaults.
-Install the chosen version in a temporary directory and merge relevant changes,
-keeping the project's data conventions, paths, tasks, and results.
+Trellis and this research template have separate versions:
 
-`--append` adds missing spec files only. It does not update existing instructions:
+| What changes | Official entry point |
+| --- | --- |
+| Installed Trellis CLI | `trellis upgrade` follows its current npm channel |
+| Project native files and registered specs | `trellis update` uses the installed CLI and configured spec source |
+| Research template release | Change the spec source tag and select the same workflow release |
+
+Upgrade the CLI only when adopting a newer supported version. `trellis upgrade
+--dry-run` previews that package operation; it does not update project files.
+For project updates, preserve existing work, inspect the proposed changes, then
+apply the migration:
 
 ```sh
-trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
-  --template research-computational \
-  --append --claude --codex
+trellis update --migrate --dry-run
+trellis update --migrate
 ```
 
-### Workflow Updates
+Modified files enter conflict handling. Merge the changes while preserving project
+facts; `--skip-all` keeps local edits and `--force` overwrites conflicts. A pinned
+spec source stays on that release until its tag is changed. See the official
+[upgrade reference](https://docs.trytrellis.app/zh/start/everyday-use).
 
-Inspect local workflow edits before replacing the selected template:
+For a first adoption into an existing project, install the selected template in
+a temporary directory and merge its relevant files. Keep data conventions, paths,
+tasks, and results. Earlier manual copies need a one-time registration against the
+published template so future updates can distinguish templates from local edits.
+`init --append` adds missing files only; it is not a refresh of customized specs.
+`init --overwrite` replaces the entire spec directory and is suitable only for
+untouched generic defaults.
+
+### Select The Research Workflow
+
+After reviewing local workflow changes, save the selected release as a variant:
 
 ```sh
 trellis workflow \
-  --template research \
+  --save research \
   --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --force
 ```
 
-The project configuration uses `default_workflow: research`. Trellis treats a
-non-native selected workflow as user-managed. Restart the agent session after
-changing its workflow context.
+Merge these fields into `.trellis/config.yaml`, keeping other settings. Use
+`research-deep-learning` for the deep-learning spec template:
 
-For direct Codex work, set `codex.dispatch_mode: inline` in
-`.trellis/config.yaml`. This avoids automatic Trellis role dispatch while
-leaving independent agents available when the task benefits from them.
+```yaml
+default_workflow: research
+codex:
+  dispatch_mode: inline
+registry:
+  spec:
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0
+    template: research-computational
+```
+
+`--save` writes `.trellis/workflows/research.md` and leaves the native global
+workflow intact; it does not set the project default. Keep the workflow release
+and spec source tag aligned. Restart the agent session after changing context.
+Inline dispatch keeps ordinary Codex work in the main session; independent agents
+remain available when useful.
 
 The template changes workflow instructions, not every separately installed
 skill or agent. An explicitly invoked native checker can carry different rules;
@@ -105,22 +133,33 @@ as the research entry points. Keep project-specific conventions alongside them.
 This avoids maintaining patched copies of native skills. A future change to
 Trellis's workflow format or loader may still require a template update.
 
-With Trellis `0.7.0-beta.3`, modified managed skills enter conflict handling:
-normal update defaults to keeping them, `--skip-all` preserves them, and `--force`
-overwrites them. Preview with `trellis update --dry-run` before upgrading.
 Custom skill paths absent from the template are not replaced by normal updates.
-Local spec copies are manual installations: the registry source parser does not
-accept filesystem paths. Do not put a local checkout in `registry.spec.source`.
+The registry source must be a supported remote source, not a local checkout path.
 
 ## Project Use
 
 The installed `shared/research-minimal.md` is the entry point.
 `shared/index.md` and `guides/index.md` point to optional references.
 
+Describe the scientific question directly. Small work needs no task or slash
+command. With working session hooks, opening a session loads Trellis context;
+`/trellis:start` is for platforms without automatic session loading.
+
 A recorded task keeps its question, plan, and state in `prd.md`. Record results
 once in `result.md` or link to existing evidence. Seeds and parameter variants
 remain runs within the same question unless they are independent deliverables.
 Additional context files, journals, and spec updates are used only when needed.
+
+`/trellis:continue` advances the current task. `/trellis:finish-work` archives
+completed work and writes a journal after the work is committed. These native
+commands are optional here; their use follows the research workflow's execution
+and verification rules. They are not additional approval stages.
+
+Write project specs from actual data conventions, source paths, and reusable
+decisions. Add a rule when a real task needs it; do not fill every template or
+turn a single experimental observation into a permanent requirement. The official
+[real-world scenarios](https://docs.trytrellis.app/zh/start/real-world-scenarios)
+provide engineering examples; adopt only the parts relevant to the research task.
 
 An untouched bootstrap-guidelines task from Trellis is not required by this
 workflow. Keep any real project work it already contains.

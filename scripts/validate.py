@@ -74,158 +74,6 @@ def validate_markdown_links() -> None:
                 fail(f"{md_path.relative_to(ROOT)} has broken link: {target}")
 
 
-def validate_required_content() -> None:
-    required = {
-        "marketplace/specs/research-computational/README.md": [
-            "General Computational Research",
-            "Template Fit",
-            "research-deep-learning",
-        ],
-        "marketplace/specs/research-computational/shared/research-minimal.md": [
-            "exploratory",
-            "smallest change",
-            "explicit task or user request",
-            "cheapest check",
-            "Stop condition",
-            "durable",
-            "retained",
-        ],
-        "marketplace/specs/research-deep-learning/shared/research-minimal.md": [
-            "exploratory",
-            "smallest change",
-            "explicit task or user request",
-            "cheapest check",
-            "Stop condition",
-            "durable",
-            "retained",
-        ],
-        "marketplace/workflows/research.md": [
-            "small research record",
-            "## Phase Index",
-            "Create a Trellis task only",
-            "Validate external data once",
-            "Sub-agents are optional",
-            "Pure prose tasks do not create or run code",
-            "Trellis does not add lint, type checking, tests, or full-suite",
-            "Never reset, discard changes",
-            "Finish without ceremony",
-        ],
-        "marketplace/specs/research-computational/shared/project-layout.md": [
-            "data/raw/",
-            "data/interim/",
-            "data/processed/",
-            "outputs/<run_id>/",
-            "existing documented layout",
-        ],
-        "marketplace/specs/research-computational/shared/anti-bloat.md": [
-            "Reuse Before Adding",
-            "Keep Variants In Parameters",
-            "Replace Without Accumulating",
-            "does not authorize unrelated cleanup",
-            "scripts/analyze_v2.py",
-        ],
-        "marketplace/specs/research-computational/shared/reproducibility.md": [
-            "manifest.json",
-            "metrics.json",
-            "Do not invent",
-            "Scratch",
-            "Retained",
-            '"retention"',
-            '"manager"',
-            '"record"',
-            "per-run freeze",
-            "Once a retained run or comparison starts",
-            "does not approve a scientific claim",
-        ],
-        "marketplace/specs/research-computational/data/index.md": [
-            "Manifest Rule",
-            "Boundary Validation",
-            "leakage",
-        ],
-        "marketplace/specs/research-computational/evaluation/index.md": [
-            "Retained evaluation runs",
-            "Comparison",
-            "reports",
-        ],
-        "marketplace/specs/research-deep-learning/shared/project-layout.md": [
-            "data/raw/",
-            "data/interim/",
-            "data/processed/",
-            "outputs/<run_id>/",
-        ],
-        "marketplace/specs/research-deep-learning/shared/anti-bloat.md": [
-            "Reuse Before Adding",
-            "Keep Variants In Config",
-            "Replace Without Accumulating",
-            "does not authorize unrelated cleanup",
-            "scripts/train_v2.py",
-        ],
-        "marketplace/specs/research-deep-learning/shared/reproducibility.md": [
-            "manifest.json",
-            "metrics.json",
-            "Do not invent",
-            "Scratch",
-            "Retained",
-            '"retention"',
-            '"manager"',
-            '"record"',
-            "per-run freeze",
-            "Once a retained run or comparison starts",
-            "does not approve a scientific claim",
-        ],
-        "marketplace/specs/research-deep-learning/data/index.md": [
-            "Format-Specific Rules",
-            "Data Lake Rule",
-            "Manifest Rule",
-        ],
-        "marketplace/specs/research-deep-learning/evaluation/index.md": [
-            "Retained evaluation runs",
-            "Scratch and smoke evaluation runs",
-            "Retained prediction products",
-        ],
-        "marketplace/specs/research-deep-learning/training/index.md": [
-            "PyTorch",
-            "Lightning",
-            "smoke",
-        ],
-        "marketplace/specs/research-computational/shared/scientific-writing.md": [
-            "Engineering Term Isolation",
-            "## Methods",
-            "Anti AI Tone",
-            "Write Like A Human",
-            "Over-Ornamentation",
-            "Bilingual Policy",
-            "Self-Check Before Submitting Prose",
-        ],
-        "marketplace/specs/research-deep-learning/shared/scientific-writing.md": [
-            "Engineering Term Isolation",
-            "## Methods",
-            "Anti AI Tone",
-            "Write Like A Human",
-            "Over-Ornamentation",
-            "Bilingual Policy",
-            "Self-Check Before Submitting Prose",
-        ],
-        "marketplace/specs/research-computational/guides/write-results.md": [
-            "Write A Results Discussion",
-            "scientific question",
-            "Completion Checklist",
-            "A completed Trellis task does not approve a scientific claim",
-        ],
-        "marketplace/specs/research-deep-learning/guides/write-results.md": [
-            "Write A Results Discussion",
-            "scientific question",
-            "Completion Checklist",
-            "A completed Trellis task does not approve a scientific claim",
-        ],
-    }
-    for rel_path, needles in required.items():
-        text = (ROOT / rel_path).read_text(encoding="utf-8")
-        for needle in needles:
-            if needle not in text:
-                fail(f"{rel_path} missing required text: {needle}")
-
-
 def validate_workflow_states() -> None:
     workflow = (ROOT / "marketplace/workflows/research.md").read_text(encoding="utf-8")
     pattern = re.compile(
@@ -282,8 +130,7 @@ def validate_no_non_ascii() -> None:
             fail(f"path must be ASCII: {rel_path}")
         # Content under examples/ may include bilingual writing samples (for
         # example a Chinese result discussion). Only paths must stay ASCII there.
-        # scientific-writing.md additionally carries the Chinese anti-AI-tone
-        # word list; the banned phrases must appear verbatim to be matchable.
+        # Scientific-writing guidance includes bilingual prose examples.
         if any(part == "examples" for part in rel_path.parts):
             continue
         if rel_path == Path("README.zh-CN.md"):
@@ -394,7 +241,6 @@ def validate_readme_pins_latest_version() -> None:
 def main() -> None:
     validate_index()
     validate_markdown_links()
-    validate_required_content()
     validate_workflow_states()
     validate_no_non_ascii()
     validate_readme_pins_latest_version()

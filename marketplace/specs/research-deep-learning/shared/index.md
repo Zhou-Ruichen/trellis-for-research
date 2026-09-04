@@ -1,43 +1,13 @@
-# Shared Deep Learning Research Guidelines
+# Research References
 
-Use the sections relevant to the current task. Optimize for reproducibility,
-iteration speed, and readable research code.
+Start with [research-minimal.md](./research-minimal.md) and the project's relevant
+facts. Other files are references for concrete questions, not a reading checklist.
 
-An existing repository's documented layout, commands, environment, and data
-locations take precedence. Do not migrate them unless the task asks for it.
-
-## Documentation Files
-
-| File | Read when |
+| Question | Reference |
 | --- | --- |
-| [research-minimal.md](./research-minimal.md) | Before any exploratory implementation; overrides conflicting guidance |
-| [project-layout.md](./project-layout.md) | Creating, moving, or naming files |
-| [anti-bloat.md](./anti-bloat.md) | Adding files, variants, scripts, helpers, or abstractions |
-| [reproducibility.md](./reproducibility.md) | Running or reporting experiments |
-| [scientific-writing.md](./scientific-writing.md) | Writing reports, discussions, methods, or paper drafts |
-| [python-style.md](./python-style.md) | Writing Python modules |
-| [../data/index.md](../data/index.md) | Touching data |
-| [../training/index.md](../training/index.md) | Touching training or model code |
-| [../evaluation/index.md](../evaluation/index.md) | Touching metrics, predictions, figures, or reports |
-
-## Rules
-
-- Keep exploratory code in its script or notebook. Use the established source
-  area for components explicitly maintained across tasks.
-- Reuse existing configs; explicit script parameters are enough for one-off runs.
-- Keep experiment variants in parameters or configs instead of copied scripts.
-- `data/` is allowed, but it must be structured by lifecycle and documented with manifests.
-- `outputs/<run_id>/` is the canonical home for retained run artifacts.
-- Scratch and smoke runs stay lightweight and disposable unless promoted.
-- `reports/` is only for curated, lightweight figures and tables that are meant to be read.
-- Delete code the current task superseded, once the replacement is verified;
-  git history is the archive. Suspected-dead code, bulk cleanup, and
-  experiment records (`outputs/` artifacts backing results, `data/manifests/`,
-  configs still referenced, anything untracked) need asking first. List every
-  deletion in the completion report.
-- Do not productionize one-off exploration with factories, plugin systems, config classes, or extra CLI layers.
-- New code and dependencies follow [anti-bloat.md](./anti-bloat.md). Temporary
-  diagnostics are removed after they answer their question.
-- Result claims point to the config, seed, data, environment record, metrics,
-  and outputs that support them. Metric values remain observations, not task
-  pass/fail criteria.
+| Would added structure simplify the current calculation? | [anti-bloat.md](./anti-bloat.md) |
+| Where does this project keep code and outputs? | [project-layout.md](./project-layout.md) |
+| What information must survive with a result? | [reproducibility.md](./reproducibility.md) |
+| Could data conventions silently change the result? | [data guidelines](../data/index.md) |
+| Is the comparison scientifically interpretable? | [evaluation guidelines](../evaluation/index.md) |
+| How should a research finding be written? | [scientific-writing.md](./scientific-writing.md) |

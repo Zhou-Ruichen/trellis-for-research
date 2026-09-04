@@ -5,8 +5,7 @@
 - `marketplace/index.json` has the fields Trellis expects;
 - template paths exist and each ships a `README.md`;
 - markdown links inside the spec resolve and stay inside the repo;
-- core research requirements are still present, including the scientific-writing
-  layer (`shared/scientific-writing.md`, `guides/write-results.md`);
+- the six workflow-state blocks retain the interface Trellis expects;
 - paths are ASCII everywhere, and file content is ASCII for the portable spec
   under `marketplace/`;
 - content under `examples/` may include bilingual writing samples (for example a
@@ -21,5 +20,6 @@ Run:
 python3 scripts/validate.py
 ```
 
-The script does not perform a remote `gh:` registry download. That requires the
-repository to be published to GitHub first.
+The script checks structure, not scientific correctness or exact prose. It does
+not perform a remote `gh:` registry download. Run it only when verification is
+requested; it is not part of an experiment's execution path.

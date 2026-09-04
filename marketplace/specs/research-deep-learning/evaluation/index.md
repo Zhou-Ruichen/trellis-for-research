@@ -1,147 +1,40 @@
 # Evaluation Guidelines
 
-Use these rules for validation, test evaluation, prediction export, diagnostics,
-figures, and report artifacts.
+Use the project's existing evaluation layout. Exploratory metrics, diagnostics,
+plots, and prediction code may stay in the script or notebook where they are
+needed. Extract code only to simplify the current calculation or meet an explicit
+maintenance need.
 
-This file governs the evidence (what to write and where). The prose around that
-evidence -- captions, report text, result discussions -- is governed by
-[../shared/scientific-writing.md](../shared/scientific-writing.md).
+Start from the scientific question and define the minimal comparison that can
+answer it. Keep data isolation and matched conditions explicit. State the split
+or sample set, relevant parameter differences, units, coordinate conventions,
+and exclusions. Check only input assumptions that affect the calculation. Do
+not add a generic validator, preflight framework, or metric target. Software tests
+require an explicit task or user request; actual failures can be diagnosed
+without creating a test suite. See [minimal rules](../shared/research-minimal.md).
 
-## Evaluation Layout
+## Metrics And Results
 
-```text
-src/<pkg>/eval/
-  metrics.py
-  predict.py
-  plots.py
-  diagnostics.py
-scripts/
-  evaluate.py
-  predict.py
-```
+Use the metrics and prediction format required by the question and existing
+project conventions. No fixed `metrics.json` or prediction schema is required.
+Record actual values, definitions, conditions, checkpoints or input data, and
+output paths in the project's existing log, config, notebook, result record, or
+report.
 
-This layout is for maintained evaluation code. Exploratory metrics, diagnostics,
-and plots may stay in a script or notebook; reuse existing functions where useful.
+A metric below an expectation is an observation to explain, not a failed software
+task. Report negative findings and their limitations with the same evidence as
+positive findings.
 
-## Verification Boundaries
+## Figures And Predictions
 
-Research code is exploratory: the result is discovered, not specified. Do not
-add TDD, coverage targets, or metric pass/fail thresholds to an experiment.
-
-Check execution and input assumptions:
-
-- the pipeline runs and shapes, dtypes, and units are consistent;
-- errors fail loudly at boundaries instead of producing fake success;
-- check data isolation and relevant numerical or coordinate conventions using
-  the requested run's inputs and outputs.
-
-Additional checks follow [research-minimal.md](../shared/research-minimal.md).
-Random-input baselines are included only when the scientific design calls for them.
-
-Report scientific outcomes:
-
-- Do not assert metric values anywhere. "RMSE must be below X" encodes the
-  answer the experiment is meant to discover.
-- A missed target is a finding to report (value, condition, gap to the
-  baseline or expectation, plausible explanation), not a task failure. A
-  task is complete when its evidence is traceable, not when a target is met.
-- Validation commands attached to a task check executability and sanity
-  only; they never assert metric values.
-
-## Metrics
-
-Retained evaluation runs write:
-
-```text
-outputs/<run_id>/metrics.json
-```
-
-Recommended schema:
-
-```json
-{
-  "run_id": "20260610-142233-baseline",
-  "split": "test",
-  "metrics": {
-    "rmse": 123.456,
-    "mae": 98.765
-  },
-  "n_samples": 100,
-  "data_manifest": "data/manifests/test_v1.json",
-  "checkpoint": "outputs/20260610-142233-baseline/checkpoints/epoch=012.ckpt",
-  "notes": []
-}
-```
-
-Scratch and smoke evaluation runs may write lighter logs or metrics while
-debugging. Promote the run and write the retained metrics file before citing it
-in a comparison, report, or result claim.
-
-Do not report retained metrics only in stdout, screenshots, notebooks, or
-remote logging dashboards.
-
-## Figures
-
-For retained generated figures tied to a run, use:
-
-```text
-outputs/<run_id>/figures/
-```
-
-Scratch figures may live under `outputs/scratch/<run_id>/figures/` and may be
-deleted unless promoted.
-
-Use:
-
-```text
-reports/
-```
-
-only for curated figures and tables intended for papers, presentations, or
-human-facing reports.
-
-## Prediction Products
-
-For retained runs, write model predictions under:
-
-```text
-outputs/<run_id>/predictions/
-```
-
-Retained prediction products must record:
-
-- checkpoint path;
-- input data manifest;
-- prediction format;
-- coordinate convention and grid definition when geospatial;
-- postprocessing steps.
+Keep figures and prediction products with the analysis that produced them,
+following existing project paths. For a retained result, record enough context
+to identify the checkpoint, input data, output format, postprocessing, and
+geospatial conventions when those details affect interpretation. Curate paper
+or review material in the project's report area when one exists.
 
 ## Diagnostic Code
 
-One parameterized diagnostic entrypoint is better than many copied scripts.
-
-Good:
-
-```text
-scripts/diagnose_run.py
-src/<pkg>/eval/diagnostics.py
-```
-
-Bad:
-
-```text
-scripts/diagnose_run_v2.py
-scripts/diagnose_failed_sample_final.py
-scripts/evaluate_old_checkpoint.py
-```
-
-## Quality Check
-
-- [ ] Retained metrics are written to JSON with split and sample count.
-- [ ] Retained figures and predictions are tied to a run ID.
-- [ ] Predictions record the input data version, output format, and postprocessing.
-- [ ] Geospatial outputs record coordinate convention and grid definition when applicable.
-- [ ] Reports contain curated artifacts, not raw output dumps.
-- [ ] Report prose and captions follow scientific-writing.md: science-first, no
-      engineering terms, no over-ornamentation or empty adjectives, and units on quantitative figures.
-- [ ] New evaluation behavior did not create copied script variants.
+Reuse a parameterized diagnostic when it already exists or will be reused. A
+one-off diagnostic can remain local to the analysis. Represent variants with
+explicit parameters or configs instead of copied scripts named `v2` or `final`.

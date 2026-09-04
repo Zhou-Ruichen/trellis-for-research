@@ -1,33 +1,32 @@
-# Trellis for Research 中文安装指南
+# Trellis for Research
 
-[English README](README.md)
+[English guide](README.md)
 
-本仓库提供两个科研 Spec 模板和一个 `research` Workflow：
+本仓库提供两个科研 Spec 模板和一个可选的任务工作流：
 
-- `research-computational`：计算科研、统计分析、模拟、传统机器学习和数据处理；
-- `research-deep-learning`：使用深度学习训练和评估的科研项目；
-- `research` Workflow：保留科研问题、必要决策和结果，不给日常工作增加审批步骤。
+- `research-computational`：分析、模拟、传统机器学习和数据处理。
+- `research-deep-learning`：深度学习训练、模型比较和 checkpoint。
+- `research` workflow：跨会话保留问题、状态和证据。
 
-模板不限定学科。是否包含深度学习训练代码决定 Spec 选择，数据所属领域不决定模板名称。
+## 科研默认行为
 
-## 版本
+- 默认只读最小科研规则和相关项目事实，其余规范按具体问题查阅。
+- 可以直接写脚本或 notebook，不要求拆包、配置系统、兼容层或测试套件。
+- 只检查可能悄悄改变科学结果的数据条件。文件和库错误直接报出，实际失败再定位。
+- 完成计划中的比较、seed 和 fold。正、负、零结果都是观察，不作为任务通过门槛。
+- 记录解释结果所需的输入、实际参数、代码状态、环境和输出。复用现有日志、配置或笔记，不强制 manifest 格式，也不要求搬动输出。
+- 小任务直接做。跨会话或独立交付才按需建任务，不要求声明模式和运行级别。
+- 子代理按需使用，不自动增加检查代理、多轮审查或未要求的软件验证。
+- 科学写作保留发现、证据、解释和真实限制，Methods 保留必要技术细节，不编造结论或使用套话代替事实。
 
-当前发布版 `v0.4.3` 使用 Trellis `0.7.0-beta.3` 的 Marketplace Workflow 接口，请显式安装该版本：
+以上精简属于 [CHANGELOG.md](CHANGELOG.md) 的 Unreleased 内容，尚未包含在下面固定标签的安装命令中。
+
+## 安装已发布版本
+
+当前发布标签为 `v0.4.3`，使用 Trellis `0.7.0-beta.3`：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
-trellis --version
-```
-
-固定 Git 标签可以避免安装结果随 `main` 变化。
-
-`v0.4.2` 已使用 Trellis `0.7.0-beta.3` 从 GitHub 完成远程安装检查，`research-deep-learning` 模板和 `research` Workflow 均可安装。
-
-## 新项目
-
-非深度学习科研：
-
-```sh
 trellis init \
   --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-computational \
@@ -36,57 +35,26 @@ trellis init \
   --claude --codex
 ```
 
-深度学习科研：
-
-```sh
-trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
-  --template research-deep-learning \
-  --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
-  --claude --codex
-```
+深度学习项目把模板改为 `research-deep-learning`。取消标签会使用已发布到开发分支的内容，安装结果不再固定。
 
 ## 已有项目
 
-先确认目标仓库和当前改动：
+保留项目自己的数据约定、路径、任务和结果。先保存现有改动，在临时目录安装所选版本，再比较并合并需要的规则。
 
-```sh
-trellis --version
-git status --short --branch
-```
-
-已有自定义 Spec 时不要使用 `--overwrite`。先提交或另行保存现有改动，然后在临时目录安装新模板并比较差异：
-
-```sh
-tmpdir="$(mktemp -d)"
-cd "$tmpdir"
-git init
-trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
-  --template research-deep-learning \
-  --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
-  --claude --codex -y
-```
-
-把 `research-deep-learning` 换成项目需要的 `research-computational`。比较临时目录和项目的 `.trellis/spec/`，只合并需要更新的规则。不要替换 `.trellis/tasks/`、`.trellis/workspace/` 或项目自己的 Spec 文件。
-
-项目缺少部分模板文件且现有文件应保持不变时，可以使用 `--append`：
+`--append` 只补缺失文件，不更新已有规范：
 
 ```sh
 trellis init \
   --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
   --template research-computational \
-  --append \
-  --claude --codex
+  --append --claude --codex
 ```
 
-`--append` 不更新已存在的文件。它适合补齐缺失文件，不适合替代差异比较。
+`--overwrite` 会替换整个 `.trellis/spec/`，仅适合仍未修改的通用默认规范。
 
 ## 更新 Workflow
 
-已有 Trellis 0.7 项目可以独立选择或刷新 Workflow：
+检查现有 workflow 改动后执行：
 
 ```sh
 trellis workflow \
@@ -95,34 +63,13 @@ trellis workflow \
   --force
 ```
 
-执行前检查当前 `.trellis/workflows/` 改动。`--force` 会替换同名 Workflow；它不会替换 `.trellis/spec/`、任务记录或项目代码。Trellis 将非原生 Workflow 视为项目管理的文件，后续 `trellis update` 不会自动恢复原生 Workflow。
+项目配置使用 `default_workflow: research`。修改后重启 Agent 会话。
+更换 workflow 不会改写另外安装的原生 skill 或 agent；调用它们仍需遵守当前任务的科研和验证要求。
 
-确认 `.trellis/config.yaml` 使用：
+## 日常使用
 
-```yaml
-default_workflow: research
-```
+从 `shared/research-minimal.md` 开始。需要任务记录时，把问题、计划和状态保留在 `prd.md`，结果写一次 `result.md`，或引用已有记录。seed、fold、参数变体默认留在同一科研问题下。
 
-重新启动 Agent 会话后，新 Workflow 状态提示才会进入后续对话。
+目录和示例供参考，不要求照搬。用户要求验证时，可运行 `python3 scripts/validate.py` 检查仓库结构；它不验证科学结论。
 
-## 使用方式
-
-- 单次会话内能完成的小任务不要求创建 Trellis 任务。
-- 探索实验执行科学设计需要的比较、随机种子、折次和重复，不因软件式通过条件否定科学结果。
-- 外部数据在进入项目时检查一次；只有具体故障会改变结果或下一步时才增加检查。
-- 科学写作按发现、证据、解释组织，Methods 保留复现所需的技术细节，不编造指标、版本、引用或机制。
-- 复用现有代码和依赖；变体放入配置或运行记录。替换代码经检查后删除旧实现，Git 历史保留旧版本。
-- Sub-agent 是可选工具，不是 Workflow 的必经步骤。
-
-## 检查安装结果
-
-以下命令只读取配置和 Workflow：
-
-```sh
-trellis --version
-grep -n 'default_workflow' .trellis/config.yaml
-python3 .trellis/scripts/get_context.py --mode phase --step 2.2
-git status --short
-```
-
-预期 Trellis 版本为 `0.7.0-beta.3`，默认 Workflow 为 `research`，Phase 2.2 能输出按任务类型区分的检查规则。提交前检查 `git diff`，确认没有项目代码、实验结果或无法解释的删除项。
+历史上的 `v0.4.2` 安装检查不能证明本次未发布修改已经通过验证。

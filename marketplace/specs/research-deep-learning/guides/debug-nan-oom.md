@@ -1,47 +1,23 @@
 # Guide: Debug NaN, Inf, Divergence, Or OOM
 
-Use a narrow diagnosis before changing model architecture or adding fallback
-logic.
+Use only for an observed training failure. Start from its traceback and the
+affected batch or operation; inspect the smallest amount of data that explains it.
 
 ## NaN Or Inf
 
-Check in this order:
-
-1. Input data finite values at dataset boundary.
-2. Target data finite values and expected range.
-3. Normalization mean/std, especially zero or tiny std.
-4. Loss inputs and masks.
-5. Learning rate and precision.
-6. Gradient norm before clipping.
-7. First batch forward pass with anomaly detection if needed.
+Locate the first operation producing unexpected non-finite values. Inspect its
+inputs, masks, normalization, and precision as relevant. Anomaly detection or a
+smaller batch can help locate the failure; neither is a required preliminary run.
 
 Do not add broad `nan_to_num` or silent loss skipping unless the data policy
-explicitly requires it and the behavior is recorded in config.
+explicitly requires it and the behavior is recorded.
 
 ## OOM
 
-Check in this order:
+Locate the allocation or retained tensors involved. Inspect batch dimensions,
+precision, activations, or evaluation accumulation only as the failure indicates.
+Use a smaller case if it helps diagnosis; do not silently change the comparison's
+training settings or add automatic retry logic.
 
-1. Batch size.
-2. Input sample, sequence, image, or array size.
-3. Precision setting.
-4. Gradient accumulation.
-5. Number of workers and prefetching.
-6. Model activation memory.
-7. Evaluation or prediction retaining tensors on device.
-
-Prefer a smaller smoke config before changing core code.
-
-## Required Debug Output
-
-When adding debug instrumentation, keep it local and removable:
-
-- shape;
-- dtype;
-- finite-value counts;
-- min/max or robust percentiles;
-- device;
-- batch keys.
-
-If debug code becomes generally useful, move it to `src/<pkg>/eval/diagnostics.py`
-and expose it through one script.
+Print only the values needed to locate the failure. Remove temporary diagnostics
+afterward; do not build a reusable diagnostic framework for a one-off error.

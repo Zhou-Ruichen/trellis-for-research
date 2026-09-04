@@ -19,19 +19,19 @@
 - 子代理按需使用，不自动增加检查代理、多轮审查或未要求的软件验证。
 - 科学写作保留发现、证据、解释和真实限制，Methods 保留必要技术细节，不编造结论或使用套话代替事实。
 
-以上精简属于 [CHANGELOG.md](CHANGELOG.md) 的 Unreleased 内容，尚未包含在下面固定标签的安装命令中。
+以上精简包含在 `v0.5.0` 中，变更见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 安装已发布版本
 
-当前发布标签为 `v0.4.3`，使用 Trellis `0.7.0-beta.3`：
+当前发布标签为 `v0.5.0`，使用 Trellis `0.7.0-beta.3`：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --claude --codex
 ```
 
@@ -45,7 +45,7 @@ trellis init \
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --template research-computational \
   --append --claude --codex
 ```
@@ -59,11 +59,12 @@ trellis init \
 ```sh
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --force
 ```
 
 项目配置使用 `default_workflow: research`。修改后重启 Agent 会话。
+在 `.trellis/config.yaml` 设置 `codex.dispatch_mode: inline`，让 Codex 默认直接工作，需要独立分析时仍可主动使用子代理。
 更换 workflow 不会改写另外安装的原生 skill 或 agent；调用它们仍需遵守当前任务的科研和验证要求。
 
 保持 Trellis 原生脚本、hooks、skills 和 agents 不变，让它们随官方更新。日常科研直接遵循 research workflow，按需使用其中的任务 CLI，不自动调用带有独立步骤和验证流程的原生 skills。
@@ -78,6 +79,6 @@ Trellis `0.7.0-beta.3` 更新时会把修改过的托管 skill 列为冲突，�
 
 从 `shared/research-minimal.md` 开始。需要任务记录时，把问题、计划和状态保留在 `prd.md`，结果写一次 `result.md`，或引用已有记录。seed、fold、参数变体默认留在同一科研问题下。
 
-目录和示例供参考，不要求照搬。用户要求验证时，可运行 `python3 scripts/validate.py` 检查仓库结构；它不验证科学结论。
+目录和示例供参考，不要求照搬。用户要求验证时，可运行 `python3 scripts/validate.py` 检查仓库结构。
 
-历史上的 `v0.4.2` 安装检查不能证明本次未发布修改已经通过验证。
+本次精简规则已在已有科研仓库中安装，并检查了 Trellis `0.7.0-beta.3` 的阶段和步骤读取。

@@ -38,17 +38,16 @@ Mixed-language projects follow the same research rules.
 
 ## Installation
 
-The latest tagged template is `v0.4.3`, targeting Trellis `0.7.0-beta.3`.
-The simplifications described above are under **Unreleased** in
-[CHANGELOG.md](CHANGELOG.md); the pinned commands below install the tagged release.
+The current template release is `v0.5.0`, targeting Trellis `0.7.0-beta.3`.
+See [CHANGELOG.md](CHANGELOG.md) for the research defaults in this release.
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --claude --codex
 ```
 
@@ -66,7 +65,7 @@ keeping the project's data conventions, paths, tasks, and results.
 
 ```sh
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --template research-computational \
   --append --claude --codex
 ```
@@ -78,13 +77,17 @@ Inspect local workflow edits before replacing the selected template:
 ```sh
 trellis workflow \
   --template research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.4.3 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
   --force
 ```
 
 The project configuration uses `default_workflow: research`. Trellis treats a
 non-native selected workflow as user-managed. Restart the agent session after
 changing its workflow context.
+
+For direct Codex work, set `codex.dispatch_mode: inline` in
+`.trellis/config.yaml`. This avoids automatic Trellis role dispatch while
+leaving independent agents available when the task benefits from them.
 
 The template changes workflow instructions, not every separately installed
 skill or agent. An explicitly invoked native checker can carry different rules;
@@ -132,10 +135,10 @@ python3 scripts/validate.py
 
 The script checks marketplace metadata, paths, links, workflow-state blocks,
 ASCII path/content rules, release pins, and installation shape when Trellis is
-available. It does not enforce exact spec wording or establish scientific validity.
+available. It does not enforce exact spec wording.
 
-The published `v0.4.2` release was previously installed with Trellis
-`0.7.0-beta.3`. That historical check does not verify the unreleased changes.
+The simplified spec and workflow have been installed in existing research
+repositories with Trellis `0.7.0-beta.3`, including native phase and step loading.
 
 ## Examples
 

@@ -5,7 +5,7 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
-## Unreleased
+## v0.5.0 - 2026-09-05
 
 ### Changed
 - Made exploratory scripts the default without package, config, test-suite,
@@ -20,6 +20,10 @@ Notable changes to this Trellis spec-template repository. Format based on
   retained evidence-based scientific writing and optional independent agents.
 - Removed validator assertions tied to exact spec wording. Structural checks
   remain available when explicitly requested.
+- Kept native Trellis files upstream-managed and selected the research workflow
+  as a separate variant. Documented direct Codex dispatch through native config.
+- Limited discussion of research limitations to their effect on the claim,
+  without repeated minor caveats or hypothetical concerns.
 
 ## v0.4.3 - 2026-09-02
 

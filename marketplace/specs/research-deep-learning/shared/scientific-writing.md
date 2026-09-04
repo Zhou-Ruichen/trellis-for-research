@@ -18,8 +18,9 @@ State a mechanism as a finding only when the evidence tests it. Otherwise
 identify it as an explanation or hypothesis. Do not invent results, citations,
 versions, or implications. Cite the source that actually supports the claim.
 
-State limitations where they change interpretation, without repeating caveats
-that do not change the conclusion. Preserve the author's intended certainty
+Give limitations space in proportion to their effect on the claim. Explain
+material limits where they matter; do not repeat a minor limitation across
+sections or add hypothetical concerns. Preserve the author's intended certainty
 when editing; flag suspected scientific errors instead of silently changing them.
 
 ## Methods

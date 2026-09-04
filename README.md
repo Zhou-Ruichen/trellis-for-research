@@ -90,6 +90,25 @@ The template changes workflow instructions, not every separately installed
 skill or agent. An explicitly invoked native checker can carry different rules;
 its use must follow the task's research and verification constraints.
 
+Keep native Trellis scripts, hooks, skills, and agents unchanged so they can
+follow upstream updates. For ordinary research, use the selected workflow
+directly and call its task CLI only when needed. Generic native skills can
+carry their own phase routing or verification procedures; do not invoke them
+automatically to implement this research workflow.
+
+In an existing project's `AGENTS.md`, outside the managed Trellis block, point
+to `.trellis/workflows/research.md` and `.trellis/spec/shared/research-minimal.md`
+as the research entry points. Keep project-specific conventions alongside them.
+This avoids maintaining patched copies of native skills. A future change to
+Trellis's workflow format or loader may still require a template update.
+
+With Trellis `0.7.0-beta.3`, modified managed skills enter conflict handling:
+normal update defaults to keeping them, `--skip-all` preserves them, and `--force`
+overwrites them. Preview with `trellis update --dry-run` before upgrading.
+Custom skill paths absent from the template are not replaced by normal updates.
+Local spec copies are manual installations: the registry source parser does not
+accept filesystem paths. Do not put a local checkout in `registry.spec.source`.
+
 ## Project Use
 
 The installed `shared/research-minimal.md` is the entry point.

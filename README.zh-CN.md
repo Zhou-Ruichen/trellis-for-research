@@ -66,6 +66,14 @@ trellis workflow \
 项目配置使用 `default_workflow: research`。修改后重启 Agent 会话。
 更换 workflow 不会改写另外安装的原生 skill 或 agent；调用它们仍需遵守当前任务的科研和验证要求。
 
+保持 Trellis 原生脚本、hooks、skills 和 agents 不变，让它们随官方更新。日常科研直接遵循 research workflow，按需使用其中的任务 CLI，不自动调用带有独立步骤和验证流程的原生 skills。
+
+在项目 `AGENTS.md` 的 Trellis 托管区之外，用简短入口指向 `.trellis/workflows/research.md` 和 `.trellis/spec/shared/research-minimal.md`，保留项目自己的约定。这样无需维护改写过的原生 skills；如果未来 Trellis 改变 workflow 格式或加载接口，仍需更新模板。
+
+Trellis `0.7.0-beta.3` 更新时会把修改过的托管 skill 列为冲突，默认保留；`--skip-all` 保留本地修改，`--force` 会覆盖。升级前用 `trellis update --dry-run` 查看。普通更新不会替换模板中不存在的自定义 skill 路径。
+
+从本地复制 spec 属于手动安装。当前 registry 不接受文件系统路径，不能把本地目录写进 `registry.spec.source`。
+
 ## 日常使用
 
 从 `shared/research-minimal.md` 开始。需要任务记录时，把问题、计划和状态保留在 `prd.md`，结果写一次 `result.md`，或引用已有记录。seed、fold、参数变体默认留在同一科研问题下。

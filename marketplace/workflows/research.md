@@ -36,6 +36,10 @@ python3 ./.trellis/scripts/task.py archive <name>
 
 ## Phase Index
 
+Work directly using the minimal research rules. Keep a task record when it
+helps future work. For recorded tasks: plan the comparison, do the work, and
+record the observations once. Load individual steps only when needed.
+
 [workflow-state:no_task]
 Work directly using the minimal research rules and relevant project facts.
 Create a task only for persistent context, independent deliverables, or an
@@ -71,7 +75,7 @@ useful. Task completion does not authorize opening a sealed final evaluation or
 declaring exploration finished.
 [/workflow-state:completed]
 
-## Phase 1: Prepare
+## Phase 1: Plan
 
 #### 1.0 Decide whether a task record is useful
 Small work proceeds without a task. Reuse an existing task for the same question.

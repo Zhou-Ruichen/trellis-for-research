@@ -20,8 +20,8 @@ scripts/
   predict.py
 ```
 
-Scripts remain thin. Metrics, prediction writing, diagnostics, and plotting
-logic live under `src/<pkg>/eval/`.
+This layout is for maintained evaluation code. Exploratory metrics, diagnostics,
+and plots may stay in a script or notebook; reuse existing functions where useful.
 
 ## Verification Boundaries
 
@@ -32,18 +32,16 @@ Check execution and input assumptions:
 
 - the pipeline runs and shapes, dtypes, and units are consistent;
 - errors fail loudly at boundaries instead of producing fake success;
-- sanity properties that hold by construction are checked (normalization
-  sums, no train/test leakage, coordinate conventions, a random-input
-  baseline in the expected range).
+- check data isolation and relevant numerical or coordinate conventions using
+  the requested run's inputs and outputs.
+
+Additional checks follow [research-minimal.md](../shared/research-minimal.md).
+Random-input baselines are included only when the scientific design calls for them.
 
 Report scientific outcomes:
 
 - Do not assert metric values anywhere. "RMSE must be below X" encodes the
   answer the experiment is meant to discover.
-- Expected outputs are unknown, so TDD does not apply. Sanity checks may be
-  written before the run (they verify the code); result assertions may not.
-- Regression checks are for maintained code with a retained baseline, not
-  for exploration.
 - A missed target is a finding to report (value, condition, gap to the
   baseline or expectation, plausible explanation), not a task failure. A
   task is complete when its evidence is traceable, not when a target is met.

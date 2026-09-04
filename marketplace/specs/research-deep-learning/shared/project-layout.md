@@ -4,6 +4,9 @@ Use the project's documented layout when one exists. The shape below is a
 starting point for a new Python project, not a reason to reorganize an existing
 repository.
 
+Create only directories the current work uses. Exploration can remain in a
+script or notebook without a package, configuration system, or test directory.
+
 ## Recommended Layout For New Projects
 
 ```text
@@ -39,7 +42,7 @@ Add `configs/data/` and `configs/model/` only when the config tree grows beyond
 
 | Path | Contract |
 | --- | --- |
-| `configs/` | YAML configs. All hyperparameters, data paths, run settings, and feature switches live here. |
+| `configs/` | Experiment parameters when the project uses configuration files. |
 | `configs/exp/` | Experiment overrides. Add files here instead of copying train/eval scripts. |
 | `data/raw/` | Immutable project-local raw data, symlinks, small samples, or pointers to external data. |
 | `data/interim/` | Intermediate outputs from data processing. Rebuildable. |
@@ -51,8 +54,8 @@ Add `configs/data/` and `configs/model/` only when the config tree grows beyond
 | `src/<pkg>/training/` | Training loop, LightningModule, optimizer/scheduler/loss builders, checkpoint logic. |
 | `src/<pkg>/eval/` | Metrics, prediction writers, evaluation routines, plotting helpers. |
 | `src/<pkg>/utils/` | Small shared utilities: seed, logging, config, paths, devices. |
-| `scripts/` | Thin command entrypoints only. Business logic belongs in `src/<pkg>/`. |
-| `notebooks/` | Exploration and inspection. Stable code must move to `src/<pkg>/`. |
+| `scripts/` | Experiment scripts or entrypoints to maintained package code. |
+| `notebooks/` | Exploration, inspection, and analysis; reuse alone does not require moving code. |
 | `tests/` | Durable checks when the project keeps them. |
 | `outputs/<run_id>/` | Retained run artifacts: config snapshot, manifest, metrics, checkpoints, logs, predictions, figures. |
 | `outputs/scratch/<run_id>/` | Optional disposable scratch or smoke outputs that are not used as result evidence. |

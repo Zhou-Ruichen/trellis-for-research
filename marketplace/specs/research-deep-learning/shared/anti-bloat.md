@@ -22,7 +22,7 @@ reuse.
 
 ## Keep Variants In Config
 
-Use one training entrypoint with explicit experiment configs:
+Reuse the training entrypoint and configuration the project already has:
 
 ```text
 scripts/train.py
@@ -30,6 +30,10 @@ configs/exp/baseline.yaml
 configs/exp/transformer.yaml
 configs/exp/without_auxiliary_input.yaml
 ```
+
+For a one-off experiment without a config system, explicit script parameters
+are enough. Record their values with retained results; do not add a config
+loader or CLI just to follow this layout.
 
 Do not accumulate source variants:
 
@@ -47,10 +51,9 @@ the current implementation.
 
 ## Exploratory And Diagnostic Code
 
-One-off notebook cells, scripts, and diagnostics may stay direct and local.
-Delete temporary instrumentation after it answers the question. Move logic into
-the maintained source area only when another task needs it or the repository
-will keep using it.
+Exploratory notebook cells and scripts may stay direct and local even when
+reused. Delete temporary instrumentation after it answers the question. Extract
+logic only to simplify the current work or meet an explicit maintenance need.
 
 ## Replace Without Accumulating
 

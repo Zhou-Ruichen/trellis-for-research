@@ -4,13 +4,14 @@ Follow this when adding a new model, data setting, ablation, or training run.
 
 ## Steps
 
-1. Search existing configs under `configs/`.
-2. Create or edit a config override under `configs/exp/`.
+1. Search existing configs, scripts, and run records.
+2. Edit existing experiment parameters or configs; do not add a config system
+   for a one-off run.
 3. Reuse the existing training entrypoint.
-4. Add or update small tests only if the experiment requires new reusable code.
-5. Run the training, comparisons, seeds, or folds required by the scientific
-   question. Use a smaller execution check only when it helps diagnose the path.
-6. Record the command in the task response or project notes when it must survive
+4. Run the training, comparisons, seeds, or folds required by the scientific
+   question. Diagnose actual failures as needed; follow
+   [research-minimal.md](../shared/research-minimal.md) for additional checks.
+5. Record the command in the task response or project notes when it must survive
    the session.
 
 ## Do
@@ -28,9 +29,10 @@ scripts/train_without_auxiliary_input_final.py
 src/<pkg>/training/trainer_v2.py
 ```
 
-## Required Config Fields
+## Experiment Settings
 
-At minimum, an experiment config should resolve:
+Make these values explicit in the existing config or script, and record them
+when retaining the result:
 
 - seed;
 - data manifest path;
@@ -42,8 +44,8 @@ At minimum, an experiment config should resolve:
 
 ## Completion Checklist
 
-- [ ] The experiment is represented as config.
-- [ ] New code was added only when config could not express the change.
+- [ ] Experiment differences are explicit parameters or configs.
+- [ ] New code was added only when existing code could not express the change.
 - [ ] The run command is clear.
 - [ ] The runs required by the scientific question are represented.
 - [ ] Metric targets are reported as observations, not task pass/fail criteria.

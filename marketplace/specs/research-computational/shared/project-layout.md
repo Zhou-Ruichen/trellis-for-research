@@ -4,6 +4,9 @@ Use the repository's existing documented layout first. This template gives a
 minimal research layout for new projects, not a migration mandate for existing
 ones.
 
+Create only directories the current work uses. Exploration can remain in a
+script or notebook without a package, configuration system, or test directory.
+
 ## Recommended Layout For New Research Projects
 
 ```text
@@ -38,10 +41,10 @@ when that is the natural convention for the language or existing repository.
 | `data/processed/` | Durable processed data products. Rebuildable and manifest-backed. |
 | `data/external/` | Read-only external datasets or symlinks when project-local pointers are useful. |
 | `data/manifests/` | JSON/YAML records for source, version, checksum, processing parameters, and split definitions. |
-| `src/`, `lib/`, or project source area | Reusable code. Keep business logic out of copied scripts and notebooks. |
-| `scripts/` | Thin command entrypoints for repeatable tasks. |
-| `notebooks/` | Exploration, inspection, and narrative analysis. Stable code moves to the source area. |
-| `tests/` | Smoke tests, data-contract tests, regression checks, and small unit tests. |
+| `src/`, `lib/`, or project source area | Components explicitly maintained across tasks. |
+| `scripts/` | Experiment scripts or entrypoints to maintained package code. |
+| `notebooks/` | Exploration, inspection, and analysis; reuse alone does not require moving code. |
+| `tests/` | Tests explicitly requested for the project. |
 | `outputs/<run_id>/` | Retained run artifacts: manifest, config snapshot or command record, metrics, logs, figures, tables, products. |
 | `outputs/scratch/<run_id>/` | Disposable scratch or smoke outputs that are not used as result evidence. |
 | `reports/` | Curated figures, tables, and summaries intended for human review or publication. |

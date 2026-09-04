@@ -84,7 +84,7 @@ def validate_required_content() -> None:
         "marketplace/specs/research-computational/shared/research-minimal.md": [
             "exploratory",
             "smallest change",
-            "concrete, likely failure",
+            "explicit task or user request",
             "cheapest check",
             "Stop condition",
             "durable",
@@ -93,7 +93,7 @@ def validate_required_content() -> None:
         "marketplace/specs/research-deep-learning/shared/research-minimal.md": [
             "exploratory",
             "smallest change",
-            "concrete, likely failure",
+            "explicit task or user request",
             "cheapest check",
             "Stop condition",
             "durable",

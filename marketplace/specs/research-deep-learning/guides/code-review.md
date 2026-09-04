@@ -15,7 +15,7 @@ Review the change against the task, not against a generic production checklist.
 
 - Existing loaders, transforms, model blocks, metrics, and plots were reused
   when they already owned the behavior.
-- Experiment variants are configs rather than copied training scripts.
+- Experiment variants are parameters or configs rather than copied scripts.
 - New shared code corresponds to repeated durable logic, not possible future use.
 - Tracked code replaced by this task was removed. Research evidence, data,
   untracked files, and unrelated suspected-dead code were preserved.

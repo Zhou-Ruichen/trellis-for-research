@@ -8,19 +8,21 @@ Trellis files exist only when they preserve a question, decision, or result.
 1. Create a Trellis task only when work must survive sessions, has independent
    deliverables, involves collaboration, or the user asks for a task record.
 2. Exploratory work is the default. Write the smallest code or prose that
-   answers the research question.
+   answers the research question for the stated inputs. Keep scripts direct;
+   do not add layers or defensive branches for hypothetical needs.
 3. Validate external data once where it enters the project. Add further checks
-   only for a concrete failure that would change the result or next action.
+   only to diagnose an observed failure or when the task or user requests them.
 4. Run every comparison, seed, fold, or repeat required by the scientific
    question. Do not repeat an identical successful command only for reassurance.
 5. Reuse existing code before adding files or abstractions. Once the replacement
    has been checked, remove tracked code that the current task replaces; preserve
    data, result evidence, untracked files, and unrelated suspected-dead code
    unless the user requests cleanup.
-6. Sub-agents are optional. Use them only when separate context or parallel work
-   helps the task. A handoff includes the task's prd.md decision and the
-   constraints of `shared/research-minimal.md`; review sub-agent output against
-   that record, not against a generic production checklist.
+6. Sub-agents are optional; work in the main session by default. Delegate bounded,
+   independent work only when parallel execution or separate context helps.
+   Pass the question, task constraints, `shared/research-minimal.md`, expected
+   output, and prd.md when present. Do not require a reviewer agent or repeated
+   agent reviews for completion. The main agent remains responsible for the result.
 
 ## Trellis 0.7 Interface
 
@@ -47,10 +49,9 @@ When a task record is useful:
 - Other task files: only for a real interface, dependency, collaboration, or
   sub-agent context need.
 
-Exploratory mode covers experiments, analysis, and one-off research code.
-Durable mode covers code the repository will maintain, such as loaders, shared
-processing, and reusable training or evaluation code. Retaining a result does
-not make exploratory code durable.
+Exploratory mode is the default, including reused experiment code. Use durable
+mode only for a component the user designates for ongoing maintenance, per
+`shared/research-minimal.md`.
 
 ## Phase Index
 
@@ -70,17 +71,23 @@ sufficient; Trellis adds no second approval.
 [/workflow-state:planning-inline]
 
 [workflow-state:in_progress]
-Read prd.md and only relevant specs. Do the requested work and scientifically
-required runs, use the same outputs for focused checks, record the result once,
-and stop when the question is answered. Commits need no separate approval.
+Work in the main session by default. Read prd.md and only relevant specs. Do the
+requested work and scientifically required runs; use the same outputs for
+focused checks. Keep code direct; do not harden it for hypothetical failures.
+Additional software verification requires an explicit request;
+reviewer agents are not a completion requirement. Record the result once and
+stop when the question is answered. Commits need no separate approval.
 Never discard changes or rewrite history. Push and PR actions follow the user.
 [/workflow-state:in_progress]
 
 [workflow-state:in_progress-inline]
 Work in the main session. Do the requested work and scientifically required
-runs, record the result once, and stop when the question is answered. Commits
-need no separate approval. Never discard changes or rewrite history. Push and
-PR actions follow the user.
+runs; use the same outputs for focused checks. Additional software verification
+requires an explicit request. Keep code direct; do not harden it for hypothetical
+failures. Reviewer agents are not a completion requirement.
+Record the result once and stop when the question is answered. Commits need no
+separate approval. Never discard changes or rewrite history. Push and PR actions
+follow the user.
 [/workflow-state:in_progress-inline]
 
 [workflow-state:completed]
@@ -134,11 +141,15 @@ for the task. Pure prose tasks do not create or run code.
 
 #### 2.2 Focused check
 
+Do not automatically invoke `trellis-check` or a reviewer agent. Follow
+`shared/research-minimal.md` for software verification; reusable code alone
+does not authorize additional tests.
+
 - Exploratory experiment: execute all runs required by the design. Check input
   fields that affect interpretation, obvious shape/dtype/unit/time errors,
-  NaN/Inf, and that observations come from the stated outputs. Do not rerun an
-  identical successful command solely for reassurance.
-- Durable code: use the narrowest check required by the task and project.
+  unexpected NaN/Inf, and that observations come from those same outputs. Do not
+  rerun an identical successful command solely for reassurance.
+- Durable code: use the narrowest check explicitly requested by the task or user.
   Trellis does not add lint, type checking, tests, or full-suite runs on its own.
 - Scientific prose: compare claims with cited evidence and keep scope and
   uncertainty accurate. Do not manufacture an executable check.

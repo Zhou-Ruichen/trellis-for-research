@@ -26,7 +26,7 @@ Use these guides for common research-code workflows.
 
 | Rule | Reference |
 | --- | --- |
-| New experiments are config overrides, not copied scripts | [../training/index.md](../training/index.md) |
+| Keep experiment variants in parameters or existing configs | [../training/index.md](../training/index.md) |
 | Retained runs need manifest, metrics, data record, seed, and an environment record | [../shared/reproducibility.md](../shared/reproducibility.md) |
 | Scratch and smoke runs stay lightweight unless promoted | [../shared/reproducibility.md](../shared/reproducibility.md) |
 | Durable data products need manifests and checks for the fields the model uses | [../data/index.md](../data/index.md) |

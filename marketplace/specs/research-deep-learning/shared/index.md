@@ -22,10 +22,10 @@ locations take precedence. Do not migrate them unless the task asks for it.
 
 ## Rules
 
-- In a new project, use `src/<pkg>/` for reusable code. In an existing project,
-  put it in the established package location.
-- Use `configs/` as the single source of truth for experiment knobs.
-- A new experiment is a new config override under `configs/exp/`, not a copied training script.
+- Keep exploratory code in its script or notebook. Use the established source
+  area for components explicitly maintained across tasks.
+- Reuse existing configs; explicit script parameters are enough for one-off runs.
+- Keep experiment variants in parameters or configs instead of copied scripts.
 - `data/` is allowed, but it must be structured by lifecycle and documented with manifests.
 - `outputs/<run_id>/` is the canonical home for retained run artifacts.
 - Scratch and smoke runs stay lightweight and disposable unless promoted.

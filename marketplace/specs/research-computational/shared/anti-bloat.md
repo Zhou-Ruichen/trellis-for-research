@@ -49,10 +49,9 @@ the current implementation.
 
 ## Exploratory And Diagnostic Code
 
-One-off notebook cells, scripts, and diagnostics may stay direct and local.
-Delete temporary instrumentation after it answers the question. Move logic into
-the maintained source area only when another task needs it or the repository
-will keep using it.
+Exploratory notebook cells and scripts may stay direct and local even when
+reused. Delete temporary instrumentation after it answers the question. Extract
+logic only to simplify the current work or meet an explicit maintenance need.
 
 ## Replace Without Accumulating
 

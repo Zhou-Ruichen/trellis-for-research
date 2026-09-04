@@ -11,12 +11,11 @@ Use simple, readable Python that is easy to inspect during research.
 
 ## Project Style
 
-- Put reusable code under `src/<pkg>/`.
-- Keep `scripts/*.py` thin: parse config, call package functions, exit.
+- Keep exploratory calculations in their script or notebook. Use the project's
+  source area for components explicitly maintained across tasks.
 - Use type hints for public functions and tensor-heavy interfaces when they clarify shape or dtype.
 - Keep tensor shape comments close to non-obvious transformations.
-- Validate at I/O boundaries: config, files, external APIs, parsed data, and model inputs.
-- Avoid broad defensive fallback logic. Unknown data or model states should fail loudly with useful context.
+- Follow [research-minimal.md](./research-minimal.md) for input checks and errors.
 
 ## Imports
 
@@ -37,27 +36,15 @@ package layout instead.
 
 ## Paths
 
-Use `pathlib.Path` for filesystem paths. Pass paths through config instead of
-hardcoding workstation-specific locations.
-
-Bad:
-
-```python
-DATA_ROOT = "/absolute/workstation/path"
-lr = 3e-4
-```
-
-Good:
-
-```python
-data_root = Path(cfg.data.root)
-lr = cfg.optimizer.lr
-```
+Use `pathlib.Path` for filesystem paths. A one-off script may declare its paths
+and parameters directly. Record their values when retaining the result; reuse
+existing configuration when the project has it.
 
 ## Tensor And Array Code
 
 - Be explicit about expected dimensions for non-trivial tensors.
-- Check shape, dtype, finite values, and NaN rules at dataset boundaries.
+- At the data boundary, check only shape, dtype, units, and missing-value
+  assumptions that affect the calculation.
 - Keep device and dtype ownership obvious. Avoid hidden `.cuda()` calls inside low-level helpers.
 
 Example:
@@ -74,12 +61,5 @@ def normalize_batch(x: torch.Tensor, mean: torch.Tensor, std: torch.Tensor) -> t
 
 ## Tests
 
-Write these for durable modules only. Exploratory code follows
-`research-minimal.md` and adds a test only for a named concrete failure.
-
-Minimum meaningful tests:
-
-- config loads;
-- dataset returns expected keys, shapes, dtype, and finite values on a tiny fixture;
-- one training step runs on CPU with a tiny batch;
-- evaluation writes `metrics.json` with the expected schema.
+Follow [research-minimal.md](./research-minimal.md) for when to add or run tests.
+This style guide adds no minimum test suite for exploratory or durable code.

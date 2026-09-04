@@ -5,10 +5,10 @@ checkpoints, and experiment variants.
 
 ## Preferred Stack
 
-- Python package layout under `src/<pkg>/`.
+- Existing project layout; a direct script is enough for an exploratory run.
 - PyTorch for model code.
 - Lightning is acceptable when it is already the project choice.
-- YAML config files in `configs/`.
+- Existing experiment configs when available.
 - Optional Hydra/OmegaConf is acceptable, but do not add it to small scripts only
   to look structured.
 
@@ -39,40 +39,18 @@ For a new project, `scripts/train.py` can be a thin entrypoint:
 6. write retained-run manifest when the run is kept as evidence;
 7. train.
 
-Reusable logic belongs in the project's established package location, or under
-`src/<pkg>/` in a new project.
+This layout is for maintained training code. An exploratory script may load
+data, construct the model, train, and save results directly.
 
 ## Config Rule
 
-Configs are the single source of truth for:
-
-- data paths and manifest paths;
-- model architecture;
-- loss and metrics;
-- optimizer and scheduler;
-- batch size, epochs, precision, devices, gradient accumulation;
-- seed and determinism settings;
-- output root and run naming.
-
-Bad:
-
-```python
-lr = 3e-4
-batch_size = 8
-model = UNet(channels=64)
-```
-
-Good:
-
-```python
-lr = cfg.optimizer.lr
-batch_size = cfg.training.batch_size
-model = build_model(cfg.model)
-```
+Reuse existing configs. Without a config system, a one-off script may declare
+parameters and construct the model directly. Retained results still record the
+values used, per [reproducibility.md](../shared/reproducibility.md).
 
 ## Experiment Variants
 
-A new experiment is a config override:
+When the project uses experiment configs, a variant is a config override:
 
 ```text
 configs/exp/baseline.yaml
@@ -107,34 +85,12 @@ Do not store checkpoints in source directories.
 Scratch and smoke checkpoints may live under `outputs/scratch/<run_id>/` and
 may be deleted when they are no longer useful.
 
-## Minimal Execution Check
-
-For a maintained training pipeline, keep a tiny configuration that exercises one
-step on the cheapest device that supports the model:
-
-```text
-configs/exp/smoke.yaml
-```
-
-The configuration should:
-
-- use a tiny fixture or tiny subset;
-- run one epoch or one training step;
-- use CPU when the model supports it; otherwise use the smallest supported GPU
-  path without adding a separate CPU implementation;
-- verify loss is finite;
-- write enough log or metrics evidence to debug failures.
-
-A small execution check needs a full manifest only when it is promoted to a
-retained result. Its environment may reference the project's existing record.
-
 ## Quality Check
 
-- [ ] New experiment added a config, not a copied training script.
+- [ ] Experiment differences are explicit parameters or configs, not copied scripts.
 - [ ] Training outputs land under `outputs/`; retained run outputs land under
       `outputs/<run_id>/`.
 - [ ] Retained run manifest records config, seed, code state, environment, and
       data manifest.
-- [ ] Maintained training behavior has one small execution path on a supported
-      device; exploratory work uses the requested result-producing invocation.
-- [ ] Model code remains reusable and testable under `src/<pkg>/`.
+- [ ] Execution follows [research-minimal.md](../shared/research-minimal.md),
+      using the requested result-producing runs.

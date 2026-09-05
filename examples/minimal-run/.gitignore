@@ -1,13 +1,4 @@
-# Disposable artifacts generated when running the example.
-# The committed fixture (data/processed/synthetic_v1.json) and the committed
-# retained-run snapshot (outputs/20260725-100000-linear/) stay tracked so the
-# example is readable without running anything.
-outputs/scratch/
-*.pyc
-__pycache__/
-.venv/
-.pytest_cache/
+# Ignore artifacts from older editable installations of this example.
 *.egg-info/
 build/
 dist/
-

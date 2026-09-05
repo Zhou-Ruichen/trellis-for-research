@@ -21,5 +21,5 @@ python3 scripts/validate.py
 ```
 
 The script checks structure, not scientific correctness or exact prose. It does
-not perform a remote `gh:` registry download. Run it only when verification is
-requested; it is not part of an experiment's execution path.
+not perform a remote `gh:` registry download. Use it when checking template
+changes; it is not part of an experiment's execution path.

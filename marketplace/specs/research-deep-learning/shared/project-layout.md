@@ -1,22 +1,15 @@
 # Project Layout
 
-Follow the project's documented layout. The repository's existing structure
-also decides where new training, data, evaluation, notebook, output, and report
-files belong. For a new project, create only what the current work uses.
+Follow the project's documented layout; it decides where source code,
+scripts, notebooks, data, outputs, and reports belong. For a new project,
+create only the directories the current work uses. An exploratory run can be
+a direct script or notebook; it needs no package, configuration system, test
+directory, or command-line wrapper.
 
-An exploratory run can be a direct script or notebook. It does not require a
-package, configuration hierarchy, test directory, or command-line machinery.
-Use the source area for code maintained across tasks, and use existing configs
-when the project has them. Keep variants as explicit parameters or config
-overrides rather than copied training or evaluation scripts.
-
-Record retained evidence in the form the project already uses. Include the
-actual command or settings, seed when relevant, data and split, model and
-training conditions, observed results with units, and paths to checkpoints,
-logs, or products as needed. A config, log, notebook, or `result.md` can be the
-record. Keep temporary outputs separate from evidence used for a result, using
-existing project conventions; do not require moving outputs into a prescribed
-tree.
-
-Keep filenames readable and avoid `v2`, `final`, or backup copies for current
-source. Follow the repository's existing Git rules for large generated files.
+Use the project's existing names, and keep one maintained filename for
+current source instead of `v2`, `final`, or backup copies. Record evidence
+where the project already records it: the command or parameters, input data
+and conditions, observed result with units, and paths to logs or products.
+Keep temporary outputs separate from evidence that supports a result, using
+existing conventions; no output relocation is required. Ignore large
+generated artifacts according to the repository's existing Git rules.

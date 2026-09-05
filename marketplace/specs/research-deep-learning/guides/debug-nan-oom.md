@@ -19,5 +19,5 @@ precision, activations, or evaluation accumulation only as the failure indicates
 Use a smaller case if it helps diagnosis; do not silently change the comparison's
 training settings or add automatic retry logic.
 
-Print only the values needed to locate the failure. Remove temporary diagnostics
-afterward; do not build a reusable diagnostic framework for a one-off error.
+Print only the values needed to locate the failure, and remove temporary
+diagnostics afterward.

@@ -1,8 +1,0 @@
-# Example experiment override. Inherits base.yaml and overrides selected knobs.
-# A new experiment is a config override, not a copied training script.
-run:
-  name: linear
-training:
-  epochs: 1000
-optimizer:
-  lr: 0.02

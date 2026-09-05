@@ -1,17 +1,12 @@
 # Deep Learning Research Spec
 
 For projects that train or evaluate deep-learning models, with optional
-Python/PyTorch guidance. Other languages keep the project's conventions.
+Python/PyTorch guidance; other languages keep the project's conventions.
 
-Start with [minimal research rules](./shared/research-minimal.md) and relevant
-project facts: data conventions, environment, and existing entrypoints.
-An exploratory task does not require a package, config system, manifest,
-software test suite, or a Trellis task record.
-
-Use [research references](./shared/index.md) when a concrete question needs one.
-Use [task guides](./guides/index.md) when their advice helps the current work.
-Do not read every spec merely because the task writes code or handles data.
+Start with [minimal research rules](./shared/research-minimal.md) and the
+project's data conventions, environment, and entrypoints. Use [research
+references](./shared/index.md) and [task guides](./guides/index.md) when a
+concrete question needs one; do not read every spec merely because a task
+writes code or handles data.
 
 For non-DL work, choose the research-computational template.
-Both templates use the same research workflow and preserve scientific evidence
-without prescribing how it must be stored.

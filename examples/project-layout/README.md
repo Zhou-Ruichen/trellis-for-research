@@ -1,31 +1,12 @@
-# Example Project Layout
+# Project Layout
 
-This directory demonstrates one suggested shape for a new project using the
-`research-deep-learning` spec. Existing repositories keep their own documented
-layout.
+Keep the project's existing layout. A new exploratory calculation can start with
+one script or notebook and its result, as in [minimal-run](../minimal-run/README.md).
 
-It is not a full scaffold. It exists so agents and developers can inspect the
-target layout quickly.
+Add a directory when there is something to put in it: shared code, external data,
+run outputs, or report figures. Separate temporary products from evidence worth
+keeping. Large datasets and generated outputs normally stay outside Git, with
+their locations recorded beside the analysis that uses them.
 
-```text
-project-layout/
-  configs/
-    base.yaml
-    exp/
-  data/
-    raw/
-    interim/
-    processed/
-    manifests/
-  src/research_project/
-    data/
-    models/
-    training/
-    eval/
-    utils/
-  scripts/
-  notebooks/
-  tests/
-  outputs/
-  reports/
-```
+This example deliberately ships no empty directory tree, placeholder manifest,
+or unused configuration. A layout should describe the work already present.

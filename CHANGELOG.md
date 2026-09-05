@@ -5,6 +5,35 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## Unreleased
+
+### Changed
+- Added concise task-resume and decomposition rules using existing records.
+- Replaced the packaged regression example with one standard-library analysis
+  script and its result; removed run tiers, manifests, config inheritance,
+  environment snapshots, and example-only packaging. The example now fits
+  the same synthetic observations with ordinary least squares instead of
+  gradient descent. Layout guidance no longer ships placeholder files.
+- Centralized execution, checking, authorization, and evidence rules in
+  `shared/research-minimal.md`; domain guides now add only domain guidance
+  and link to the common rules instead of restating procedures.
+- Focused checks the work needs are part of the work. Removed the blanket
+  requirement that software tests, lint, builds, and type checks wait for an
+  explicit request; test suites, check agents, new test infrastructure, and
+  repeated successful checks are still not added by default.
+- Removed the universal sealed-evaluation and freeze-confirmation ceremony.
+  Data isolation, specifically declared held-out-data restrictions, and
+  user-reserved decisions remain in force; completing a task does not
+  itself declare exploration finished.
+- Unified the duplicated shared specs across the two templates around
+  shared domain-neutral wording; both templates stay self-contained, and
+  the deep-learning reproducibility guide keeps its checkpoint, model,
+  and RNG specifics.
+- Shortened the workflow, spec files, and READMEs while keeping the six
+  Trellis 0.7 workflow-state blocks, numbered phase and step entries, task
+  CLI, marketplace ids, template paths, and published release pins
+  unchanged.
+
 ## v0.5.0 - 2026-09-05
 
 ### Changed

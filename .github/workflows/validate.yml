@@ -24,33 +24,5 @@ jobs:
       - name: Validate marketplace
         run: python3 scripts/validate.py
 
-  example-smoke:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install example package
-        working-directory: examples/minimal-run
-        run: |
-          python -m venv .venv
-          .venv/bin/pip install -q -e . pytest
-
-      - name: Build dataset
-        working-directory: examples/minimal-run
-        run: .venv/bin/python scripts/build_dataset.py
-
-      - name: Smoke train (scratch tier)
-        working-directory: examples/minimal-run
-        run: .venv/bin/python scripts/train.py --config configs/exp/smoke.yaml
-
-      - name: Re-evaluate committed snapshot
-        working-directory: examples/minimal-run
-        run: .venv/bin/python scripts/evaluate.py --run-id 20260725-100000-linear
-
-      - name: Tests
-        working-directory: examples/minimal-run
-        run: .venv/bin/python -m pytest -q
+      - name: Run minimal example
+        run: python3 examples/minimal-run/analysis.py

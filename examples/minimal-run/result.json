@@ -1,0 +1,25 @@
+{
+  "python": "3.14.7",
+  "data": {
+    "kind": "synthetic",
+    "seed": 42,
+    "n_samples": 200,
+    "x_range": [
+      0.0,
+      10.0
+    ],
+    "true_slope": 2.0,
+    "true_intercept": 1.0,
+    "noise_std": 0.5
+  },
+  "method": "ordinary least squares (statistics.linear_regression)",
+  "fit": {
+    "slope": 2.014293628721581,
+    "intercept": 0.9865966705506111
+  },
+  "in_sample": {
+    "rmse": 0.45903538398179894,
+    "mae": 0.36114387668186154,
+    "r2": 0.9938678372752769
+  }
+}

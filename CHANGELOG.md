@@ -9,6 +9,9 @@ Notable changes to this Trellis spec-template repository. Format based on
 
 ### Changed
 - Added concise task-resume and decomposition rules using existing records.
+- Linked Python style and training guidance from the deep-learning reference
+  index; clarified delegated edit scope, outputs, completion criteria, shared
+  compute coordination, and the main agent's integration responsibility.
 - Replaced the packaged regression example with one standard-library analysis
   script and its result; removed run tiers, manifests, config inheritance,
   environment snapshots, and example-only packaging. The example now fits

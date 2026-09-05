@@ -32,6 +32,7 @@ result, and reviewer agents are not a completion requirement.
 
 - Before pausing or handing off, update the existing task record with completed and unverified work, the next action, and key decisions. For ongoing computations, include the host, job identifier, and log or output paths; verify their current state before restarting work.
 - Split a task when a question or deliverable can be assessed independently, and note dependencies. Keep seeds, folds, and parameter variants together unless they need independent delivery; do not create extra files or task levels merely to represent the split.
+- When delegating, specify the objective, edit scope, output locations, and completion criteria. Avoid overlapping writes and coordinate shared compute use. The main agent integrates the deliverables and checks the evidence needed to support the result.
 
 [workflow-state:no_task]
 Work under the minimal research rules and relevant project facts. Create a

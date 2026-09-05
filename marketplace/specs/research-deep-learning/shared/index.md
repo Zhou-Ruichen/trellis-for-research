@@ -7,7 +7,9 @@ facts. Other files are references for concrete questions, not a reading checklis
 | --- | --- |
 | Would added structure simplify the current calculation? | [anti-bloat.md](./anti-bloat.md) |
 | Where does this project keep code and outputs? | [project-layout.md](./project-layout.md) |
+| How should research Python and tensor code be written? | [python-style.md](./python-style.md) |
 | What information must survive with a result? | [reproducibility.md](./reproducibility.md) |
 | Could data conventions silently change the result? | [data guidelines](../data/index.md) |
+| How should training variants and checkpoints be handled? | [training guidelines](../training/index.md) |
 | Is the comparison scientifically interpretable? | [evaluation guidelines](../evaluation/index.md) |
 | How should a research finding be written? | [scientific-writing.md](./scientific-writing.md) |

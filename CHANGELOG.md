@@ -8,6 +8,33 @@ Notable changes to this Trellis spec-template repository. Format based on
 ## Unreleased
 
 ### Changed
+- Rewrote `shared/scientific-writing.md` around one main claim: comparisons
+  serve the claim, planned comparisons are reported including losses, and
+  no passages rebut objections that no reviewer or result raised.
+- Kept workflow vocabulary (freeze, baseline, protocol, pipeline, manifest,
+  retained or promoted run, dry run) and coined terms out of research prose
+  unless attached to a named referent; required direct statements instead
+  of chains of what a thing is not or claims routed through a second noun;
+  placed each limitation next to the claim it weakens and cut disclaimers
+  of claims nobody made; moved Git, CI, and hosting details and identifiers
+  out of the narrative.
+- Linked the writing rules from `shared/research-minimal.md` and workflow
+  step 2.1.
+- Replaced "baseline" and "protocol" in the reproducibility and data specs
+  with "reference run", "reference method", "comparison", and "access URL".
+- Added evaluation rules for selection versus reporting data and for
+  differences measured against variation under one condition; a notebook is
+  a record when it runs top to bottom from a fresh kernel.
+- Gave each principle one home: variants-as-parameters and code review live
+  in `anti-bloat.md`, storage in `project-layout.md`, evidence and
+  "software success is not evidence" in `reproducibility.md`, comparison
+  rules in `evaluation/index.md`. Removed `guides/code-review.md`; merged
+  `guides/add-experiment.md` into `guides/add-run.md`.
+- Made `data/index.md`, `evaluation/index.md`, and `shared/reproducibility.md`
+  identical across the two templates; deep-learning specifics (selection
+  data, RNG schedule, checkpoints, augmentation) moved to
+  `training/index.md`. Nine files are now shared and checked byte-identical
+  by the validator; `index.md` files stay short as Trellis layer catalogues.
 - Added concise task-resume and decomposition rules using existing records.
 - Linked Python style and training guidance from the deep-learning reference
   index; clarified delegated edit scope, outputs, completion criteria, shared
@@ -29,9 +56,7 @@ Notable changes to this Trellis spec-template repository. Format based on
   user-reserved decisions remain in force; completing a task does not
   itself declare exploration finished.
 - Unified the duplicated shared specs across the two templates around
-  shared domain-neutral wording; both templates stay self-contained, and
-  the deep-learning reproducibility guide keeps its checkpoint, model,
-  and RNG specifics.
+  shared domain-neutral wording; both templates stay self-contained.
 - Shortened the workflow, spec files, and READMEs while keeping the six
   Trellis 0.7 workflow-state blocks, numbered phase and step entries, task
   CLI, marketplace ids, template paths, and published release pins

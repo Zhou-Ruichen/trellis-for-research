@@ -33,8 +33,10 @@ project scaffold or a Trellis fork.
   completion does not declare results final or exploration finished.
 - Tasks are for context that must survive sessions, independent
   deliverables, or explicit requests; sub-agents are optional helpers.
-- Write findings with evidence, interpretation, and actual limits; do not
-  invent results or present software status as science.
+- Write one main claim with its evidence, interpretation, and actual
+  limits in the field's terms. A workflow word such as freeze, baseline,
+  or protocol names a concrete referent or is replaced by it; a thing is
+  defined by what it is; software status is not a finding.
 
 Project-specific data conventions and existing code organization remain in
 place; mixed-language projects follow the same rules. These defaults are
@@ -167,8 +169,9 @@ python3 scripts/validate.py
 ```
 
 The script checks marketplace metadata, paths, links, workflow-state
-blocks, ASCII rules, release pins, and installation shape when Trellis is
-available. It does not enforce exact spec wording.
+blocks, ASCII rules, shared-file parity between the two templates, release
+pins, and installation shape when Trellis is available. It does not
+enforce exact spec wording.
 
 Validation of these unreleased changes covers repository checks and native
 context loading in a temporary Trellis `0.7.0-beta.3` project. These changes

@@ -11,6 +11,9 @@
 - content under `examples/` may include bilingual writing samples (for example a
   Chinese result discussion), so the ASCII-content check skips that subtree while
   still requiring ASCII paths;
+- the files both templates share (`data/index.md`, `evaluation/index.md`,
+  `guides/add-run.md`, `guides/write-results.md`, and every `shared/` file
+  except `index.md` and `python-style.md`) stay byte-identical;
 - when Trellis is installed, the template can be copied into `.trellis/spec/`
   after `trellis init` and every expected file is present.
 

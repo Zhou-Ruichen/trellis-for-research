@@ -91,7 +91,8 @@ The next action and the inputs and outputs it needs are clear.
 
 #### 2.1 Implement or write
 Use existing code or direct scripts and notebooks. Add structure only to
-simplify the current calculation. Pure writing tasks need no executable code.
+simplify the current calculation. Pure writing tasks need no executable code;
+research-facing prose follows `shared/scientific-writing.md`.
 
 #### 2.2 Use the result as evidence
 Run the comparisons, seeds, and folds the question needs, and check

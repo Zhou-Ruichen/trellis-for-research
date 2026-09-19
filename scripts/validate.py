@@ -144,6 +144,27 @@ def validate_no_non_ascii() -> None:
             fail(f"file content must be ASCII: {rel_path}")
 
 
+SHARED_FILES = [
+    "data/index.md",
+    "evaluation/index.md",
+    "guides/add-run.md",
+    "guides/write-results.md",
+    "shared/anti-bloat.md",
+    "shared/project-layout.md",
+    "shared/reproducibility.md",
+    "shared/research-minimal.md",
+    "shared/scientific-writing.md",
+]
+
+
+def validate_shared_files_identical() -> None:
+    first = ROOT / "marketplace/specs/research-computational"
+    second = ROOT / "marketplace/specs/research-deep-learning"
+    for rel_path in SHARED_FILES:
+        if (first / rel_path).read_bytes() != (second / rel_path).read_bytes():
+            fail(f"templates must keep {rel_path} identical")
+
+
 def validate_trellis_spec_shape() -> None:
     trellis = shutil.which("trellis")
     if trellis is None:
@@ -154,35 +175,17 @@ def validate_trellis_spec_shape() -> None:
         "research-deep-learning": [
             "README.md",
             "shared/index.md",
-            "shared/project-layout.md",
-            "shared/anti-bloat.md",
-            "shared/reproducibility.md",
-            "shared/scientific-writing.md",
-            "shared/research-minimal.md",
             "shared/python-style.md",
-            "data/index.md",
             "training/index.md",
-            "evaluation/index.md",
             "guides/index.md",
-            "guides/add-experiment.md",
-            "guides/write-results.md",
             "guides/debug-nan-oom.md",
-            "guides/code-review.md",
+            *SHARED_FILES,
         ],
         "research-computational": [
             "README.md",
             "shared/index.md",
-            "shared/project-layout.md",
-            "shared/anti-bloat.md",
-            "shared/reproducibility.md",
-            "shared/scientific-writing.md",
-            "shared/research-minimal.md",
-            "data/index.md",
-            "evaluation/index.md",
             "guides/index.md",
-            "guides/add-run.md",
-            "guides/write-results.md",
-            "guides/code-review.md",
+            *SHARED_FILES,
         ],
     }
 
@@ -243,6 +246,7 @@ def main() -> None:
     validate_markdown_links()
     validate_workflow_states()
     validate_no_non_ascii()
+    validate_shared_files_identical()
     validate_readme_pins_latest_version()
     validate_trellis_spec_shape()
     print("trellis-for-research validation passed")

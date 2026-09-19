@@ -39,22 +39,21 @@ project scaffold or a Trellis fork.
   defined by what it is; software status is not a finding.
 
 Project-specific data conventions and existing code organization remain in
-place; mixed-language projects follow the same rules. These defaults are
-unreleased development-branch changes; the last published release stays `v0.5.0`,
-with differences recorded in [CHANGELOG.md](CHANGELOG.md).
+place; mixed-language projects follow the same rules. Differences between
+releases are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-The current template release is `v0.5.0`, targeting Trellis
+The current template release is `v0.6.0`, targeting Trellis
 `0.7.0-beta.3`. See [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --claude --codex
 ```
 
@@ -102,7 +101,7 @@ variant:
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --force
 ```
 
@@ -115,7 +114,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0
     template: research-computational
 ```
 
@@ -173,9 +172,8 @@ blocks, ASCII rules, shared-file parity between the two templates, release
 pins, and installation shape when Trellis is available. It does not
 enforce exact spec wording.
 
-Validation of these unreleased changes covers repository checks and native
-context loading in a temporary Trellis `0.7.0-beta.3` project. These changes
-have not been deployed to existing research projects.
+Release validation covers repository checks and native context loading in
+a temporary Trellis `0.7.0-beta.3` project.
 
 ## Examples
 

@@ -5,7 +5,7 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
-## Unreleased
+## v0.6.0 - 2026-09-20
 
 ### Changed
 - Rewrote `shared/scientific-writing.md` around one main claim: comparisons

@@ -19,19 +19,19 @@
 - 跨会话上下文、独立交付或明确要求才建任务；子代理按需使用，不自动增加检查代理或多轮审查。
 - 写作围绕一条主线，用领域术语陈述主要结论及其证据、解释和真实限制，限制写在它影响的结论旁边；流程词（冻结、基线、协议）必须落到具体对象；不以"不是什么"的排比代替定义，不编造结论，也不以软件运行状态冒充科学结果。
 
-以上默认行为是主分支上尚未发布的修订；最后发布的版本仍为 `v0.5.0`，差异见 [CHANGELOG.md](CHANGELOG.md)。
+版本间差异见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 安装已发布版本
 
-当前发布标签为 `v0.5.0`，使用 Trellis `0.7.0-beta.3`：
+当前发布标签为 `v0.6.0`，使用 Trellis `0.7.0-beta.3`：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.3
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --claude --codex
 ```
 
@@ -65,7 +65,7 @@ trellis update --migrate
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
   --force
 ```
 
@@ -77,7 +77,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.5.0
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0
     template: research-computational
 ```
 
@@ -93,4 +93,4 @@ registry:
 
 项目 spec 写真实的数据约定、源文件路径和可复用决定，实际任务需要时再补规则。[官方业务场景](https://docs.trytrellis.app/zh/start/real-world-scenarios)可作参考，选择与当前科研任务有关的部分。最小示例保留标准库脚本、实际结果和说明；目录参考不再附带空目录或占位配置。
 
-仓库结构检查可运行 `python3 scripts/validate.py`。本次未发布修订的验证覆盖仓库检查，以及临时 Trellis `0.7.0-beta.3` 项目的原生上下文加载；尚未部署到已有科研项目。
+仓库结构检查可运行 `python3 scripts/validate.py`。发布前验证覆盖仓库检查，以及临时 Trellis `0.7.0-beta.3` 项目的原生上下文加载。

@@ -14,7 +14,7 @@ explicitly requires it and the behavior is recorded.
 
 ## OOM
 
-Locate the allocation or retained tensors involved. Inspect batch dimensions,
+Locate the allocation or tensors involved. Inspect batch dimensions,
 precision, activations, or evaluation accumulation only as the failure indicates.
 Use a smaller case if it helps diagnosis; do not silently change the comparison's
 training settings or add automatic retry logic.

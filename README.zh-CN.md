@@ -5,33 +5,33 @@
 本仓库提供两个科研 Spec 模板和一个可选的任务工作流：
 
 - `research-computational`：分析、模拟、传统机器学习和数据处理。
-- `research-deep-learning`：深度学习训练、模型比较和 checkpoint。
-- `research` workflow：跨会话保留问题、状态和证据。
+- `research-deep-learning`：深度学习训练和模型比较。
+- `research` workflow：跨会话保留问题、数字和复现信息。
 
 ## 科研默认行为
 
 - 从 `shared/research-minimal.md` 和相关项目事实开始，其余规范按具体问题查阅。
-- 复用现有代码或直接写脚本、notebook，不要求拆包或配置系统；错误直接报出，实际失败再定位。
-- 工作所需的聚焦检查属于工作本身：匹配条件的比较与计划内的 seed、在数据边界检查可能悄悄改变结论的假设、用实验自身输出作为证据。默认不添加测试套件、lint 或类型检查、检查代理，也不重复跑成功的命令。
-- 指标是观察，包括负结果和零结果，不作为任务通过门槛。
-- 保留解释结果所需的输入、实际参数、代码状态、环境和输出，复用现有记录；不强制 manifest，也不要求搬动输出。
-- 按项目声明的规则隔离 held-out 数据；任务完成不代表结果定稿或探索结束。
-- 跨会话上下文、独立交付或明确要求才建任务；子代理按需使用，不自动增加检查代理或多轮审查。
-- 写作围绕一条主线，用领域术语陈述主要结论及其证据、解释和真实限制，限制写在它影响的结论旁边；流程词（冻结、基线、协议）必须落到具体对象；不以"不是什么"的排比代替定义，不编造结论，也不以软件运行状态冒充科学结果。
+- 复用现有代码或直接写脚本、notebook。额外的包、配置层、测试和包装只有在当前问题需要时才添加；错误直接报出，实际失败再定位。
+- 运行能回答问题的最小计算。只有在比较、seed 或输入检查能回答问题或避免结果被悄悄改变时才添加。
+- 在现有记录中保留数字，以及复现它所需的命令、数据、代码、seed 和环境信息；大输出默认不进 Git。
+- 按项目声明的规则分开用于最终评估的数据；完成一个任务后可以继续探索。
+- 跨会话上下文、独立交付或明确要求才建任务；普通工作由主会话完成。
+- 写作直接陈述数字、条件、解释和真实限制，使用领域已有术语，写清数据、方法和设置；不编造结论，也不以软件运行状态冒充科学结果。
 
 版本间差异见 [CHANGELOG.md](CHANGELOG.md)。
 
-## 安装已发布版本
+## 安装固定版本
 
-当前发布标签为 `v0.6.0`，使用 Trellis `0.7.0-beta.3`：
+下一版本计划使用标签 `v0.6.1`，对应 Trellis `0.7.0-beta.4`。发布该标签后，
+使用下面的固定版本命令：
 
 ```sh
-npm install -g @mindfoldhq/trellis@0.7.0-beta.3
+npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --claude --codex
 ```
 
@@ -50,8 +50,8 @@ Trellis 与科研模板各自有版本：
 需要采用较新的受支持版本时再升级 CLI；`trellis upgrade --dry-run` 只预览包升级，不更新项目文件。更新项目前先保存现有工作：
 
 ```sh
-trellis update --migrate --dry-run
-trellis update --migrate
+trellis update --dry-run
+trellis update
 ```
 
 修改过的文件进入冲突处理：合并时保留项目事实，`--skip-all` 保留本地修改，`--force` 覆盖冲突文件。固定的 spec 来源不会自动跳到新标签。命令区别见[官方升级说明](https://docs.trytrellis.app/zh/start/everyday-use)。
@@ -65,7 +65,7 @@ trellis update --migrate
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --force
 ```
 
@@ -77,20 +77,20 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1
     template: research-computational
 ```
 
-`--save` 写入 `.trellis/workflows/research.md`，保留原生全局 workflow，但不设置项目默认值。workflow 和 spec 来源应选同一发布标签，修改上下文后重启 Agent 会话。`inline` 让 Codex 默认在主会话工作，需要独立分析时仍可用子代理。
+`--save` 写入 `.trellis/workflows/research.md`，保留原生全局 workflow，项目默认值保持不变。workflow 和 spec 来源应选同一发布标签，修改上下文后重启 Agent 会话。`inline` 让 Codex 默认在主会话工作；问题需要时再使用子代理。
 
-保持 Trellis 原生脚本、hooks、skills 和 agents 不变，让它们随官方更新；带有独立流程的原生 skills 不会被本 workflow 自动调用。在项目 `AGENTS.md` 的 Trellis 托管区之外，指向 `.trellis/workflows/research.md` 和 `.trellis/spec/shared/research-minimal.md`，保留项目自己的约定。若未来 Trellis 改变 workflow 格式或加载接口，仍需更新模板。普通更新不会替换模板中不存在的自定义 skill 路径；registry 来源必须是支持的远端来源，不能填本地目录。
+保留 Trellis 原生脚本、hooks、skills 和 agents，让它们随官方更新。在项目 `AGENTS.md` 中指向 `.trellis/workflows/research.md` 和 `.trellis/spec/shared/research-minimal.md`，保留项目自己的约定。registry 使用受支持的远端来源。
 
 ## 日常使用
 
-从 `shared/research-minimal.md` 开始。直接描述科研问题，小任务不必建 task 或输入 slash 命令；会话 hook 正常的平台自动加载上下文，没有自动加载能力的平台才需要 `/trellis:start`。需要任务记录时，问题、计划和状态保留在 `prd.md`，结果写一次 `result.md` 或引用已有记录；seed、fold、参数变体默认留在同一科研问题下。
+从 `shared/research-minimal.md` 开始。直接描述科研问题，小任务不必建 task 或输入 slash 命令；会话 hook 正常的平台自动加载上下文，没有自动加载能力的平台才需要 `/trellis:start`。需要任务记录时，在 `prd.md` 留下问题和下一步，在任务的 `result.md` 或项目现有结果记录中写结果和复现信息；参数变体默认留在同一科研问题下。
 
-`/trellis:continue` 推进当前任务；`/trellis:finish-work` 在工作提交后归档任务并写 journal。这些原生命令按需使用，不增加逐阶段确认。
+`/trellis:continue` 推进当前任务；`/trellis:finish-work` 在工作提交后归档任务并写 journal。按任务记录或 journal 的需要使用这些命令。
 
-项目 spec 写真实的数据约定、源文件路径和可复用决定，实际任务需要时再补规则。[官方业务场景](https://docs.trytrellis.app/zh/start/real-world-scenarios)可作参考，选择与当前科研任务有关的部分。最小示例保留标准库脚本、实际结果和说明；目录参考不再附带空目录或占位配置。
+项目 spec 写真实的数据约定、源文件路径和可复用决定，实际任务需要时再补规则。[官方业务场景](https://docs.trytrellis.app/zh/start/real-world-scenarios)可作参考，选择与当前科研任务有关的部分。最小示例保留标准库脚本、实际结果和说明；目录参考只列出当前使用的文件。
 
-仓库结构检查可运行 `python3 scripts/validate.py`。发布前验证覆盖仓库检查，以及临时 Trellis `0.7.0-beta.3` 项目的原生上下文加载。
+仓库结构检查可运行 `python3 scripts/validate.py`。

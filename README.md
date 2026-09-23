@@ -3,40 +3,33 @@
 [Chinese guide](README.zh-CN.md)
 
 Research instructions and an optional task record for Trellis. Small work
-runs directly; long-running work preserves its question, state, and evidence.
+runs directly; long-running work keeps its question, numbers, and rerun notes.
 
 | Template | Use for |
 | --- | --- |
 | `research-computational` | Analysis, simulation, traditional ML, and data processing |
-| `research-deep-learning` | Deep-learning training, checkpoints, and model comparisons |
+| `research-deep-learning` | Deep-learning training and model comparisons |
 
-Both use the `research` workflow. This is a template repository, not a
-project scaffold or a Trellis fork.
+Both use the `research` workflow. This repository distributes templates for
+installation into Trellis projects.
 
 ## Research Defaults
 
 - Start from `shared/research-minimal.md` plus project facts; other specs
   answer concrete questions instead of loading as a checklist.
-- Reuse existing code or a direct script/notebook. No package, config
-  system, or compatibility layer is required for an exploratory calculation;
-  errors propagate with tracebacks and are diagnosed where they occur.
-- Focused checks the work needs are part of the work: matched comparisons
-  and planned seeds, one boundary check for assumptions that could silently
-  change results, and the experiment's own outputs as evidence. No default
-  test suite, lint or type pass, check agent, or repeated re-runs.
-- Metrics are observations, including negative and null results, never task
-  pass thresholds.
-- Preserve the inputs, settings, code state, environment, and outputs needed
-  to interpret retained evidence, reusing existing records. No manifest
-  schema or output relocation.
-- Keep held-out data isolated under the project's stated restrictions; task
-  completion does not declare results final or exploration finished.
+- Reuse existing code or a direct script/notebook. Extra packages, config
+  layers, tests, and wrappers are optional and need a concrete reason.
+- Run the smallest useful calculation. Add a comparison, seed, or input check
+  only when it answers the question or prevents a likely silent error.
+- Record the reported number and the small set of command, data, code, seed,
+  and environment details needed to rerun it. Keep large outputs outside Git.
+- Keep data reserved for final evaluation separate under the project's stated
+  restrictions; a finished task records one step in an ongoing investigation.
 - Tasks are for context that must survive sessions, independent
-  deliverables, or explicit requests; sub-agents are optional helpers.
-- Write one main claim with its evidence, interpretation, and actual
-  limits in the field's terms. A workflow word such as freeze, baseline,
-  or protocol names a concrete referent or is replaced by it; a thing is
-  defined by what it is; software status is not a finding.
+  deliverables, or explicit requests. The main session owns ordinary work.
+- Write the finding with its number, conditions, interpretation, and actual
+  limits in the field's terms. Name the data, method, and settings directly;
+  software status is not a finding.
 
 Project-specific data conventions and existing code organization remain in
 place; mixed-language projects follow the same rules. Differences between
@@ -44,16 +37,17 @@ releases are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-The current template release is `v0.6.0`, targeting Trellis
-`0.7.0-beta.3`. See [CHANGELOG.md](CHANGELOG.md) for what changed.
+The next template release is `v0.6.1`, targeting Trellis `0.7.0-beta.4`.
+After publishing that tag, use the pinned commands below. See
+[CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ```sh
-npm install -g @mindfoldhq/trellis@0.7.0-beta.3
+npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --claude --codex
 ```
 
@@ -76,8 +70,8 @@ touching project files. For project updates, save current work, inspect the
 proposed changes, then apply:
 
 ```sh
-trellis update --migrate --dry-run
-trellis update --migrate
+trellis update --dry-run
+trellis update
 ```
 
 Modified files enter conflict handling: merge while preserving project
@@ -101,7 +95,7 @@ variant:
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1 \
   --force
 ```
 
@@ -114,27 +108,21 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.0
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.1
     template: research-computational
 ```
 
 `--save` writes `.trellis/workflows/research.md`, leaves the native global
-workflow intact, and does not set the project default. Keep the workflow
+workflow intact and keeps the project default unchanged. Keep the workflow
 release and spec source tag aligned, and restart the agent session after
 changing context. Inline dispatch keeps ordinary Codex work in the main
-session; independent agents remain available when useful.
+session; use a sub-agent only when the question needs one.
 
-Keep native Trellis scripts, hooks, skills, and agents unchanged so they
-follow upstream updates; generic native skills may carry their own routing
-or verification procedures and are not invoked automatically by this
-workflow. In an existing project's `AGENTS.md`, outside the managed Trellis
-block, point to `.trellis/workflows/research.md` and
-`.trellis/spec/shared/research-minimal.md` as the research entry points,
-keeping project-specific conventions alongside them. A future change to
-Trellis's workflow format or loader may still require a template update.
-Custom skill paths absent from the template are not replaced by normal
-updates, and the registry source must be a supported remote source, not a
-local checkout path.
+Keep native Trellis scripts, hooks, skills, and agents so they follow
+upstream updates. In an existing project's `AGENTS.md`, point to
+`.trellis/workflows/research.md` and
+`.trellis/spec/shared/research-minimal.md` as the research entry points.
+Use a supported remote registry source.
 
 ## Project Use
 
@@ -143,16 +131,15 @@ The installed `shared/research-minimal.md` is the entry point;
 
 Describe the scientific question directly; small work needs no task or
 slash command. With session hooks, opening a session loads Trellis context;
-`/trellis:start` is for platforms without automatic session loading. A
-recorded task keeps its question, plan, and state in `prd.md` and records
-results once in `result.md` or links existing evidence. Seeds and parameter
-variants remain runs within the same question unless they are independent
-deliverables.
+`/trellis:start` is for platforms without automatic session loading. If a
+question needs a task record, keep its question and next action in `prd.md`
+and put the result and rerun information in the task's `result.md` or the
+project's existing result record.
+Parameter variants can remain under the same question.
 
 `/trellis:continue` advances the current task; `/trellis:finish-work`
 archives completed work and writes a journal after the work is committed.
-These native commands are optional and follow the research workflow's
-rules; they are not additional approval stages.
+Use these native commands when their task record or journal is useful.
 
 Write project specs from actual data conventions, source paths, and
 reusable decisions; add a rule when a real task needs it. The official
@@ -169,17 +156,13 @@ python3 scripts/validate.py
 
 The script checks marketplace metadata, paths, links, workflow-state
 blocks, ASCII rules, shared-file parity between the two templates, release
-pins, and installation shape when Trellis is available. It does not
-enforce exact spec wording.
-
-Release validation covers repository checks and native context loading in
-a temporary Trellis `0.7.0-beta.3` project.
+pins, and installation shape when Trellis is available.
 
 ## Examples
 
-- `examples/project-layout/`: brief layout guidance, without placeholder files.
+- `examples/project-layout/`: brief layout guidance for the files in use.
 - `examples/minimal-run/`: one standard-library regression script, its actual
-  result, and a short scientific report. No package installation or run tiers.
+  result, and a short scientific report.
 
 ## Repository Layout
 

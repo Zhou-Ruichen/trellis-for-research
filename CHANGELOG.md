@@ -5,6 +5,23 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.1 - 2026-09-23
+
+### Changed
+- Updated the documented Trellis target from `0.7.0-beta.3` to the
+  non-breaking `0.7.0-beta.4` release. Its migration list is empty, so
+  `trellis update` needs no `--migrate` option.
+- Made the research workflow a direct exploratory path. Trellis state labels
+  remain for context loading, but they do not describe approval steps or
+  automatic sub-agent work.
+- Reduced the default record to the number and the command, data, code, seed,
+  and environment details needed to rerun it. Large outputs remain outside Git
+  unless they are needed to interpret the number.
+- Made repeats, extra comparisons, input checks, and uncertainty conditional
+  on the question. A single run and a negative result remain valid observations.
+- Removed workflow labels from the installed writing guidance and replaced
+  them with the concrete data, method, settings, and number.
+
 ## v0.6.0 - 2026-09-20
 
 ### Changed

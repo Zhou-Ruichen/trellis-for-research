@@ -18,8 +18,8 @@ python3 analysis.py > result.json
 ```
 
 The [short report](reports/linear_regression_discussion.md) interprets the result.
-The observations used for fitting are also used for evaluation; these numbers
-describe this synthetic sample, not generalization to unseen or real data.
+The observations used for fitting are also used for evaluation; both metrics
+are in-sample results on this synthetic sample.
 
 This example keeps parameters in the script and one result beside it. Edit the
 existing script for a new comparison; preserve the code and results supporting

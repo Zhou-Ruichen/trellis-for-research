@@ -5,6 +5,14 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.3 - 2026-10-10
+
+### Changed
+- Added "boundary" to the banned borrowings in `shared/scientific-writing.md`;
+  say where the data are read instead.
+- Renamed the `data/index.md` heading "Data boundary" to "Checks when data
+  are read".
+
 ## v0.6.2 - 2026-10-10
 
 ### Changed

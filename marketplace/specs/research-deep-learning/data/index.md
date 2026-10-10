@@ -9,7 +9,7 @@ For data too large to version, record a pointer and the upstream version or
 retrieval date. Add the variables, extent, resolution, or checksum only when
 they affect the reported result or its reproduction.
 
-## Data boundary
+## Checks when data are read
 
 Inspect the units, split, labels, missing-value handling, or other input fact
 only when getting it wrong could silently change the result. Let the data

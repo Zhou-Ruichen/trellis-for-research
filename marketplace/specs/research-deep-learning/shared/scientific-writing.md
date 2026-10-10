@@ -26,6 +26,11 @@ explanation at the strength the result supports. Place the data range or
 other limit beside the finding it limits. Give uncertainty when it changes how
 the result should be read.
 
+Spend the words on the analysis and on a plain statement of what was
+observed. State a limitation once, beside the claim it affects and in
+proportion to its effect; do not pile scope qualifiers onto a favorable
+result, and do not add a hedge for an objection nobody raised.
+
 ## Methods
 
 Describe data, processing, settings, software, command, and analysis in the
@@ -45,9 +50,12 @@ data, method, settings, and result directly. Keep internal labels in working
 notes. Preserve the author's certainty when editing and flag a suspected
 scientific error for review.
 
-Do not use a borrowed engineering or software word, a workflow label, or a
-coined term for any scientific concept, procedure, comparison, or result, in
-prose or in a reply. Name the quantity, data, method, or result. In geodesy,
+Do not use a borrowed engineering or software word, a workflow label, a
+coined term, or an internal codename for any scientific concept, procedure,
+comparison, or result, in prose, in a reply, or in a new identifier,
+comment, docstring, log line, file name, or figure label in code and
+configuration, which take the field's term or its standard abbreviation.
+Name the quantity, data, method, or result. In geodesy,
 for example, write 正则化 not 阻尼, 参考模型 not 基线, 核对 not 验收,
 方法与设置 not 方案, 补充 not 补齐; a run is completed, not 跑通 or 落地;
 say where the data are read, not 边界 or boundary.

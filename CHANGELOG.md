@@ -5,6 +5,21 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.4 - 2026-10-10
+
+### Changed
+- Internal codenames fall under the same ban as coined terms and engineering
+  borrowings in `shared/scientific-writing.md`; a new identifier, comment,
+  docstring, log line, file name, or figure label in code and configuration
+  takes the field's term or its standard abbreviation.
+- Results prose spends its words on the analysis and a plain statement of
+  what was observed; a limitation is stated once, beside the claim it affects
+  and in proportion to its effect, without piling scope qualifiers onto a
+  favorable result or hedging against objections nobody raised.
+- `shared/research-minimal.md`: an exploratory task adds no outcome gate
+  (pass/fail, eligible, interesting_signal) and no automatic continue or
+  stop rule.
+
 ## v0.6.3 - 2026-10-10
 
 ### Changed

@@ -37,17 +37,17 @@ releases are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-The next template release is `v0.6.3`, targeting Trellis `0.7.0-beta.4`.
+The next template release is `v0.6.4`, targeting Trellis `0.7.0-beta.4`.
 After publishing that tag, use the pinned commands below. See
 [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.3 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.3 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
   --claude --codex
 ```
 
@@ -95,7 +95,7 @@ variant:
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.3 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
   --force
 ```
 
@@ -108,7 +108,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.3
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4
     template: research-computational
 ```
 

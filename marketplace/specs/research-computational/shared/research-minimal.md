@@ -13,6 +13,8 @@ question needs them.
 - Run the smallest useful calculation or comparison. Add another seed, fold,
   check, or data inspection only when it answers the question or prevents a
   likely silent error. A negative, zero, or unexpected result is still an observation.
+  An exploratory task adds no outcome gate such as pass/fail, eligible, or
+  interesting_signal and no automatic continue or stop rule.
 - Keep the small record needed to reproduce a reported result: input or data
   version, code revision, command or notebook, parameters, relevant seed, and
   an environment pointer. Put the result and its units in the existing result

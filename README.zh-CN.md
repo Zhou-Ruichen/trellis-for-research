@@ -22,15 +22,15 @@
 
 ## 安装固定版本
 
-当前版本标签为 `v0.6.6`，对应 Trellis `0.7.0-beta.4`。使用下面的固定版本命令：
+当前版本标签为 `v0.6.7`，对应 Trellis `0.7.0-beta.4`。使用下面的固定版本命令：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.7 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.7 \
   --claude --codex
 ```
 
@@ -64,7 +64,7 @@ trellis update
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.7 \
   --force
 ```
 
@@ -76,7 +76,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.7
     template: research-computational
 ```
 

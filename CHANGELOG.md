@@ -5,6 +5,17 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.7 - 2026-10-10
+
+### Fixed
+- `guides/debug-nan-oom.md`: v0.6.6 weakened two rules while removing
+  disclaimer phrasing. Restored their meaning in direct form: `nan_to_num`
+  or loss skipping enters the code only where the data policy requires it
+  and the run record states it is active; a rerun after OOM is a recorded
+  decision, and the comparison's training settings stay as they were. The
+  v0.6.6 note that substantive prohibitions were unchanged was wrong for
+  this file.
+
 ## v0.6.6 - 2026-10-10
 
 ### Changed

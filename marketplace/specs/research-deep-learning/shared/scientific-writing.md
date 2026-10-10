@@ -1,7 +1,8 @@
 # Scientific Writing
 
-Use this guide for manuscripts, abstracts, captions, reviewer responses, and
-research reports. Routine task updates can stay brief.
+Use this guide for manuscripts, abstracts, captions, reviewer responses,
+research reports, and replies in the working session. A routine update can
+stay brief, but it uses the same vocabulary as the manuscript.
 
 ## Main finding
 
@@ -43,3 +44,12 @@ Use terms established in the field or defined in the manuscript. Name the
 data, method, settings, and result directly. Keep internal labels in working
 notes. Preserve the author's certainty when editing and flag a suspected
 scientific error for review.
+
+Do not use a borrowed engineering or software word, a workflow label, or a
+coined term for any scientific concept, procedure, comparison, or result, in
+prose or in a reply. Name the quantity, data, method, or result. In geodesy,
+for example, write 正则化 not 阻尼, 参考模型 not 基线, 核对 not 验收,
+方法与设置 not 方案, 补充 not 补齐; a run is completed, not 跑通 or 落地.
+The established wording of the field's published literature decides the
+term. A project terminology file records those choices and does not override
+the literature.

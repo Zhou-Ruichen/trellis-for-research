@@ -5,6 +5,19 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.2 - 2026-10-10
+
+### Changed
+- Extended `shared/scientific-writing.md` to replies in the working session,
+  not only manuscripts and reports. A routine update may stay brief but uses
+  the manuscript's vocabulary.
+- Banned borrowed engineering or software words, workflow labels, and coined
+  terms for any scientific concept, procedure, comparison, or result, with
+  Chinese geodesy illustrations (regularization rather than damping,
+  reference model rather than baseline, checking rather than acceptance).
+  The field's published literature decides the term; a project terminology
+  file records those choices.
+
 ## v0.6.1 - 2026-09-23
 
 ### Changed

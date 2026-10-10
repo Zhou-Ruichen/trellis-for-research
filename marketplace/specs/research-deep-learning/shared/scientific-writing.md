@@ -26,8 +26,7 @@ explanation at the strength the result supports. Place the data range or
 other limit beside the finding it limits. Give uncertainty when it changes how
 the result should be read.
 
-Spend the words on the analysis and on a plain statement of what was
-observed. State a limitation once, beside the claim it affects and in
+Describe the analysis and state plainly what was observed. State a limitation once, beside the claim it affects and in
 proportion to its effect; do not pile scope qualifiers onto a favorable
 result, and do not add a hedge for an objection nobody raised.
 
@@ -48,7 +47,9 @@ paragraphs that move from the result to its interpretation.
 Use terms established in the field or defined in the manuscript. Name the
 data, method, settings, and result directly. Keep internal labels in working
 notes. Preserve the author's certainty when editing and flag a suspected
-scientific error for review.
+scientific error for review. Do not strengthen a claim with emphasis-only
+modifiers such as 深刻, 深入, or 严格; keep a modifier only when it adds
+information or has an established technical meaning (严格递增, 统计显著).
 
 Do not use a borrowed engineering or software word, a workflow label, a
 coined term, or an internal codename for any scientific concept, procedure,

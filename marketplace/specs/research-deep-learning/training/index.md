@@ -8,6 +8,6 @@ construct the model, train, and save results.
 If early stopping or checkpoint choice affects the result, say which data and
 rule made the choice. For a result someone should rerun, record the model and
 optimizer settings, data or split, relevant seed, command, and result path.
-Keep a checkpoint only when it is needed to rerun or interpret that result.
+Keep a checkpoint when it is needed to rerun or interpret that result.
 Diagnose actual failures where they occur; see [debug guidance](../guides/debug-nan-oom.md)
 for NaN, Inf, divergence, or OOM.

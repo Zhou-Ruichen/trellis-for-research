@@ -11,27 +11,26 @@
 ## 科研默认行为
 
 - 从 `shared/research-minimal.md` 和相关项目事实开始，其余规范按具体问题查阅。
-- 复用现有代码或直接写脚本、notebook。额外的包、配置层、测试和包装只有在当前问题需要时才添加；错误直接报出，实际失败再定位。
-- 运行能回答问题的最小计算。只有在比较、seed 或输入检查能回答问题或避免结果被悄悄改变时才添加。
+- 复用现有代码或直接写脚本、notebook。额外的包、配置层、测试和包装在有具体理由时添加；错误直接报出，实际失败再定位。
+- 运行能回答问题的最小计算。比较、seed 或输入检查在能回答问题或避免结果被悄悄改变时添加。
 - 在现有记录中保留数字，以及复现它所需的命令、数据、代码、seed 和环境信息；大输出默认不进 Git。
 - 按项目声明的规则分开用于最终评估的数据；完成一个任务后可以继续探索。
-- 跨会话上下文、独立交付或明确要求才建任务；普通工作由主会话完成。
-- 写作直接陈述数字、条件、解释和真实限制，使用领域已有术语，写清数据、方法和设置；不编造结论，也不以软件运行状态冒充科学结果。
+- 跨会话上下文、独立交付或明确要求时建任务；普通工作由主会话完成。
+- 写作直接陈述数字、条件、解释和真实限制，使用领域已有术语，写清数据、方法和设置。
 
 版本间差异见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 安装固定版本
 
-下一版本计划使用标签 `v0.6.4`，对应 Trellis `0.7.0-beta.4`。发布该标签后，
-使用下面的固定版本命令：
+当前版本标签为 `v0.6.6`，对应 Trellis `0.7.0-beta.4`。使用下面的固定版本命令：
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --claude --codex
 ```
 
@@ -65,7 +64,7 @@ trellis update
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --force
 ```
 
@@ -77,7 +76,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6
     template: research-computational
 ```
 

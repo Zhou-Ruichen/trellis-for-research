@@ -5,6 +5,37 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.6 - 2026-10-10
+
+### Changed
+- Removed disclaimer-style phrasing across the specs, `workflows/research.md`,
+  and README Research Defaults: trigger conditions read as "when X" instead
+  of "only when X", permission sentences ("is optional", "can stay") read as
+  direct instructions, and negative boilerplate arms ("instead of ...",
+  "rather than ...") were dropped where the positive instruction carries the
+  rule. Substantive prohibitions (terminology bans, silent NaN skipping,
+  invented evidence) are unchanged.
+- `shared/scientific-writing.md`: the narrative names data, method, and
+  settings; the repository address with its version and the data product
+  versions go in the availability statement, and run identifiers stay in the
+  result record. The terminology rule is split into short sentences with
+  the geodesy illustrations last.
+- `shared/research-minimal.md`: the exploratory-task rule is its own bullet
+  and states where thresholds and continue-or-stop rules belong.
+- `README.zh-CN.md` Research Defaults and version pins aligned with
+  `README.md`.
+
+## v0.6.5 - 2026-10-10
+
+### Changed
+- Dropped the engineering metaphors "defensive layer" and "outcome gate"
+  from the exploratory-task rule in `shared/research-minimal.md`; the rule
+  now states what to report and what not to add directly.
+- `shared/scientific-writing.md`: emphasis-only modifiers (deep, in-depth,
+  strict as bare intensifiers) are dropped; a modifier stays when it adds
+  information or has an established technical meaning (strictly increasing,
+  statistically significant).
+
 ## v0.6.4 - 2026-10-10
 
 ### Changed

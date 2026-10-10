@@ -16,11 +16,11 @@ installation into Trellis projects.
 ## Research Defaults
 
 - Start from `shared/research-minimal.md` plus project facts; other specs
-  answer concrete questions instead of loading as a checklist.
-- Reuse existing code or a direct script/notebook. Extra packages, config
-  layers, tests, and wrappers are optional and need a concrete reason.
+  answer concrete questions.
+- Reuse existing code or a direct script/notebook. Add extra packages, config
+  layers, tests, and wrappers for a concrete reason.
 - Run the smallest useful calculation. Add a comparison, seed, or input check
-  only when it answers the question or prevents a likely silent error.
+  when it answers the question or prevents a likely silent error.
 - Record the reported number and the small set of command, data, code, seed,
   and environment details needed to rerun it. Keep large outputs outside Git.
 - Keep data reserved for final evaluation separate under the project's stated
@@ -28,31 +28,29 @@ installation into Trellis projects.
 - Tasks are for context that must survive sessions, independent
   deliverables, or explicit requests. The main session owns ordinary work.
 - Write the finding with its number, conditions, interpretation, and actual
-  limits in the field's terms. Name the data, method, and settings directly;
-  software status is not a finding.
+  limits in the field's terms; name the data, method, and settings directly.
 
-Project-specific data conventions and existing code organization remain in
-place; mixed-language projects follow the same rules. Differences between
+Mixed-language projects follow the same rules. Differences between
 releases are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-The next template release is `v0.6.4`, targeting Trellis `0.7.0-beta.4`.
-After publishing that tag, use the pinned commands below. See
+The current template release is `v0.6.6`, targeting Trellis `0.7.0-beta.4`.
+Use the pinned commands below. See
 [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --template research-computational \
   --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --claude --codex
 ```
 
 For deep learning, use `--template research-deep-learning`. Remove the tag
-only when you intentionally want the published development branch.
+when you intentionally want the published development branch.
 
 ### Existing Projects And Upgrades
 
@@ -64,7 +62,7 @@ Trellis and this research template have separate versions:
 | Project native files and registered specs | `trellis update` uses the installed CLI and configured spec source |
 | Research template release | Change the spec source tag and select the same workflow release |
 
-Upgrade the CLI only when adopting a newer supported version;
+Upgrade the CLI when adopting a newer supported version;
 `trellis upgrade --dry-run` previews that package operation without
 touching project files. For project updates, save current work, inspect the
 proposed changes, then apply:
@@ -95,7 +93,7 @@ variant:
 ```sh
 trellis workflow \
   --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4 \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6 \
   --force
 ```
 
@@ -108,7 +106,7 @@ codex:
   dispatch_mode: inline
 registry:
   spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.4
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.6
     template: research-computational
 ```
 
@@ -116,7 +114,7 @@ registry:
 workflow intact and keeps the project default unchanged. Keep the workflow
 release and spec source tag aligned, and restart the agent session after
 changing context. Inline dispatch keeps ordinary Codex work in the main
-session; use a sub-agent only when the question needs one.
+session; use a sub-agent when the question needs one.
 
 Keep native Trellis scripts, hooks, skills, and agents so they follow
 upstream updates. In an existing project's `AGENTS.md`, point to
@@ -144,9 +142,9 @@ Use these native commands when their task record or journal is useful.
 Write project specs from actual data conventions, source paths, and
 reusable decisions; add a rule when a real task needs it. The official
 [real-world scenarios](https://docs.trytrellis.app/zh/start/real-world-scenarios)
-provide engineering examples; adopt only the parts relevant to the research
-task. An untouched bootstrap-guidelines task from Trellis is not required
-by this workflow; keep any real project work it already contains.
+provide engineering examples; adopt the parts relevant to the research
+task. Delete an untouched bootstrap-guidelines task from Trellis; keep any
+real project work it already contains.
 
 ## Repository Checks
 

@@ -1,23 +1,23 @@
 # Guide: Debug NaN, Inf, Divergence, Or OOM
 
-Use only for an observed training failure. Start from its traceback and the
+Use for an observed training failure. Start from its traceback and the
 affected batch or operation; inspect the smallest amount of data that explains it.
 
 ## NaN Or Inf
 
 Locate the first operation producing unexpected non-finite values. Inspect its
 inputs, masks, normalization, and precision as relevant. Anomaly detection or a
-smaller batch can help locate the failure; neither is a required preliminary run.
+smaller batch can help locate the failure.
 
-Do not add broad `nan_to_num` or silent loss skipping unless the data policy
-explicitly requires it and the behavior is recorded.
+Add `nan_to_num` or loss skipping when the data policy calls for it, and
+record the behavior with the run.
 
 ## OOM
 
 Locate the allocation or tensors involved. Inspect batch dimensions,
-precision, activations, or evaluation accumulation only as the failure indicates.
-Use a smaller case if it helps diagnosis; do not silently change the comparison's
-training settings or add automatic retry logic.
+precision, activations, or evaluation accumulation as the failure indicates.
+Use a smaller case for diagnosis. The comparison keeps its training
+settings, and a rerun is recorded as a rerun.
 
-Print only the values needed to locate the failure, and remove temporary
+Print the values needed to locate the failure, and remove temporary
 diagnostics afterward.

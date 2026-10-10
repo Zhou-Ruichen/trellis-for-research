@@ -1,7 +1,7 @@
 # Research Workflow
 
-Work directly under `shared/research-minimal.md`. Small exploratory work can
-stay in the main session and in the project's existing scripts, notebooks, and
+Work directly under `shared/research-minimal.md`. Small exploratory work
+stays in the main session and in the project's existing scripts, notebooks, and
 result files. Use a Trellis task when a question must survive a session
 change, an independent deliverable needs its own context, or the user asks
 for a task record.
@@ -31,25 +31,25 @@ when they matter later.
 [/workflow-state:in_progress]
 
 [workflow-state:in_progress-inline]
-Run the calculation in the main session and keep only the useful result note.
+Run the calculation in the main session and keep the useful result note.
 [/workflow-state:in_progress-inline]
 
 [workflow-state:completed]
-Report the result, its conditions, and its location. Keep a note only when
+Report the result, its conditions, and its location. Keep a note when
 future work needs it.
 [/workflow-state:completed]
 
 ## Working order
 
 1. State the question and the observation needed.
-2. Reuse the existing entrypoint, data, and output location. Add structure only
+2. Reuse the existing entrypoint, data, and output location. Add structure
    when it simplifies the current calculation.
 3. Run the smallest useful case or comparison. Inspect an input assumption
-   only when an error could silently change the result.
+   when an error could silently change the result.
 4. Record the result and the command, parameters, data pointer, code revision,
    and seed or environment detail needed to rerun it.
 5. Stop when the requested observation is delivered with the direct support
-   needed to interpret it. Keep a task record or project note only when it
+   needed to interpret it. Keep a task record or project note when it
    will help a later session.
 
 When a task record is useful, the native commands remain available:

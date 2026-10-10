@@ -5,6 +5,15 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.8 - 2026-10-10
+
+### Changed
+- `evaluation/index.md` (both templates): when conditions share data or
+  folds, report the paired per-fold differences; a single run per condition
+  supports a description, not a ranking.
+- `shared/reproducibility.md`: install dependencies only into a recorded
+  environment.
+
 ## v0.6.7 - 2026-10-10
 
 ### Fixed

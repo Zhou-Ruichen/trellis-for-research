@@ -18,7 +18,7 @@ installation into Trellis projects.
 - Start from `shared/research-minimal.md` plus project facts; other specs
   answer concrete questions.
 - Reuse existing code or a direct script/notebook. Add extra packages, config
-  layers, tests, and wrappers for a concrete reason.
+  layers, and wrappers for a concrete reason.
 - Run the smallest useful calculation. Add a comparison, seed, or input check
   when it answers the question or prevents a likely silent error.
 - Record the reported number and the small set of command, data, code, seed,
@@ -35,22 +35,60 @@ releases are recorded in [CHANGELOG.md](CHANGELOG.md).
 
 ## Installation
 
-The current template release is `v0.6.8`, targeting Trellis `0.7.0-beta.4`.
+The current template release is `v0.6.9`, targeting Trellis `0.7.0-beta.4`.
 Use the pinned commands below. See
 [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ```sh
 npm install -g @mindfoldhq/trellis@0.7.0-beta.4
 trellis init \
-  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.8 \
+  --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.9 \
   --template research-computational \
-  --workflow research \
-  --workflow-source gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.8 \
   --claude --codex
 ```
 
 For deep learning, use `--template research-deep-learning`. Remove the tag
-when you intentionally want the published development branch.
+when you intentionally want the published development branch. Then select
+the research workflow.
+
+### Select The Research Workflow
+
+Save the workflow from the same release as a variant; in an existing
+project, review local workflow changes first:
+
+```sh
+trellis workflow \
+  --save research \
+  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.9 \
+  --force
+```
+
+Merge these fields into `.trellis/config.yaml`, keeping other settings, and
+use `research-deep-learning` for the deep-learning spec template:
+
+```yaml
+default_workflow: research
+codex:
+  dispatch_mode: inline
+registry:
+  spec:
+    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.9
+    template: research-computational
+```
+
+`--save` writes `.trellis/workflows/research.md`; `trellis update` keeps
+updating the native `.trellis/workflow.md`, and `default_workflow` makes the
+research variant the project default. Keep the workflow release and spec
+source tag aligned, and restart the agent session after changing context.
+Inline dispatch keeps ordinary Codex work in the main session; without it,
+Codex defaults implement and check work to sub-agents. Use a sub-agent when
+the question needs one.
+
+Keep native Trellis scripts, hooks, skills, and agents unmodified;
+`trellis update` maintains them. The Trellis-managed block of `AGENTS.md` describes the
+native workflow; below it, point to `.trellis/workflows/research.md` and
+`.trellis/spec/shared/research-minimal.md` as the research entry points.
+Use a supported remote registry source.
 
 ### Existing Projects And Upgrades
 
@@ -72,55 +110,19 @@ trellis update --dry-run
 trellis update
 ```
 
-Modified files enter conflict handling: merge while preserving project
-facts; `--skip-all` keeps local edits and `--force` overwrites conflicts. A
-pinned spec source stays on that release until its tag is changed. See the
-official [upgrade reference](https://docs.trytrellis.app/zh/start/everyday-use).
+Template files the project left unedited update automatically. Edited files
+enter conflict handling: merge while preserving project facts; `--skip-all`
+keeps local edits and `--force` overwrites conflicts. A pinned spec source
+stays on that release until its tag is changed. See the official
+[upgrade reference](https://docs.trytrellis.app/zh/start/everyday-use).
 
 For first adoption into an existing project, install the selected template
 in a temporary directory and merge its relevant files, keeping data
 conventions, paths, tasks, and results. Earlier manual copies need one-time
-registration against the published template so future updates can
+registration against the published template, which lets future updates
 distinguish templates from local edits. `init --append` adds missing files
 only; `init --overwrite` replaces the entire spec directory and suits
 untouched generic defaults only.
-
-### Select The Research Workflow
-
-After reviewing local workflow changes, save the selected release as a
-variant:
-
-```sh
-trellis workflow \
-  --save research \
-  --marketplace gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.8 \
-  --force
-```
-
-Merge these fields into `.trellis/config.yaml`, keeping other settings, and
-use `research-deep-learning` for the deep-learning spec template:
-
-```yaml
-default_workflow: research
-codex:
-  dispatch_mode: inline
-registry:
-  spec:
-    source: gh:Zhou-Ruichen/trellis-for-research/marketplace#v0.6.8
-    template: research-computational
-```
-
-`--save` writes `.trellis/workflows/research.md`, leaves the native global
-workflow intact and keeps the project default unchanged. Keep the workflow
-release and spec source tag aligned, and restart the agent session after
-changing context. Inline dispatch keeps ordinary Codex work in the main
-session; use a sub-agent when the question needs one.
-
-Keep native Trellis scripts, hooks, skills, and agents so they follow
-upstream updates. In an existing project's `AGENTS.md`, point to
-`.trellis/workflows/research.md` and
-`.trellis/spec/shared/research-minimal.md` as the research entry points.
-Use a supported remote registry source.
 
 ## Project Use
 
@@ -128,19 +130,24 @@ The installed `shared/research-minimal.md` is the entry point;
 `shared/index.md` and `guides/index.md` point to optional references.
 
 Describe the scientific question directly; small work needs no task or
-slash command. With session hooks, opening a session loads Trellis context;
-`/trellis:start` is for platforms without automatic session loading. If a
-question needs a task record, keep its question and next action in `prd.md`
-and put the result and rerun information in the task's `result.md` or the
-project's existing result record.
-Parameter variants can remain under the same question.
+slash command. With session hooks, opening a session loads Trellis context,
+including the research workflow summary; `/trellis:start` is for platforms
+without automatic session loading. If a question needs a task record, keep
+its question and next action in `prd.md` and put the result and rerun
+information in the task's `result.md` or the project's existing result
+record. Parameter variants can remain under the same question.
 
-`/trellis:continue` advances the current task; `/trellis:finish-work`
-archives completed work and writes a journal after the work is committed.
-Use these native commands when their task record or journal is useful.
+A later session resumes a task from its `prd.md` and `result.md`.
+`task.py finish` ends work on a task and leaves the record where results,
+code, and reports cite it. `/trellis:finish-work` archives the task, moving
+its directory under `.trellis/tasks/archive/`, and writes a session journal;
+use it for records nothing cites.
 
-Write project specs from actual data conventions, source paths, and
-reusable decisions; add a rule when a real task needs it. The official
+Write project facts and rules (data conventions, source paths, terminology,
+reusable decisions) in a project-owned spec layer such as
+`.trellis/spec/project/index.md` and the files it links; add a rule when a
+real task needs it. Session start lists that index beside the template
+indexes, and unedited template files update without conflicts. The official
 [real-world scenarios](https://docs.trytrellis.app/zh/start/real-world-scenarios)
 provide engineering examples; adopt the parts relevant to the research
 task. Delete an untouched bootstrap-guidelines task from Trellis; keep any
@@ -152,9 +159,9 @@ real project work it already contains.
 python3 scripts/validate.py
 ```
 
-The script checks marketplace metadata, paths, links, workflow-state
-blocks, ASCII rules, shared-file parity between the two templates, release
-pins, and installation shape when Trellis is available.
+The script checks marketplace metadata, paths, links, the workflow markers
+Trellis reads, ASCII rules, shared-file parity between the two templates,
+and the release pins in both READMEs.
 
 ## Examples
 

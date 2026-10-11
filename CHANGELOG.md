@@ -5,6 +5,54 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.9 - 2026-10-11
+
+### Fixed
+- `workflows/research.md` again has the `## Phase Index` section and
+  `#### X.Y` steps that Trellis 0.7 reads; since v0.6.1 session start loaded
+  no research guidance and `get_context.py --mode phase` failed. The working
+  order is now steps 1.1, 2.1, 2.2, and 3.1 inside the Phase Index.
+- `planning-inline` and `in_progress-inline`, which Codex reads under
+  `codex.dispatch_mode: inline`, repeat `planning` and `in_progress`; since
+  v0.6.1 they kept a planning task's question out of `prd.md`.
+- The task commands run under Trellis 0.7.0-beta.4: `task.py create` takes
+  `--description`, and `task.py start` takes `--allow-empty-context`.
+
+### Changed
+- The workflow overrides the native task-creation question, review gates,
+  and default sub-agent dispatch; the `no_task` block starts short
+  calculations without a task.
+- New projects save the research workflow as a variant with
+  `default_workflow: research` and `codex.dispatch_mode: inline`, as
+  existing projects do; `trellis init --workflow research` made every
+  `trellis update` flag `.trellis/workflow.md` and left Codex dispatching to
+  sub-agents. Such a project restores the native file with
+  `trellis workflow --template native --force` after saving the variant.
+- Project facts and rules go in a project-owned spec layer such as
+  `.trellis/spec/project/index.md`; unedited template files update without
+  merge conflicts.
+- `shared/scientific-writing.md`: sentences connect through their content
+  and order; differing facts stand side by side, each with its value, and a
+  verb states a relation. Contrast words, connectives, and emphasis-only
+  modifiers in English and Chinese are dropped, and the clauses that kept
+  inference connectives and informative modifiers are removed.
+  `research-minimal.md`, `evaluation/index.md`, and
+  `guides/debug-nan-oom.md` state their rules without contrast clauses.
+- The rule that research projects need no defensive code or tests removes
+  tests, test suites, and test directories from the specs and README
+  defaults. The input checks in the data and evaluation guidelines stay.
+- `task.py finish` ends a task and keeps its record at the cited path;
+  `task.py archive` and `/trellis:finish-work` move it under
+  `.trellis/tasks/archive/`. The README no longer suggests
+  `/trellis:continue`.
+- `scripts/validate.py` checks the Phase Index, step headings, matching
+  inline blocks, and the release pins in both READMEs. The install-shape
+  check and the CI Trellis install are removed.
+
+### Removed
+- `examples/minimal-run/.gitignore`, left from the packaged example removed
+  in v0.6.0.
+
 ## v0.6.8 - 2026-10-10
 
 ### Changed

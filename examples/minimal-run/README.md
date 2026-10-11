@@ -18,9 +18,9 @@ python3 analysis.py > result.json
 ```
 
 The [short report](reports/linear_regression_discussion.md) interprets the result.
-The observations used for fitting are also used for evaluation; both metrics
-are in-sample results on this synthetic sample.
+The same observations are used for fitting and evaluation; both metrics are
+in-sample results on this synthetic sample.
 
 This example keeps parameters in the script and one result beside it. Edit the
 existing script for a new comparison; preserve the code and results supporting
-any finding you keep. Use another structure when a project actually needs it.
+any finding you keep. Use another structure when a project needs it.

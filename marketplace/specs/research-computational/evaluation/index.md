@@ -17,8 +17,8 @@ evaluation set when the question needs an estimate on unseen data.
 Repeat a run or report variation when the question is about stability or a
 difference between conditions. Describe a single run as one observation and
 match the precision of the claim to the information in that run. When
-conditions share data or folds, report the paired per-fold differences; a
-single run per condition supports a description, not a ranking.
+conditions share data or folds, report the paired per-fold differences. With
+one run per condition, leave the conditions unranked.
 
 Record the actual number, condition, metric definition, and any output path
 needed to rerun it. Report an unexpected, negative, or null result with its observed value.

@@ -1,4 +1,0 @@
-# Ignore artifacts from older editable installations of this example.
-*.egg-info/
-build/
-dist/

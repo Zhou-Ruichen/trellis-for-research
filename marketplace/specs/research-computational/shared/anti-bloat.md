@@ -7,9 +7,9 @@ copy.
 
 Add a function or module when it removes real duplication or makes the current
 calculation easier to rerun. Add a framework, registry, plugin system, CLI
-layer, test suite, or compatibility layer for a concrete need. Keep a one-off
-check in the script or notebook where it was useful.
+layer, or compatibility layer for a concrete need. Keep a one-off check in the
+script or notebook where it was useful.
 
 Remove a superseded implementation after the replacement works. Keep data
 references, reported numbers, settings needed to interpret them, and
-unrelated changes. Review the calculation itself when a test suite is absent.
+unrelated changes. Review the calculation and its output.

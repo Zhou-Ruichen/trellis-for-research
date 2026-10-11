@@ -2,6 +2,9 @@
 
 Start with [research-minimal.md](./research-minimal.md) and the project's relevant
 facts. Consult the other files when a concrete question calls for them.
+Project facts and rules live in a project-owned layer such as
+`.trellis/spec/project/index.md`; leaving template files unedited lets
+`trellis update` replace them.
 
 | Question | Reference |
 | --- | --- |

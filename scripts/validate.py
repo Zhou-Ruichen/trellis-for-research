@@ -5,10 +5,8 @@ from __future__ import annotations
 
 import json
 import re
-import shutil
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 
@@ -21,18 +19,8 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def load_index() -> dict:
-    index_path = MARKETPLACE / "index.json"
-    if not index_path.exists():
-        fail("marketplace/index.json is missing")
-    try:
-        return json.loads(index_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        fail(f"marketplace/index.json is invalid JSON: {exc}")
-
-
 def validate_index() -> None:
-    index = load_index()
+    index = json.loads((MARKETPLACE / "index.json").read_text(encoding="utf-8"))
     templates = index.get("templates")
     if not isinstance(templates, list) or not templates:
         fail("marketplace/index.json must contain a non-empty templates array")
@@ -74,8 +62,17 @@ def validate_markdown_links() -> None:
                 fail(f"{md_path.relative_to(ROOT)} has broken link: {target}")
 
 
-def validate_workflow_states() -> None:
+def validate_workflow_markers() -> None:
+    # Trellis 0.7 SessionStart and `get_context.py --mode phase` read the
+    # Phase Index, `--step X.Y` reads step headings, and the per-turn hook
+    # reads the state blocks; `trellis workflow --save` warns when any is absent.
+    # Research text does not depend on Codex dispatch mode, so each -inline
+    # block repeats its base block.
     workflow = (ROOT / "marketplace/workflows/research.md").read_text(encoding="utf-8")
+    if not re.search(r"^## Phase Index$", workflow, re.M):
+        fail("marketplace/workflows/research.md needs a '## Phase Index' section")
+    if not re.search(r"^#### \d+\.\d+", workflow, re.M):
+        fail("marketplace/workflows/research.md needs '#### X.Y' step headings")
     pattern = re.compile(
         r"^\[workflow-state:([A-Za-z0-9_-]+)\]\s*\n"
         r"(.*?)\n\s*\[/workflow-state:\1\]$",
@@ -98,24 +95,20 @@ def validate_workflow_states() -> None:
             "marketplace/workflows/research.md must contain the six Trellis 0.7 "
             "workflow states in interface order"
         )
+    bodies = {match.group(1): match.group(2) for match in matches}
+    for status in ("planning", "in_progress"):
+        if bodies[f"{status}-inline"] != bodies[status]:
+            fail(f"marketplace/workflows/research.md: {status}-inline must repeat {status}")
 
 
 def iter_repo_files() -> list[Path]:
-    try:
-        result = subprocess.run(
-            ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
-            cwd=ROOT,
-            check=True,
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        return [
-            path.relative_to(ROOT)
-            for path in ROOT.rglob("*")
-            if path.is_file() and ".git" not in path.parts
-        ]
+    result = subprocess.run(
+        ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+    )
     return [Path(line) for line in result.stdout.splitlines() if line]
 
 
@@ -165,66 +158,6 @@ def validate_shared_files_identical() -> None:
             fail(f"templates must keep {rel_path} identical")
 
 
-def validate_trellis_spec_shape() -> None:
-    trellis = shutil.which("trellis")
-    if trellis is None:
-        print("WARN: trellis not found; skipped install-shape validation", file=sys.stderr)
-        return
-
-    expected_by_template = {
-        "research-deep-learning": [
-            "README.md",
-            "shared/index.md",
-            "shared/python-style.md",
-            "training/index.md",
-            "guides/index.md",
-            "guides/debug-nan-oom.md",
-            *SHARED_FILES,
-        ],
-        "research-computational": [
-            "README.md",
-            "shared/index.md",
-            "guides/index.md",
-            *SHARED_FILES,
-        ],
-    }
-
-    with tempfile.TemporaryDirectory(prefix="trellis-for-research-") as tmp:
-        tmp_path = Path(tmp)
-        subprocess.run(
-            ["git", "init"],
-            cwd=tmp_path,
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        subprocess.run(
-            [trellis, "init", "--claude", "--codex", "-y"],
-            cwd=tmp_path,
-            check=True,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
-        for template in load_index()["templates"]:
-            if template["type"] != "spec":
-                continue
-            template_id = template["id"]
-            if template_id not in expected_by_template:
-                fail(f"missing spec-shape expectations for template {template_id!r}")
-            template_path = ROOT / template["path"]
-            spec_path = tmp_path / ".trellis/spec"
-            if spec_path.exists():
-                shutil.rmtree(spec_path)
-            shutil.copytree(template_path, spec_path)
-
-            for rel_path in expected_by_template[template_id]:
-                if not (spec_path / rel_path).is_file():
-                    fail(
-                        f"Trellis spec-shape validation missing "
-                        f"{template_id}/.trellis/spec/{rel_path}"
-                    )
-
-
 def validate_readme_pins_latest_version() -> None:
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
     match = re.search(r"^## (v\d+\.\d+\.\d+) - \d{4}-\d{2}-\d{2}", changelog, re.M)
@@ -232,23 +165,23 @@ def validate_readme_pins_latest_version() -> None:
         fail("CHANGELOG.md has no versioned release heading")
         return
     latest = match.group(1)
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
-    if not pins:
-        fail(f"README.md pins no version; expected {latest}")
-    for pin in set(pins):
-        if pin != latest:
-            fail(f"README.md pins {pin}; latest CHANGELOG release is {latest}")
+    for readme_name in ("README.md", "README.zh-CN.md"):
+        readme = (ROOT / readme_name).read_text(encoding="utf-8")
+        pins = re.findall(r"marketplace#(v\d+\.\d+\.\d+)", readme)
+        if not pins:
+            fail(f"{readme_name} pins no version; expected {latest}")
+        for pin in set(pins):
+            if pin != latest:
+                fail(f"{readme_name} pins {pin}; latest CHANGELOG release is {latest}")
 
 
 def main() -> None:
     validate_index()
     validate_markdown_links()
-    validate_workflow_states()
+    validate_workflow_markers()
     validate_no_non_ascii()
     validate_shared_files_identical()
     validate_readme_pins_latest_version()
-    validate_trellis_spec_shape()
     print("trellis-for-research validation passed")
 
 

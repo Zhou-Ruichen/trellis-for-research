@@ -45,12 +45,18 @@ Use headings in order and give a distinct topic its own heading. Keep one main
 fact, procedure, reason, or qualification in each sentence. Use short
 paragraphs that move from the result to its interpretation.
 
+Sentences connect through their content and order: differing facts stand
+side by side, each with its value, and a verb such as 表明 or 导致 states a
+relation. Contrast words (but, however, although, instead, rather than; 但,
+然而, 不过, 却, 虽然, 尽管, 不是 X 而是 Y) and connectives (moreover,
+furthermore, additionally, therefore, notably, overall; 此外, 另外, 同时, 因此,
+值得注意的是, 总之, 综上所述) are dropped.
+
 Use terms established in the field or defined in the manuscript. Name the
 data, method, settings, and result directly. Keep internal labels in working
 notes. Preserve the author's certainty when editing and flag a suspected
-scientific error for review. A modifier stays when it adds information or
-has an established technical meaning (严格递增, 统计显著); emphasis-only
-modifiers such as 深刻, 深入, or 严格 are dropped.
+scientific error for review. Emphasis-only modifiers such as 深刻, 深入, 严格,
+非常, 全面, 显著, 关键, 核心, or 重要 are dropped.
 
 Use the field's term for every scientific concept, procedure, comparison,
 and result. This holds in prose, in a reply, and in a new identifier,

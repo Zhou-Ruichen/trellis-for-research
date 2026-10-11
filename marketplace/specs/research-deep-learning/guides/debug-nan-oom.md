@@ -18,7 +18,8 @@ record states that it is active.
 Locate the allocation or tensors involved. Inspect batch dimensions,
 precision, activations, or evaluation accumulation as the failure indicates.
 Use a smaller case for diagnosis. The comparison's training settings stay as
-they were, and a rerun is a recorded decision rather than an automatic retry.
+they were. A rerun is a recorded decision; the training code does not retry
+automatically.
 
 Print the values needed to locate the failure, and remove temporary
 diagnostics afterward.

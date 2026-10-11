@@ -4,15 +4,14 @@ Use these rules for exploratory work. Domain guides add details when a
 question needs them.
 
 - Follow the user's question and project rules. Keep work in the main session
-  and add task stages, sub-agents, or tests when the question or a
-  concrete failure calls for them.
+  and add task stages or sub-agents when the question calls for them.
 - Reuse existing code or a direct script or notebook. Add structure when
   it makes the current calculation clearer or repeatable. Let ordinary errors
   show their traceback and diagnose the failure where it occurs. See
   [anti-bloat.md](./anti-bloat.md).
 - Run the smallest useful calculation or comparison. Add another seed, fold,
   check, or data inspection when it answers the question or prevents a
-  likely silent error. A negative, zero, or unexpected result is still an observation.
+  likely silent error. A negative, zero, or unexpected result is recorded as an observation.
 - An exploratory task reports what was observed. Pass/fail or eligibility
   thresholds (eligible, interesting_signal) and automatic continue-or-stop
   rules belong to a confirmatory protocol the user has asked for.

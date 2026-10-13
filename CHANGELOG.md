@@ -5,6 +5,40 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.10 - 2026-10-13
+
+### Changed
+- `shared/scientific-writing.md` holds every reply in the working session,
+  including progress updates, debugging and log reviews, run reports, and
+  one-line answers, to a manuscript's standard of evidence and wording.
+  Every sentence carries a fact, a value, an action, or a conclusion, and a
+  sentence that carries none is deleted. A reply opens with the answer, the
+  result, or the current state, including a failure or an unknown, and ends
+  once the answer and its evidence are given.
+- New "Evidence status" section: the verb of a claim states its evidence as
+  executed (command completed, file written), checked (output compared with
+  a reference, an expected value, or the source), or inferred (judged from a
+  log, a code reading, or partial output, with that basis named). Untested,
+  unknown, and failed steps are written as such. Writing an executed step as
+  checked, or an inference as a fact, is fabricated evidence, and removing a
+  hedge adds no run, check, or result.
+- New "Objections and hedges" section: a sentence that refutes a claim no
+  user, reviewer, cited work, or earlier result put forward is deleted, and
+  so is a hedge whose removal changes neither the reading of a fact nor the
+  next step. Sentences built on the listed Chinese and English negation and
+  hedge constructions (does not prove, does not mean, does not imply, cannot
+  yet, is not enough to show, not X but Y, and the other listed forms) are
+  deleted or rewritten as what was measured, run, checked, or left untested.
+  A correction opens with the differing facts side by side.
+- New "Limitations and risks" section: the limitation rule moves here from
+  "Results and interpretation". The data scope goes inside the claim it
+  limits, a claim wider than its evidence is narrowed in that sentence, and
+  a risk tied to an operation is written before that operation.
+- New "Paired examples" section: eight original and rewritten sentences on
+  executed and checked claims, an inference, an unraised objection, a
+  correction, scope inside the claim, and hedges on favorable results.
+- `README.md` and `README.zh-CN.md` pin `v0.6.10`.
+
 ## v0.6.9 - 2026-10-11
 
 ### Fixed

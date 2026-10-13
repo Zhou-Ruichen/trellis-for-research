@@ -1,8 +1,13 @@
 # Scientific Writing
 
 Use this guide for manuscripts, abstracts, captions, reviewer responses,
-research reports, and replies in the working session. A routine update stays
-brief and uses the same vocabulary as the manuscript.
+research reports, and every reply in the working session, including progress
+updates, debugging and log reviews, run reports, and one-line answers. A
+reply is held to a manuscript's standard of evidence and wording. A routine
+update stays brief and uses the same vocabulary as the manuscript.
+
+Every sentence carries a fact, a value, an action, or a conclusion. A
+sentence that carries none is deleted.
 
 ## Main finding
 
@@ -15,21 +20,84 @@ comparison or further detail when it changes how the result is interpreted,
 and state the scope the presented data cover; leave cases unrelated to the
 current question to later work.
 
+A reply opens with the answer, the result, or the current state, including a
+failure or an unknown, and ends once the answer and its evidence are given.
+A next step is written when a blocker or the question calls for one.
+
 ## Results and interpretation
 
 For each result, write what was measured, what was compared, what stayed the
 same, what changed, and what the result supports. Include a lower, zero, or
 unexpected result when the question included that comparison.
 
-Separate an observation, an explanation, and a hypothesis. State the
-explanation at the strength the result supports. Place the data range or
-other limit beside the finding it limits. Give uncertainty when it changes how
-the result should be read.
+Describe the analysis and state plainly what was observed. Separate an
+observation, an explanation, and a hypothesis. State the explanation at the
+strength the result supports. Give uncertainty when it changes how the result
+should be read.
 
-Describe the analysis and state plainly what was observed. State a
-limitation once, beside the claim it affects and in proportion to its
-effect. A favorable result carries that one limitation and no further scope
-qualifiers; an objection nobody raised gets no hedge.
+## Evidence status
+
+The verb of each claim states the evidence behind it.
+
+- Executed (已执行): the command completed or the file was written.
+- Checked (已核对): the output was compared with a reference, an expected
+  value, or the source. The words verified, confirmed, 已验证, and 已确认
+  claim this level.
+- Inferred (推断): the claim rests on a log, a code reading, or partial
+  output, and the sentence names that basis.
+
+A step not run is written as untested (未测), a question without evidence as
+unknown (未知), and a failed step as failed (失败), with its error. Writing an
+executed step as checked, or an inference as a fact, is fabricated evidence.
+Removing a hedge keeps the evidence status of the claim and adds no run,
+check, or result.
+
+## Objections and hedges
+
+The reader judges the strength of the evidence from the facts given. A
+refutation of a claim nobody made, or a qualifier on every sentence, costs
+reading time and adds no information.
+
+An objection nobody raised gets no hedge: a sentence that refutes a claim no
+user, reviewer, cited work, or earlier result put forward is deleted. A hedge
+whose removal changes neither the reading of a fact nor the next step is
+deleted.
+
+Sentences built on these constructions are deleted or rewritten as what was
+measured, run, checked, or left untested: 不能证明, 不等于, 不代表, 并不是,
+并非, 并不意味着, 尚不能, 不足以说明, 有待进一步, 不是 X 而是 Y; does not
+prove, is not the same as, does not mean, does not imply, not necessarily,
+cannot yet, is not enough to show, further work is needed, not X but Y.
+
+A correction of a claim someone made opens with the differing facts, side by
+side and each with its value.
+
+## Limitations and risks
+
+State a limitation once, beside the claim it affects and in proportion to its
+effect. The data scope goes inside the claim it limits, and a claim wider
+than its evidence is narrowed in that sentence. A favorable result carries
+that one limitation and no further scope qualifiers.
+
+A risk tied to an operation, such as data loss, an irreversible change, or a
+cost, is written before that operation.
+
+## Paired examples
+
+Each row gives a sentence to delete or rewrite (原) and its rewrite (改).
+Parentheses in the first column give the context behind the sentence. A
+rewrite uses only evidence the writer holds.
+
+| 原 | 改 |
+| --- | --- |
+| 生成两个 JSONL 不能证明正文提取完整，也不代表没有遗漏。 | 两个 JSONL 已生成；正文完整性未核对。 |
+| 修复已验证。（只重新运行了反演） | 修复后的反演已运行完成，结果未与参考模型比对。 |
+| 验证集损失上升是过拟合导致的。（只看了训练日志） | 训练集损失持续下降，验证集损失自第 30 轮上升；推断为过拟合。 |
+| 瓶颈不是 IO，而是 CPU 解码。（此前无人提到 IO） | 瓶颈在 CPU 解码，每步 0.9 s 中占 0.6 s。 |
+| 不是显存的问题，而是 dtype 不匹配。（用户问：是不是显存不够？） | 显存峰值 9 GB，上限 24 GB；报错栈指向第 88 行的 dtype 不匹配。 |
+| 正文提取完整。（回复末尾注明只核对了 10 份文档） | 已核对的 10 份文档正文与原文一致。 |
+| 模型在测试集上表现最好，这并不意味着它在所有区域都优于参考模型。 | 3 个测试区域中，模型在 2 个区域的 RMSE 低于参考模型（表 2），第 3 个区域高 0.4 mm。 |
+| The lower RMSE does not prove that the method generalizes beyond the study area. | In the study area, RMSE fell from 4.1 mm to 3.2 mm (Table 2). |
 
 ## Methods
 

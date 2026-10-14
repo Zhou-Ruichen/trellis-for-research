@@ -16,8 +16,9 @@ with codex.dispatch_mode: inline reads the -inline variants, which repeat
 their base blocks. -->
 
 [workflow-state:no_task]
-Work from the research question and the project's existing facts. Short
-calculations start in the current session without a task.
+Work from the research question and the project's existing facts.
+Discussion, explanation, and short calculations happen in the current
+session without a task.
 [/workflow-state:no_task]
 
 [workflow-state:planning]
@@ -31,15 +32,21 @@ when they are clear.
 [/workflow-state:planning-inline]
 
 [workflow-state:in_progress]
-Read the question in `prd.md` and run the calculation. Put the result and
-rerun information in the task's `result.md` or the project's existing result
-record when they matter later.
+Act on the current request within the task's question. A discussion or
+assessment gets a judgment from the evidence at hand; a design request
+compares the candidate schemes; a question about a log or an earlier result
+is answered from the existing record. Run the calculation when the request
+authorizes it. Put a result and its rerun information in the task's
+`result.md` or the project's existing result record when they matter later.
 [/workflow-state:in_progress]
 
 [workflow-state:in_progress-inline]
-Read the question in `prd.md` and run the calculation. Put the result and
-rerun information in the task's `result.md` or the project's existing result
-record when they matter later.
+Act on the current request within the task's question. A discussion or
+assessment gets a judgment from the evidence at hand; a design request
+compares the candidate schemes; a question about a log or an earlier result
+is answered from the existing record. Run the calculation when the request
+authorizes it. Put a result and its rerun information in the task's
+`result.md` or the project's existing result record when they matter later.
 [/workflow-state:in_progress-inline]
 
 [workflow-state:completed]
@@ -56,12 +63,16 @@ write the question, inputs, and next action in `prd.md`, and run
 they are clear. Main-session work leaves the `implement.jsonl` and
 `check.jsonl` sub-agent manifests empty.
 
-#### 2.1 Run the calculation
+#### 2.1 Act on the request
 
-Reuse the existing entrypoint, data, and output location; add structure when
-it simplifies the current calculation. Run the smallest useful case or
-comparison. Inspect an input assumption when an error could silently change
-the result.
+Match the action to the current request. A discussion or assessment gets a
+judgment from the evidence at hand. A design request compares the candidate
+schemes and gives a preferred option with its reasons. A question about a
+log or an earlier result is answered from the existing record. For a
+requested calculation, reuse the existing entrypoint, data, and output
+location; add structure when it simplifies the current calculation, run the
+smallest useful case or comparison, and inspect an input assumption when an
+error could silently change the result.
 
 #### 2.2 Record the result
 

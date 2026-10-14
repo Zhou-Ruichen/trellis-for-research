@@ -5,6 +5,65 @@ Notable changes to this Trellis spec-template repository. Format based on
 [Semantic Versioning](https://semver.org/) as git tags. Pin a version with
 `trellis init --registry gh:Zhou-Ruichen/trellis-for-research/marketplace#<tag>`.
 
+## v0.6.11 - 2026-10-15
+
+### Changed
+- `workflows/research.md`: the `in_progress` blocks and step 2.1 match the
+  action to the current request instead of requiring a calculation run on
+  every turn. A discussion or assessment gets a judgment from the evidence
+  at hand, a design request compares the candidate schemes and gives a
+  preferred option, a question about a log or an earlier result is answered
+  from the existing record, and a calculation runs when the request
+  authorizes it. The `no_task` block covers discussion and explanation
+  beside short calculations. The Phase Index, the `#### X.Y` steps, the six
+  workflow-state blocks, and the identical `-inline` blocks keep their form,
+  and the `task.py` commands and record paths are unchanged.
+- `shared/research-minimal.md` (both templates): a bounded assessment ends
+  with the result that answers its question, and that result may be
+  negative. In continuing research, a comparison answers the current
+  unknown first; a repeat or an added condition is chosen by what it
+  contributes to the interpretation, and the continuation plan follows the
+  current assignment, the evidence that holds, and the available resources.
+  Counterevidence updates only the level it actually refutes (an
+  assumption, a configuration, a mechanism, or the research topic), the
+  refuted configuration or claim is no longer used, and the evidence that
+  remains selects the next comparison that distinguishes the explanations
+  at issue. An exploratory task records what was observed, compared, and
+  interpreted; thresholds and automatic continue-or-stop rules stay with a
+  confirmatory design the user has asked for.
+- `evaluation/index.md` (both templates): the recorded numbers describe the
+  difference observed in the comparison, and a claim about stability or
+  general superiority rests on the repeated-run evidence that shows it;
+  this replaces the rule that one run per condition leaves conditions
+  unranked, which mixed the observed difference with cross-run stability.
+  The scale of repetition follows the question and the available resources.
+  Run counts, units, and variation are stated as the records contain them,
+  and what the records do not contain stays unknown. A comparison design
+  gives each new case one named change from its reference condition; with
+  several factors in play it names each factor's levels and the
+  combinations actually run, keeping existing runs and proposed new cases
+  distinct. A near-equal result is interpreted together with the variation
+  and the comparison's resolving power, at the level of explanation the
+  design isolates.
+- `shared/scientific-writing.md` (both templates): the details in a short
+  reply are selected by the reader's current question. Material supplied in
+  the request or read from a record is stated as given, with its source
+  named; it claims checked only after an actual comparison with a
+  reference, an expected value, or the source. An untested step or an
+  unknown is stated when it affects the current judgment, the use of the
+  result, or the next step, and the status sits beside the claim it
+  affects; a reply answered from the given material ends with that answer
+  instead of a closing line about what was not checked. A condition
+  necessary to a conclusion is written with that conclusion. Scientific
+  concepts keep the field's terms while ordinary software constructs and
+  existing file names such as `prd.md` and `result.md` keep their names.
+  The paired examples gain a given-log row.
+- `scripts/README.md`: the ASCII description now matches `validate.py`,
+  which exempts `examples/`, `README.zh-CN.md`, and the bilingual
+  `shared/scientific-writing.md` files from the content check while keeping
+  every path ASCII.
+- `README.md` and `README.zh-CN.md` pin `v0.6.11`.
+
 ## v0.6.10 - 2026-10-13
 
 ### Changed

@@ -9,11 +9,12 @@
   `## Phase Index` section, `#### X.Y` step headings, and the six
   workflow-state blocks in interface order, each `-inline` block repeating
   its base block;
-- paths are ASCII everywhere, and file content is ASCII for the portable spec
-  under `marketplace/`;
-- content under `examples/` may include bilingual writing samples (for example a
-  Chinese result discussion); the ASCII-content check skips that subtree, and
-  the ASCII-path check covers it;
+- paths are ASCII everywhere, and file content is ASCII except under
+  `examples/` (bilingual writing samples such as a Chinese result
+  discussion), in `README.zh-CN.md`, and in the two
+  `shared/scientific-writing.md` files, whose prose examples are bilingual;
+  the content check skips exactly those files and the path check still
+  covers them;
 - the files both templates share (`data/index.md`, `evaluation/index.md`,
   `guides/add-run.md`, `guides/write-results.md`, and every `shared/` file
   except `index.md` and `python-style.md`) stay byte-identical;

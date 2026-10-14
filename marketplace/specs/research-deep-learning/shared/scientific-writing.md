@@ -22,7 +22,10 @@ current question to later work.
 
 A reply opens with the answer, the result, or the current state, including a
 failure or an unknown, and ends once the answer and its evidence are given.
-A next step is written when a blocker or the question calls for one.
+A next step is written when a blocker or the question calls for one. The
+details in a short reply are selected by the reader's current question: keep
+the values, conditions, and limits that question uses, and leave the rest in
+the record it cites.
 
 ## Results and interpretation
 
@@ -42,7 +45,9 @@ The verb of each claim states the evidence behind it.
 - Executed (已执行): the command completed or the file was written.
 - Checked (已核对): the output was compared with a reference, an expected
   value, or the source. The words verified, confirmed, 已验证, and 已确认
-  claim this level.
+  claim this level. Material supplied in the request or read from a record
+  is stated as given, with its source named; it becomes checked only
+  through that comparison.
 - Inferred (推断): the claim rests on a log, a code reading, or partial
   output, and the sentence names that basis.
 
@@ -50,7 +55,11 @@ A step not run is written as untested (未测), a question without evidence as
 unknown (未知), and a failed step as failed (失败), with its error. Writing an
 executed step as checked, or an inference as a fact, is fabricated evidence.
 Removing a hedge keeps the evidence status of the claim and adds no run,
-check, or result.
+check, or result. Such a status is stated when it affects the current
+judgment, the use of the result, or the next step, and it sits beside the
+claim it affects: when the given material answers the question, the reply
+ends with that answer, and a closing line about what was not run or checked
+is deleted once the claims carry their status.
 
 ## Objections and hedges
 
@@ -76,7 +85,8 @@ side and each with its value.
 
 State a limitation once, beside the claim it affects and in proportion to its
 effect. The data scope goes inside the claim it limits, and a claim wider
-than its evidence is narrowed in that sentence. A favorable result carries
+than its evidence is narrowed in that sentence. A condition necessary to a
+conclusion is written with that conclusion. A favorable result carries
 that one limitation and no further scope qualifiers.
 
 A risk tied to an operation, such as data loss, an irreversible change, or a
@@ -96,6 +106,7 @@ rewrite uses only evidence the writer holds.
 | 瓶颈不是 IO，而是 CPU 解码。（此前无人提到 IO） | 瓶颈在 CPU 解码，每步 0.9 s 中占 0.6 s。 |
 | 不是显存的问题，而是 dtype 不匹配。（用户问：是不是显存不够？） | 显存峰值 9 GB，上限 24 GB；报错栈指向第 88 行的 dtype 不匹配。 |
 | 正文提取完整。（回复末尾注明只核对了 10 份文档） | 已核对的 10 份文档正文与原文一致。 |
+| 日志已核对：训练损失下降，验证损失自第 30 轮上升。（只阅读了用户给的日志，结尾另附"未核对原记录"） | 训练日志显示训练损失持续下降，验证损失自第 30 轮上升；推断为过拟合。 |
 | 模型在测试集上表现最好，这并不意味着它在所有区域都优于参考模型。 | 3 个测试区域中，模型在 2 个区域的 RMSE 低于参考模型（表 2），第 3 个区域高 0.4 mm。 |
 | The lower RMSE does not prove that the method generalizes beyond the study area. | In the study area, RMSE fell from 4.1 mm to 3.2 mm (Table 2). |
 
@@ -132,7 +143,8 @@ comment, docstring, log line, file name, or figure label in code and
 configuration, which take the field's term or its standard abbreviation.
 Borrowed engineering or software words, workflow labels, coined terms, and
 internal codenames are replaced by the quantity, data, method, or result
-they stand for.
+they stand for. Ordinary software constructs keep their programming names,
+and existing project file names such as prd.md and result.md keep theirs.
 
 The established wording of the field's published literature decides the
 term. A project terminology file records those choices.

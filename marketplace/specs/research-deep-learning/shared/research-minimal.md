@@ -12,9 +12,20 @@ question needs them.
 - Run the smallest useful calculation or comparison. Add another seed, fold,
   check, or data inspection when it answers the question or prevents a
   likely silent error. A negative, zero, or unexpected result is recorded as an observation.
-- An exploratory task reports what was observed. Pass/fail or eligibility
-  thresholds (eligible, interesting_signal) and automatic continue-or-stop
-  rules belong to a confirmatory protocol the user has asked for.
+- An exploratory task records what was observed, compared, and interpreted.
+  Pass/fail or eligibility thresholds (eligible, interesting_signal) and
+  automatic continue-or-stop rules belong to a confirmatory design the user
+  has asked for.
+- A bounded assessment ends with the result that answers its question, and
+  that result may be negative. In continuing research, a comparison answers
+  the current unknown first; a repeat or an added condition is chosen by
+  what it contributes to the interpretation, and the continuation plan
+  follows the current assignment, the evidence that holds, and the
+  available resources. Counterevidence updates only the level it actually
+  refutes (an assumption, a configuration, a mechanism, or the research
+  topic), the refuted configuration or claim is no longer used, and the
+  evidence that remains selects the next comparison that distinguishes the
+  explanations at issue.
 - Keep the small record needed to reproduce a reported result: input or data
   version, code revision, command or notebook, parameters, relevant seed, and
   an environment pointer. Put the result and its units in the existing result
